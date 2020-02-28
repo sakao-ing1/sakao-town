@@ -26,7 +26,7 @@ public final class ConnectionFileReader {
     // De plus, seul le singleton peut s'instancier lui-même.
 	private ConnectionFileReader() {
 		try {
-			File xmlDoc = new File("ConnectionFile.xml");
+			File xmlDoc = new File("sakao-connectionpool\\connectionPool\\ConnectionFile.xml");
 			DocumentBuilderFactory dbFact = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuild = dbFact.newDocumentBuilder();
 			Document doc = dBuild.parse(xmlDoc);
@@ -34,18 +34,23 @@ public final class ConnectionFileReader {
 			
 			/////Root element
 			System.out.println("Root element : " + doc.getDocumentElement().getNodeName());
-			NodeList nList = doc.getElementsByTagName("");
+			NodeList nList = doc.getElementsByTagName("url");
 			for(int i = 0; i < nList.getLength();i++) {
 				Node nNode = nList.item(i);
 				System.out.println("Node name : " + nNode.getNodeName() + " " + (i+1) );
 				if(nNode.getNodeType() == Node.ELEMENT_NODE) {
+					
 					Element eElement = (Element) nNode;
+					
 					this.driver = eElement.getElementsByTagName("driver").item(0).getTextContent();
 					System.out.println("Driver : " + this.driver);
+					
 					this.url = eElement.getElementsByTagName("url").item(0).getTextContent();
 					System.out.println("url :" + this.url);
+					
 					this.login = eElement.getElementsByTagName("login").item(0).getTextContent();
 					System.out.println("login : " + this.login);
+					
 					this.password = eElement.getElementsByTagName("password").item(0).getTextContent();
 					System.out.println("password " + this.password);
 				}
