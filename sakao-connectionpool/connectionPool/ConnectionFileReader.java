@@ -1,22 +1,17 @@
 package connectionPool;
 
-import java.io.File;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.io.FileInputStream;
+///import java.util.Enumeration;
+import java.util.Properties;
 
 
 
 public final class ConnectionFileReader {
-	private String url;
-	private String driver;
-	private String login;
-	private String password;
+	private static String url;
+	private static String driver;
+	private static String login;
+	private static String password;
 	
 	
 	private static ConnectionFileReader instance = null;
@@ -25,47 +20,51 @@ public final class ConnectionFileReader {
     // La présence d'un constructeur privé supprime le constructeur public par défaut.
     // De plus, seul le singleton peut s'instancier lui-même.
 	private ConnectionFileReader() {
+		Properties p = new Properties();
 		try {
-			File xmlDoc = new File("sakao-connectionpool\\connectionPool\\ConnectionFile.xml");
-			DocumentBuilderFactory dbFact = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuild = dbFact.newDocumentBuilder();
-			Document doc = dBuild.parse(xmlDoc);
+			FileInputStream fis = new FileInputStream("sakao-connectionpool\\connectionPool\\ConnectionFile.xml");
+			p.loadFromXML(fis);
+			///Enumeration<?> enumeration = p.propertyNames();
+			
+			ConnectionFileReader.url = (String) p.get("url");
+			ConnectionFileReader.driver = (String) p.get("driver");
+			ConnectionFileReader.login = (String) p.get("login");
+			ConnectionFileReader.password = (String) p.get("password");
+			
+			System.out.println(ConnectionFileReader.url);
+			System.out.println(ConnectionFileReader.driver);
+			System.out.println(ConnectionFileReader.login);
+			System.out.println(ConnectionFileReader.password );
+
 			
 			
-			/////Root element
-			System.out.println("Root element : " + doc.getDocumentElement().getNodeName());
-			NodeList nList = doc.getElementsByTagName("url");
-			for(int i = 0; i < nList.getLength();i++) {
-				Node nNode = nList.item(i);
-				System.out.println("Node name : " + nNode.getNodeName() + " " + (i+1) );
-				if(nNode.getNodeType() == Node.ELEMENT_NODE) {
-					
-					Element eElement = (Element) nNode;
-					
-					this.driver = eElement.getElementsByTagName("driver").item(0).getTextContent();
-					System.out.println("Driver : " + this.driver);
-					
-					this.url = eElement.getElementsByTagName("url").item(0).getTextContent();
-					System.out.println("url :" + this.url);
-					
-					this.login = eElement.getElementsByTagName("login").item(0).getTextContent();
-					System.out.println("login : " + this.login);
-					
-					this.password = eElement.getElementsByTagName("password").item(0).getTextContent();
-					System.out.println("password " + this.password);
+			/////Util mais cest pour parcourir et afficher nous avons nous besoin de recuperer des valeurs afin de les attribuer aux attributs de la vlasse, pour cela nous utilisons get
+			///while(enumeration.hasMoreElements()) {
+				///String key = (String) enumeration.nextElement();
+				///String value = p.getProperty(key);
+				///if(key == "driver") {
+					///System.out.println(key + " = " +  value);
+
+				///}
+			///}
+			
+			///DocumentBuilderFactory dbFact = DocumentBuilderFactory.newInstance();
+			///DocumentBuilder dBuild = dbFact.newDocumentBuilder();
+			///Document doc = dBuild.parse(XMLDoc);
+			
+			
+		
 				}
-				
-			}
-		}
+
 		catch(Exception e) {;}
 
 	}
 	
 	
-	  /**
-     * Méthode permettant de renvoyer une instance de la classe Singleton
-     * @return Retourne l'instance du singleton.
-     */
+	  
+    /// * Méthode permettant de renvoyer une instance de la classe Singleton
+     ///* @return Retourne l'instance du singleton.
+     
 	
 	
 	public final static ConnectionFileReader getInstance() {
@@ -91,7 +90,7 @@ public final class ConnectionFileReader {
 	
  
 	public String toString() {
-		return "url : " + this.url + " driver : " + this.driver + " login : " + this.login + " password : " + this.password;
+		return "url : " + ConnectionFileReader.url + " driver : " + ConnectionFileReader.driver + " login : " + ConnectionFileReader.login + " password : " + ConnectionFileReader.password;
 	}
 	
 	
