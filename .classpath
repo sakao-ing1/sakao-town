@@ -11,5 +11,6 @@
 	<classpathentry kind="src" path="sakao-server"/>
 	<classpathentry kind="src" path="sakao-backend"/>
 	<classpathentry kind="src" path="sakao-common"/>
+	<classpathentry kind="src" path="sakao-connectionpool"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
