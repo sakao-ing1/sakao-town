@@ -12,12 +12,15 @@ public class JDBCConnectionPool {
 
 	private Collection<Connection> listConnection = new ArrayList<Connection>();
 
+	ConnectionFileReader conFileRead = ConnectionFileReader.getInstance();
+
 	// methode qui remplit l'attribut avec un certain nombre d'instances de la
 	// classe Connection
 	public void fill() throws ClassNotFoundException {
 		try {
-			Class.forName("");
-			Connection con = DriverManager.getConnection("", "postgres", "system");
+
+			Class.forName(ConnectionFileReader.getDriver());
+			Connection con = DriverManager.getConnection(ConnectionFileReader.getUrl(), ConnectionFileReader.getLogin(), ConnectionFileReader.getPassword());
 			listConnection.add(con);
 			System.out.println("connexion établie!!!!");
 
