@@ -18,7 +18,7 @@ public class ConnectionFileReader {
 	
 	public static void main(String [] args) {
 		try {
-			File xmlDoc = new File("C:\\Users\\Aziz\\git\\sakao-town\\sakao-connectionpool\\connectionPool\\ConnectionFile.xml");
+			File xmlDoc = new File("sakao-connectionpool\\connectionPool\\ConnectionFile.xml");
 			DocumentBuilderFactory dbFact = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuild = dbFact.newDocumentBuilder();
 			Document doc = dBuild.parse(xmlDoc);
