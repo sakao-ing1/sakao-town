@@ -10,30 +10,27 @@ import java.util.logging.Logger;
 
 public class JDBCConnectionPool {
 
-	private Collection<Connection> connection = new ArrayList<Connection>();
-	
-	public void remplir (Connection con,String url,String login,String password) {
+	private Collection<Connection> listConnection = new ArrayList<Connection>();
+
+	public void remplir(Connection con) throws ClassNotFoundException {
 		try {
-			con = DriverManager.getConnection(url, login, password);
-			connection.add(con);
+			Class.forName("");
+			con = DriverManager.getConnection("", "postgres", "system");
+			listConnection.add(con);
 			System.out.println("connexion établie!!!!");
+
 		} catch (SQLException ex) {
 			Logger.getLogger(JDBCConnectionPool.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
-	
-	
-	/*
-	public JDBCConnectionPool() {
-		
-	}
 
-	public Connection getConnection() {
-		return connection;
-	}
+	
+	 /* public Connection getConnection(String url) { 
+		  for(Connection con : con)
+	  
+	 
+	  }*/
+	  
+	 
 
-	public void setConnection(Connection connection) {
-		this.connection = connection;
-	}
-*/
 }
