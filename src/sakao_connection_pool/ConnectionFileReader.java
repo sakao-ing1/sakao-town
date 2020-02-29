@@ -19,7 +19,7 @@ public final class ConnectionFileReader {
 	private ConnectionFileReader() {
 		Properties p = new Properties();
 		try {
-			FileInputStream fis = new FileInputStream("sakao-connectionpool\\connectionPool\\ConnectionFile.xml");
+			FileInputStream fis = new FileInputStream("src\\sakao_connection_pool\\ConnectionFile.xml");
 			p.loadFromXML(fis);
 			/// Enumeration<?> enumeration = p.propertyNames();
 
