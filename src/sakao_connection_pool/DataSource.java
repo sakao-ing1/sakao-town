@@ -1,4 +1,5 @@
-package connectionPool;
+package sakao_connection_pool;
+
 
 import java.sql.Connection;
 import java.sql.SQLException;

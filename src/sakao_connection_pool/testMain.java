@@ -1,4 +1,6 @@
-package connectionPool;
+package sakao_connection_pool;
+
+import sakao_connection_pool.DataSource;;
 
 public class testMain {
 
