@@ -1,4 +1,5 @@
-package connectionPool;
+package sakao_connection_pool;
+
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -25,5 +26,23 @@ public class DataSource {
 	public static void closeInstance() {
 		instance.closeAllConnection();
 	}
+	
+	public void showPersonne() {
+		System.out.println(instance.showPersonne().toString());
+	}
+	
+	public void addPersonne(String name,int age) {
+		Personne p = new Personne(name, age);
+		instance.addPersonne(p);
+	}
+	
+	public void deletePersonne(String name) {
+		instance.deletePersonneByName(name);
+	}
+	
+	public void updatePersonne(int id, String name, int age) {
+		instance.updatePersonne(id, name, age);
+	}
+	
 
 }
