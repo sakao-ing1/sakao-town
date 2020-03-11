@@ -33,8 +33,8 @@ public class DataSource {
 		System.out.println(instance.showPersonne().toString());
 	}
 	
-	public void addPersonne(int id,String name,int age) {
-		Personne p = new Personne(id,name, age);
+	public void addPersonne(String name,int age) {
+		Personne p = new Personne(name, age);
 		instance.addPersonne(p);
 	}
 	
@@ -89,13 +89,11 @@ public class DataSource {
 			
 			
 			case 1 :
-				System.out.println("Veuillez renseigner un id");
-				int id = sc.nextInt();
 				System.out.println("Veuillez renseigner un nom");
 				String name = sc.next();
 				System.out.println("Veuillez renseigner un age");
 				int age = sc.nextInt();
-				this.addPersonne(id, name, age);
+				this.addPersonne(name, age);
 				System.out.println("********************");
 				break;
 				
