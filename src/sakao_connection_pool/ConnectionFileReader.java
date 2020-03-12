@@ -3,6 +3,7 @@ package sakao_connection_pool;
 import java.io.FileInputStream;
 /////import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 ///import java.util.Enumeration;
 import java.util.Properties;
 
@@ -20,9 +21,9 @@ public final class ConnectionFileReader {
 	
 	/////Methode qui permet douvrir le fichier et de le lire
 	public void Read() {
-		FileInputStream fis;
+		InputStream fis;
 		try {
-			fis = new FileInputStream(".\\resources\\ConnectionFile.xml");
+			fis = getClass().getClassLoader().getResourceAsStream("sakao_connection_pool/ConnectionFile.xml");
 			p.loadFromXML(fis);
 		} catch (IOException e) {
 			e.printStackTrace();
