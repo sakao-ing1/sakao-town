@@ -22,7 +22,7 @@ public final class ConnectionFileReader {
 	public void Read() {
 		FileInputStream fis;
 		try {
-			fis = new FileInputStream("src\\sakao_connection_pool\\ConnectionFile.xml");
+			fis = new FileInputStream(".\\resources\\ConnectionFile.xml");
 			p.loadFromXML(fis);
 		} catch (IOException e) {
 			e.printStackTrace();
