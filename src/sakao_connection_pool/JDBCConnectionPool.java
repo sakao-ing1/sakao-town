@@ -248,6 +248,7 @@ public class JDBCConnectionPool {
     	Statement query = this.listConnectionavailable.get(0).createStatement();
     	int result = query.executeUpdate("Delete from personne");
     	System.out.println("all rows deleted");
+    	
     }
     
  

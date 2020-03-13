@@ -144,7 +144,7 @@ public class DataSource {
 				
 			case 6 :
 				this.deleteAllPersonne();
-				this.reset(instance.getListConnectionbusy().get(instance.getListConnectionbusy().size() - 1));
+				/////this.reset(instance.getListConnectionbusy().get(instance.getListConnectionbusy().size() - 1));
 				break;
 				
 				
