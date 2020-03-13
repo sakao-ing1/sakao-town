@@ -62,6 +62,8 @@ public class DataSource {
 		instance.updatePersonneName(id, name);
 	}
 	
+	
+	
 	public void StartCRUD() {
 		
 		Scanner sc = new Scanner(System.in);
@@ -94,11 +96,14 @@ public class DataSource {
 				System.out.println("Veuillez renseigner un age");
 				int age = sc.nextInt();
 				this.addPersonne(name, age);
+				this.reset(instance.getListConnectionbusy().get(instance.getListConnectionbusy().size() - 1));				
 				System.out.println("********************");
 				break;
 				
 			case 2 :
 				this.showPersonne();
+				this.reset(instance.getListConnectionbusy().get(instance.getListConnectionbusy().size() - 1));
+
 				System.out.println("********************");
 
 				break;
@@ -107,6 +112,7 @@ public class DataSource {
 				System.out.println("Veuillez renseigner un id");
 				int idtodelete = sc.nextInt();
 				this.deletePersonneById(idtodelete);
+				this.reset(instance.getListConnectionbusy().get(instance.getListConnectionbusy().size() - 1));
 				System.out.println("********************");
 
 				break;
@@ -118,6 +124,7 @@ public class DataSource {
 				System.out.println("Veuillez renseigner le nouvel age");
 				int ageupdateage = sc.nextInt();
 				this.updatePersonneAge(idupdateage, ageupdateage);
+				this.reset(instance.getListConnectionbusy().get(instance.getListConnectionbusy().size() - 1));
 				System.out.println("********************");
 
 				break;
@@ -130,12 +137,14 @@ public class DataSource {
 				System.out.println("Veuillez renseigner le nouveau nom");
 				String nameupdatename = sc.next();
 				this.updatePersonneName(idupdatename, nameupdatename);
+				this.reset(instance.getListConnectionbusy().get(instance.getListConnectionbusy().size() - 1));
 				System.out.println("********************");
 
 				break;
 				
 			case 6 :
 				this.deleteAllPersonne();
+				this.reset(instance.getListConnectionbusy().get(instance.getListConnectionbusy().size() - 1));
 				break;
 				
 				

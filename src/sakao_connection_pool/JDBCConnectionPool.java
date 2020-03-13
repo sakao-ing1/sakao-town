@@ -16,9 +16,32 @@ import java.util.logging.Logger;
 public class JDBCConnectionPool {
 
 	private ArrayList<Connection> listConnectionavailable;
+	public ArrayList<Connection> getListConnectionavailable() {
+		return listConnectionavailable;
+	}
+
+
+
+	public void setListConnectionavailable(ArrayList<Connection> listConnectionavailable) {
+		this.listConnectionavailable = listConnectionavailable;
+	}
+
+
+
+	public ArrayList<Connection> getListConnectionbusy() {
+		return listConnectionbusy;
+	}
+
+
+
+	public void setListConnectionbusy(ArrayList<Connection> listConnectionbusy) {
+		this.listConnectionbusy = listConnectionbusy;
+	}
+
+
 	private ArrayList<Connection> listConnectionbusy;
 	private ConnectionFileReader connectionfilereader;
-	private static final int maxconnection = 5;
+	/////private static final int maxconnection = 5;
 	private static int position = 0;
 
 	/////Creer le pool de connection
@@ -40,9 +63,9 @@ public class JDBCConnectionPool {
 				Connection con = DriverManager.getConnection(connectionfilereader.getProperty("url"), connectionfilereader.getProperty("login"),connectionfilereader.getProperty("password"));
 				listConnectionavailable.add(con);
 				position = position + 1;
-				System.out.println("La connexion numero " + position + " a ete établie");
-	
 			}
+			System.out.println(position + " connections has been created");
+			System.out.println("");
 		}
 			
 			
@@ -72,15 +95,20 @@ public class JDBCConnectionPool {
 	
 	/////Methode qui renvoie un objet Connection le plus proche dispo dans l'attribut
 	public Connection getConnection() {
+		Connection connection = null;
 		try {
-			listConnectionbusy.add(listConnectionavailable.get(0));
-			listConnectionavailable.remove(listConnectionbusy.get(0));
+			connection = listConnectionavailable.get(0);
+			listConnectionbusy.add(connection);
+			listConnectionavailable.remove(connection);
+			System.out.println("available conection(s) : " + listConnectionavailable.size());
+			System.out.println("busy connection(s) : " + listConnectionbusy.size());
+			System.out.println("Total connection(s) : 5");
+			System.out.println("");
 		}
 		catch(Exception e) {
 			System.out.println("Il ny a pas de connexion dispo");
-			return null;
 		}
-		return listConnectionbusy.get(0);
+		return listConnectionavailable.get(0);
 			
 	}
 	
@@ -224,9 +252,9 @@ public class JDBCConnectionPool {
     
  
 
-	public static int getMaxconnection() {
+	/*public static int getMaxconnection() {
 		return maxconnection;
-	}
+	}*/
     
 
 }
