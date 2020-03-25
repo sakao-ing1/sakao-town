@@ -20,24 +20,24 @@ public class ServerSakao {
 
 
 	public void start(int port) throws IOException, JSONException {
-		setServerSocket(new ServerSocket(port));
+		serverSocket = new ServerSocket(port);
 		clientSocket = serverSocket.accept();
-		json = new JSONObject();
 		out = new OutputStreamWriter(clientSocket.getOutputStream(),StandardCharsets.UTF_8);
 		in = new BufferedReader (new InputStreamReader(clientSocket.getInputStream(),StandardCharsets.UTF_8));
-		this.sendMessageToClient();
-		this.CloseConnection();
+		System.out.println("Client connecte");
+		System.out.println(this.sendMessageToClient());
+		
+		/////System.out.println(this.sendMessageToClient());
 	}
 	
 	
 	public String sendMessageToClient() throws IOException, JSONException {
-		String arrival = in.readLine();
-		if(arrival != null) {
-			json = new JSONObject();
-			json.put("message du servr", "Server a recu votre message");
-			out.write(json.toString());
-		}
-		return json.toString() + " a ete recu du server";
+
+		json = new JSONObject();
+		json.put("message du servr", "Server a recu votre message");
+		out.write(json.toString());
+		out.flush();
+		return json.toString() + " a ete envoye par le server";
 	}
 	
 	
@@ -46,6 +46,7 @@ public class ServerSakao {
 		out.close();
 		clientSocket.close();
 		serverSocket.close();
+		System.out.println("Server deconnecte");
 	}
 	
 
@@ -60,6 +61,8 @@ public class ServerSakao {
 	public static void main(String[] args) throws IOException, JSONException {
 		ServerSakao serveur1 = new ServerSakao();
 		serveur1.start(3030);
+		/////System.out.println(serveur1.sendMessageToClient());
+		serveur1.CloseConnection();
 	}
 	
 

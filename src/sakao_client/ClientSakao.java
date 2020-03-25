@@ -16,12 +16,15 @@ public class ClientSakao {
 		private BufferedReader in;
 		private JSONObject JSonObj;
 		
-		public void startConnection(String ip,int port) throws IOException, JSONException {
+		public void startConnection(String ip,int port,String a, int b) throws IOException, JSONException {
 			System.out.println("Connexion au server");
 			clientSocket = new Socket(ip,port);
 			out = new OutputStreamWriter(clientSocket.getOutputStream(),StandardCharsets.UTF_8);
 			in = new BufferedReader (new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
 			System.out.println("Connexion au serveur reussi");
+			System.out.println(this.sendMessageToServer(a, b));
+			System.out.println(this.readMessageFromServer());
+			this.CloseConnection();
 		}
 		
 		
@@ -30,14 +33,15 @@ public class ClientSakao {
 			JSonObj.put("name", n);
 			JSonObj.put("age", m);
 			out.write(JSonObj.toString());
+			out.flush();
 			return JSonObj.toString() + " a ete envoye au serveur" ;
 		}
 		
 		
 		public String readMessageFromServer() throws JSONException, IOException {
 			String line = in.readLine();
-			JSONObject JSONOBJReceived = new JSONObject(line);
-			return JSONOBJReceived.toString() + " a ete recu en provenance du serveur";
+			JSonObj= new JSONObject(line);
+			return JSonObj.toString(2) + " a ete recu en provenance du serveur";
 		}
 		
 		
@@ -52,10 +56,8 @@ public class ClientSakao {
 		
 		public static void main(String[] args) throws IOException, JSONException {
 			ClientSakao client1 = new ClientSakao();
-			client1.startConnection("localhost", 3030);			
-			client1.sendMessageToServer("Alain", 23);
-			client1.readMessageFromServer();
-			client1.CloseConnection();
+			client1.startConnection("localhost", 3030,"Alain",23);			
+
 		}
 	
 }
