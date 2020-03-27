@@ -22,8 +22,8 @@ public class ServerSakao {
 	private Socket clientSocket;
 	private OutputStreamWriter out;
 	private BufferedReader in;
-	private Request request;
-	private Response response;
+	private Request request = new Request();
+	private Response response = new Response();
 	private Crud_Service service;
 	private ObjectMapper mapper;
 
@@ -36,25 +36,43 @@ public class ServerSakao {
 		out = new OutputStreamWriter(clientSocket.getOutputStream(),StandardCharsets.UTF_8);
 		in = new BufferedReader (new InputStreamReader(clientSocket.getInputStream(),StandardCharsets.UTF_8));
 		System.out.println("Client connecte");
-		System.out.println(this.sendMessageToClient());
+		/////System.out.println(this.sendMessageToClient());
+		mapper = new ObjectMapper();
+		String jsonString = in.readLine();
+		request = mapper.readValue(jsonString,Request.class);
+		System.out.println("Message recu");
+		String operation_type = request.getOperation_type();
+		service = new Crud_Service();
+		this.response.setStudents(this.service.showPersonne());
+		this.response.setState(true);
+		String outjsonString = mapper.writeValueAsString(response);
+		out.write(outjsonString);
+		out.flush();
+	
+		
 	}
 	
 	
-	public boolean sendMessageToClient() throws IOException, JSONException {
+	/*public boolean sendMessageToClient() throws IOException, JSONException {
 		boolean b = false;
-		this.StartCrud();
+		mapper = new ObjectMapper();
+		String jsonString = in.readLine();
+		request = mapper.readValue(jsonString,Request.class);
+		System.out.println("Message recu");
 		try {
+			String operation_type = request.getOperation_type();
+			service = new Crud_Service();
+			this.response.setStudents(this.service.showPersonne());
+			this.response.setState(true);
 			String outjsonString = mapper.writeValueAsString(response);
 			out.write(outjsonString);
 			out.flush();
 			b = true;
 		}
-		catch(Exception e) {
-		e.printStackTrace();
-		}
+		catch(Exception e) {}
 		
-		return  b;
-	}
+		return b;
+	}*/
 	
 	
 	public void CloseConnection() throws IOException {
@@ -75,22 +93,24 @@ public class ServerSakao {
 	}
 	
 	
-	public void StartCrud() throws JsonParseException, JsonMappingException, IOException {
+	/*public void StartCrud() throws JsonParseException, JsonMappingException, IOException {
+		System.out.println("ESSAIE");
 		mapper = new ObjectMapper();
 		String jsonString = in.readLine();
 		request = mapper.readValue(jsonString,Request.class);
+		System.out.println("Message recu");
 		String operation_type = request.getOperation_type();
-		
 		
 		switch(operation_type) {
 		
 		case "SELECT_ALL" :
+			service = new Crud_Service();
 			response.setStudents(this.service.showPersonne()); 
 			response.setState(true);
 			break;
 		}
 		
-	}
+	}*/
 	
 	
 	public static void main(String[] args) throws IOException, JSONException {

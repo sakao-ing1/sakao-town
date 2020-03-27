@@ -9,6 +9,9 @@ public class Crud_Service {
 	
 	private  Crud_Controller controller;
 	
+	public Crud_Service() {
+		this.controller = new Crud_Controller();
+	}
 	
 	public ArrayList<Personne> showPersonne() {
 		return 	controller.showPersonne();

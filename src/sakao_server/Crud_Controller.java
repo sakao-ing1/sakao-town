@@ -15,6 +15,15 @@ public class Crud_Controller {
 	private DataSource datasource;
 	
 	
+	public Crud_Controller() {
+		try {
+			this.datasource = new DataSource();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	
 	// Requete SELECT
 	

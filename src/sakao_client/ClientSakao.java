@@ -20,53 +20,60 @@ public class ClientSakao {
 		private BufferedReader in;
 		private Request request;
 		private Response response;
+		private ObjectMapper mapper;
 		private final static String SELECT_ALL = "SELECT_ALL"; 
 		private final static String DELETE_ALL = "DELETE_ALL";
 		private final static String INSERT = "INSERT";
 		private final static String DELETE = "DELETE";
 		private final static String UPDATE_NAME = "UPDATE_NAME";
 		private final static String UPDATE_AGE= "UPDATE_AGE";
+		
 
 
 		
 		public void startConnection(String ip,int port) throws IOException, JSONException {
+
 			System.out.println("Connexion au server");
 			clientSocket = new Socket(ip,port);
 			out = new OutputStreamWriter(clientSocket.getOutputStream(),StandardCharsets.UTF_8);
 			in = new BufferedReader (new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
 			System.out.println("Connexion au serveur reussi");
 			this.StartHMI();
+
 		}
 		
 	/////IMPORTANT NOUS FAISON UNE METHODE POUR CHAQUE ACTION DU CRUD A OPTIMISER POUR EN FAIRE QUUNE SEULE
 		
 		/* Si le client tape SELECT ALL OU DELETE ALL : request.operation_type = "Select_all" "Delete_All */
 		public String sendSelectAllMessageToServer(String table) throws IOException, JSONException { 
-			ObjectMapper mapper = new ObjectMapper();
+			mapper = new ObjectMapper();
 			request = new Request(SELECT_ALL,table);
 			String outjsonString = mapper.writeValueAsString(request);
 			out.write(outjsonString);
 			out.flush();
+			System.out.println("REQUETE ENVOYE");
 			String injsonString = in.readLine();
+			response = new Response();
 			response = mapper.readValue(injsonString, Response.class);
 			return response.toString();
 		}
 		
 		
 		public String sendDeleteAllMessageToServer(String table) throws IOException, JSONException { 
-			ObjectMapper mapper = new ObjectMapper();
+			mapper = new ObjectMapper();
 			request = new Request(DELETE_ALL,table);
 			String outjsonString = mapper.writeValueAsString(request);
 			out.write(outjsonString);
 			out.flush();
 			String injsonString = in.readLine();
+			response = new Response();
 			response = mapper.readValue(injsonString, Response.class);
 			return response.toString();
 		}
 		
 		
 		public String sendInsertMessageToServer(String table, String name, int age) throws IOException {
-			ObjectMapper mapper = new ObjectMapper();
+			mapper = new ObjectMapper();
 			request = new Request(INSERT,table,name,age);
 			String outjsonString = mapper.writeValueAsString(request);
 			out.write(outjsonString);
@@ -78,7 +85,7 @@ public class ClientSakao {
 		
 		
 		public String sendDeleteAStudentMessageToServer(String table,int id) throws IOException {
-			ObjectMapper mapper = new ObjectMapper();
+			mapper = new ObjectMapper();
 			request = new Request(DELETE ,table,id);
 			String outjsonString = mapper.writeValueAsString(request);
 			out.write(outjsonString);
@@ -89,7 +96,7 @@ public class ClientSakao {
 		}
 		
 		public String sendUpdateANameMessageToServer(String table,int id,String name) throws IOException {
-			ObjectMapper mapper = new ObjectMapper();
+			mapper = new ObjectMapper();
 			request = new Request(UPDATE_NAME ,table,id,name);
 			String outjsonString = mapper.writeValueAsString(request);
 			out.write(outjsonString);
@@ -100,7 +107,7 @@ public class ClientSakao {
 		}
 		
 		public String sendUpdateANameMessageToServer(String table,int id, int age) throws IOException {
-			ObjectMapper mapper = new ObjectMapper();
+			 mapper = new ObjectMapper();
 			request = new Request(UPDATE_AGE ,table,id,age);
 			String outjsonString = mapper.writeValueAsString(request);
 			out.write(outjsonString);
@@ -120,7 +127,7 @@ public class ClientSakao {
 		}
 			
 		
-		public void StartHMI() throws IOException {
+		public void StartHMI() {
 			
 			Scanner sc = new Scanner(System.in);
 			System.out.println("MENU CRUD");
@@ -200,7 +207,11 @@ public class ClientSakao {
 					
 					
 				case 7 :
-				this.CloseConnection();
+					try {
+						this.CloseConnection();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				System.out.println("Vous avez quitte le menu");
 				
 				}

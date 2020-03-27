@@ -69,6 +69,10 @@ public class Request {
 	
 	
 	
+	public Request() {
+	}
+
+
 	public String toString() {
 		
 		
