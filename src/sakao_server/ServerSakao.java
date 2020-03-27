@@ -8,15 +8,22 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
-import org.json.JSONObject;
+
+import sakao_common.Request;
+import sakao_common.Response;
+import sakao_connection_pool.DataSource;
 
 public class ServerSakao {
 	private ServerSocket serverSocket;
 	private Socket clientSocket;
 	private OutputStreamWriter out;
 	private BufferedReader in;
-	private JSONObject json;
+	private Request request;
+	private Response response;
+	private DataSource dta;
+	
 
 
 	public void start(int port) throws IOException, JSONException {
@@ -32,14 +39,16 @@ public class ServerSakao {
 	
 	
 	public String sendMessageToClient() throws IOException, JSONException {
-
-		json = new JSONObject();
-		json.put("message du servr", "Server a recu votre message");
-		out.write(json.toString());
-		out.flush();
-		return json.toString() + " a ete envoye par le server";
+ 
+		return  " a ete envoye par le server";
 	}
 	
+	public String readMessageFromClient() throws IOException {////Transformation du flux entrant en json en objet request 
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonString = in.readLine();
+		request = mapper.readValue(jsonString,Request.class);
+		return request.toString();
+	}
 	
 	public void CloseConnection() throws IOException {
 		in.close();

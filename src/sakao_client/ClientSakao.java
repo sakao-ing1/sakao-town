@@ -7,14 +7,22 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import sakao_common.Request;
+import sakao_common.Response;
 
 public class ClientSakao {
 		private Socket clientSocket;
 		private OutputStreamWriter out;
 		private BufferedReader in;
-		private JSONObject JSonObj;
+		private Request request;
+		private Response response;
+		private final static String SELECT_ALL = "SELECT_ALL"; 
+		private final static String DELETE_ALL = "DELETE_ALL";
+
 		
 		public void startConnection(String ip,int port,String a, int b) throws IOException, JSONException {
 			System.out.println("Connexion au server");
@@ -22,27 +30,27 @@ public class ClientSakao {
 			out = new OutputStreamWriter(clientSocket.getOutputStream(),StandardCharsets.UTF_8);
 			in = new BufferedReader (new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
 			System.out.println("Connexion au serveur reussi");
-			System.out.println(this.sendMessageToServer(a, b));
-			System.out.println(this.readMessageFromServer());
+			///System.out.println(this.sendMessageToServer(a, b));
+			///System.out.println(this.readMessageFromServer());
 			this.CloseConnection();
 		}
 		
-		
-		public String sendMessageToServer(String n, int m) throws IOException, JSONException { 
-			JSonObj = new JSONObject();
-			JSonObj.put("name", n);
-			JSonObj.put("age", m);
-			out.write(JSonObj.toString());
+		/* Si le client tape 1 : request.operation_type = "Select_all" */
+		public String sendMessageToServer(String table, int id,String name, int age) throws IOException, JSONException { 
+			ObjectMapper mapper = new ObjectMapper();
+			request = new Request(table,id,name,age);
+			String jsonString = mapper.writeValueAsString(request);
+			out.write(jsonString);
 			out.flush();
-			return JSonObj.toString() + " a ete envoye au serveur" ;
+			return jsonString ;
 		}
 		
 		
-		public String readMessageFromServer() throws JSONException, IOException {
+		/*public String readMessageFromServer() throws JSONException, IOException {
 			String line = in.readLine();
-			JSonObj= new JSONObject(line);
-			return JSonObj.toString(2) + " a ete recu en provenance du serveur";
-		}
+			///JSonObj= new JSONObject(line);
+			///return JSonObj.toString(2) + " a ete recu en provenance du serveur";
+		}*/
 		
 		
 		public void CloseConnection() throws IOException {

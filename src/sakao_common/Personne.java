@@ -1,4 +1,4 @@
-package sakao_connection_pool;
+package sakao_common;
 
 public class Personne {
 	private int id;
@@ -40,7 +40,7 @@ public class Personne {
 		this.age = age;
 	}
 
-	@Override
+	
 	public String toString() {
 		return "Personne [id=" + id + ", name=" + name + ", age=" + age + "]";
 	}
