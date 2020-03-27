@@ -37,8 +37,6 @@ public class ServerSakao {
 		in = new BufferedReader (new InputStreamReader(clientSocket.getInputStream(),StandardCharsets.UTF_8));
 		System.out.println("Client connecte");
 		System.out.println(this.sendMessageToClient());
-		
-		/////System.out.println(this.sendMessageToClient());
 	}
 	
 	
@@ -76,13 +74,6 @@ public class ServerSakao {
 		this.serverSocket = serverSocket;
 	}
 	
-	public static void main(String[] args) throws IOException, JSONException {
-		ServerSakao serveur1 = new ServerSakao();
-		serveur1.start(3030);
-		/////System.out.println(serveur1.sendMessageToClient());
-		serveur1.CloseConnection();
-	}
-	
 	
 	public void StartCrud() throws JsonParseException, JsonMappingException, IOException {
 		mapper = new ObjectMapper();
@@ -100,6 +91,14 @@ public class ServerSakao {
 		}
 		
 	}
+	
+	
+	public static void main(String[] args) throws IOException, JSONException {
+		ServerSakao serveur1 = new ServerSakao();
+		serveur1.start(3030);
+		serveur1.CloseConnection();
+	}
+	
 	
 
 }

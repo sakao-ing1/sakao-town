@@ -29,7 +29,7 @@ public class ClientSakao {
 
 
 		
-		public void startConnection(String ip,int port,String a, int b) throws IOException, JSONException {
+		public void startConnection(String ip,int port) throws IOException, JSONException {
 			System.out.println("Connexion au server");
 			clientSocket = new Socket(ip,port);
 			out = new OutputStreamWriter(clientSocket.getOutputStream(),StandardCharsets.UTF_8);
@@ -118,14 +118,7 @@ public class ClientSakao {
 			clientSocket.close();
 			System.out.println("Client deconnecte");
 		}
-		
-		
-		public static void main(String[] args) throws IOException, JSONException {
-			ClientSakao client1 = new ClientSakao();
-			client1.startConnection("localhost", 3030,"Alain",23);			
-
-		}
-		
+			
 		
 		public void StartHMI() throws IOException {
 			
@@ -217,5 +210,11 @@ public class ClientSakao {
 			
 			
 			
-		}	
+		}
+		
+		public static void main(String[] args) throws IOException, JSONException {
+			ClientSakao client1 = new ClientSakao();
+			client1.startConnection("localhost", 3030);			
+
+		}
 }
