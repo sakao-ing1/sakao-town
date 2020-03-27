@@ -8,6 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
 
@@ -22,7 +24,9 @@ public class ServerSakao {
 	private BufferedReader in;
 	private Request request;
 	private Response response;
-	private DataSource dta;
+	private Crud_Service service;
+	private ObjectMapper mapper;
+
 	
 
 
@@ -38,17 +42,22 @@ public class ServerSakao {
 	}
 	
 	
-	public String sendMessageToClient() throws IOException, JSONException {
- 
-		return  " a ete envoye par le server";
+	public boolean sendMessageToClient() throws IOException, JSONException {
+		boolean b = false;
+		this.StartCrud();
+		try {
+			String outjsonString = mapper.writeValueAsString(response);
+			out.write(outjsonString);
+			out.flush();
+			b = true;
+		}
+		catch(Exception e) {
+		e.printStackTrace();
+		}
+		
+		return  b;
 	}
 	
-	public String readMessageFromClient() throws IOException {////Transformation du flux entrant en json en objet request 
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonString = in.readLine();
-		request = mapper.readValue(jsonString,Request.class);
-		return request.toString();
-	}
 	
 	public void CloseConnection() throws IOException {
 		in.close();
@@ -72,6 +81,24 @@ public class ServerSakao {
 		serveur1.start(3030);
 		/////System.out.println(serveur1.sendMessageToClient());
 		serveur1.CloseConnection();
+	}
+	
+	
+	public void StartCrud() throws JsonParseException, JsonMappingException, IOException {
+		mapper = new ObjectMapper();
+		String jsonString = in.readLine();
+		request = mapper.readValue(jsonString,Request.class);
+		String operation_type = request.getOperation_type();
+		
+		
+		switch(operation_type) {
+		
+		case "SELECT_ALL" :
+			response.setStudents(this.service.showPersonne()); 
+			response.setState(true);
+			break;
+		}
+		
 	}
 	
 

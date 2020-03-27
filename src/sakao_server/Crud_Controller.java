@@ -117,7 +117,7 @@ public class Crud_Controller {
   
   
   public void deleteAllPersonne() throws SQLException {
-  	Statement query = this.datasource.getInstance().getListConnectionavailable().get(0).createStatement();
+  	Statement query = this.datasource.getListConnectionavailable().get(0).createStatement();
   	int result = query.executeUpdate("Delete from personne");
   	System.out.println("all rows deleted");
   	

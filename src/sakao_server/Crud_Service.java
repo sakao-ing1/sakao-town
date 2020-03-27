@@ -1,6 +1,5 @@
 package sakao_server;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,33 +14,84 @@ public class Crud_Service {
 		return 	controller.showPersonne();
 	}
 	
-	public void addPersonne(String name,int age) {
-		Personne p = new Personne(name, age);
-		controller.addPersonne(p);
+	public boolean addPersonne(String name,int age) {
+		boolean b = false;
+		try {
+			Personne p = new Personne(name, age);
+			controller.addPersonne(p);
+			b = true;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+
+		}
+		return b;
 	}
 	
-	public void deletePersonneByName(String name) {
-		controller.deletePersonneByName(name);
+	public boolean deletePersonneByName(String name) {
+		boolean b = false;
+		try {
+			controller.deletePersonneByName(name);
+			b = true;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+
+		}
+		return b;
 	}
 	
-	public void deletePersonneById(int ID) {
-		controller.deletePersonneById(ID);
+	
+	public boolean deletePersonneById(int ID) {
+		boolean b = false;
+		try {
+			controller.deletePersonneById(ID);
+			b = true;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+
+		}
+		return b;
 	}
 	
-	public void updatePersonneAge(int id, int age) {
-		controller.updatePersonneAge(id, age);
+	public boolean updatePersonneAge(int id, int age) {
+		boolean b = false;
+		try {
+			controller.updatePersonneAge(id, age);
+			b = true;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+
+		}
+		
+		return b;
 	}
 	
-	public void deleteAllPersonne() {
+	public boolean deleteAllPersonne() {
+		boolean b = false;
 		try {
 			controller.deleteAllPersonne();
-		} catch (SQLException e) {
+			b = true;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return b;
 	}
 	
-	public void updatePersonneName(int id, String name) {
-		controller.updatePersonneName(id, name);
+	public boolean updatePersonneName(int id, String name) {
+		boolean b = false;
+		try {
+			controller.updatePersonneName(id, name);
+			b = true;
+		}
+		
+		catch(Exception e) {
+			e.printStackTrace();
+
+		}
+		return b;
 	}
 	
 	
@@ -126,7 +176,8 @@ public class Crud_Service {
 				
 			case 6 :
 				this.deleteAllPersonne();
-				/////this.reset(instance.getListConnectionbusy().get(instance.getListConnectionbusy().size() - 1));
+				this.controller.getDatasource().reset(controller.getDatasource().getListConnectionbusy().get(controller.getDatasource().getListConnectionbusy().size() - 1));
+
 				break;
 				
 				
