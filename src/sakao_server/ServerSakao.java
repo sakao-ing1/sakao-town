@@ -15,7 +15,6 @@ import org.json.JSONException;
 
 import sakao_common.Request;
 import sakao_common.Response;
-import sakao_connection_pool.DataSource;
 
 public class ServerSakao {
 	private ServerSocket serverSocket;
@@ -27,54 +26,50 @@ public class ServerSakao {
 	private Crud_Service service;
 	private ObjectMapper mapper;
 
-	
-
-
 	public void start(int port) throws IOException, JSONException {
 		serverSocket = new ServerSocket(port);
 		clientSocket = serverSocket.accept();
-		out = new OutputStreamWriter(clientSocket.getOutputStream(),StandardCharsets.UTF_8);
-		in = new BufferedReader (new InputStreamReader(clientSocket.getInputStream(),StandardCharsets.UTF_8));
+		out = new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8);
+		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
 		System.out.println("Client connecte");
-		/////System.out.println(this.sendMessageToClient());
+		///// System.out.println(this.sendMessageToClient());
 		mapper = new ObjectMapper();
 		String jsonString = in.readLine();
-		request = mapper.readValue(jsonString,Request.class);
+		System.out.println(jsonString);
+		request = mapper.readValue(jsonString, Request.class);
 		System.out.println("Message recu");
 		String operation_type = request.getOperation_type();
+		System.out.println(operation_type);
 		service = new Crud_Service();
 		this.response.setStudents(this.service.showPersonne());
-		this.response.setState(true);
+		// this.response.setState(true);
 		String outjsonString = mapper.writeValueAsString(response);
-		out.write(outjsonString);
+		out.write(outjsonString + "\n");
 		out.flush();
-	
-		
+
 	}
-	
-	
-	/*public boolean sendMessageToClient() throws IOException, JSONException {
+
+	public boolean sendMessageToClient() throws IOException, JSONException {
 		boolean b = false;
 		mapper = new ObjectMapper();
 		String jsonString = in.readLine();
-		request = mapper.readValue(jsonString,Request.class);
+		request = mapper.readValue(jsonString, Request.class);
 		System.out.println("Message recu");
 		try {
 			String operation_type = request.getOperation_type();
 			service = new Crud_Service();
 			this.response.setStudents(this.service.showPersonne());
-			this.response.setState(true);
+			// this.response.setState(true);
 			String outjsonString = mapper.writeValueAsString(response);
 			out.write(outjsonString);
 			out.flush();
 			b = true;
+		} catch (Exception e) {
 		}
-		catch(Exception e) {}
-		
+
 		return b;
-	}*/
-	
-	
+	}
+
 	public void CloseConnection() throws IOException {
 		in.close();
 		out.close();
@@ -82,7 +77,6 @@ public class ServerSakao {
 		serverSocket.close();
 		System.out.println("Server deconnecte");
 	}
-	
 
 	public ServerSocket getServerSocket() {
 		return serverSocket;
@@ -91,34 +85,38 @@ public class ServerSakao {
 	public void setServerSocket(ServerSocket serverSocket) {
 		this.serverSocket = serverSocket;
 	}
-	
-	
-	/*public void StartCrud() throws JsonParseException, JsonMappingException, IOException {
+
+	public void StartCrud() throws JsonParseException, JsonMappingException, IOException {
 		System.out.println("ESSAIE");
 		mapper = new ObjectMapper();
 		String jsonString = in.readLine();
-		request = mapper.readValue(jsonString,Request.class);
+		request = mapper.readValue(jsonString, Request.class);
 		System.out.println("Message recu");
 		String operation_type = request.getOperation_type();
-		
-		switch(operation_type) {
-		
-		case "SELECT_ALL" :
+
+		switch (operation_type) {
+
+		case "SELECT_ALL":
 			service = new Crud_Service();
-			response.setStudents(this.service.showPersonne()); 
-			response.setState(true);
+			response.setStudents(this.service.showPersonne());
+			// response.setState(true);
 			break;
 		}
-		
-	}*/
-	
-	
-	public static void main(String[] args) throws IOException, JSONException {
-		ServerSakao serveur1 = new ServerSakao();
-		serveur1.start(3030);
-		serveur1.CloseConnection();
+
 	}
-	
-	
+
+	public static void main(String[] args) {
+		ServerSakao serveur1 = new ServerSakao();
+		try {
+			serveur1.start(3030);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// serveur1.CloseConnection();
+	}
 
 }

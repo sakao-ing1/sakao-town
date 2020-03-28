@@ -21,7 +21,7 @@ public class ClientThread extends Thread {
 	
 	public void run() {
 		try {
-			clientSocket = this.serversakao.getServerSocket().accept();
+		//	clientSocket = this.serversakao.getServerSocket().accept();
 			json = new JSONObject();
 			out = new OutputStreamWriter(clientSocket.getOutputStream(),StandardCharsets.UTF_8);
 			in = new BufferedReader (new InputStreamReader(clientSocket.getInputStream(),StandardCharsets.UTF_8));

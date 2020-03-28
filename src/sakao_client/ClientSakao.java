@@ -6,11 +6,20 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.type.CollectionType;
+import org.codehaus.jackson.type.TypeReference;
 import org.json.JSONException;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
+import sakao_common.Personne;
 import sakao_common.Request;
 import sakao_common.Response;
 
@@ -19,7 +28,8 @@ public class ClientSakao {
 		private OutputStreamWriter out;
 		private BufferedReader in;
 		private Request request;
-		private Response response;
+		private Response response = new Response();
+		
 		private ObjectMapper mapper;
 		private final static String SELECT_ALL = "SELECT_ALL"; 
 		private final static String DELETE_ALL = "DELETE_ALL";
@@ -32,7 +42,6 @@ public class ClientSakao {
 
 		
 		public void startConnection(String ip,int port) throws IOException, JSONException {
-
 			System.out.println("Connexion au server");
 			clientSocket = new Socket(ip,port);
 			out = new OutputStreamWriter(clientSocket.getOutputStream(),StandardCharsets.UTF_8);
@@ -49,16 +58,16 @@ public class ClientSakao {
 			mapper = new ObjectMapper();
 			request = new Request(SELECT_ALL,table);
 			String outjsonString = mapper.writeValueAsString(request);
-			out.write(outjsonString);
+			out.write(outjsonString+"\n");
 			out.flush();
 			System.out.println("REQUETE ENVOYE");
 			String injsonString = in.readLine();
-			response = new Response();
-			response = mapper.readValue(injsonString, Response.class);
+			System.out.println(injsonString);
+			response=mapper.readValue(injsonString, Response.class);
 			return response.toString();
 		}
 		
-		
+
 		public String sendDeleteAllMessageToServer(String table) throws IOException, JSONException { 
 			mapper = new ObjectMapper();
 			request = new Request(DELETE_ALL,table);
@@ -166,7 +175,7 @@ public class ClientSakao {
 					System.out.println("Veuillez renseigner la table");
 					String table = sc.next();
 					try {
-						this.sendSelectAllMessageToServer(table);
+					System.out.println(this.sendSelectAllMessageToServer(table));
 					} catch (IOException | JSONException e) {
 						e.printStackTrace();
 					}
@@ -222,7 +231,7 @@ public class ClientSakao {
 			
 			
 		}
-		
+	
 		public static void main(String[] args) throws IOException, JSONException {
 			ClientSakao client1 = new ClientSakao();
 			client1.startConnection("localhost", 3030);			
