@@ -2,11 +2,9 @@ package sakao_common;
 
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class Response {
 	private ArrayList<Personne> students;
-	// private boolean state;
+	/////private boolean state;
 
 	public Response() {
 	}

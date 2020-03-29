@@ -31,9 +31,10 @@ public class ServerSakao {
 		clientSocket = serverSocket.accept();
 		out = new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8);
 		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
-		System.out.println("Client connecte");
+		System.out.println("Client connected");
 		///// System.out.println(this.sendMessageToClient());
-		mapper = new ObjectMapper();
+
+		/*mapper = new ObjectMapper();
 		String jsonString = in.readLine();
 		System.out.println(jsonString);
 		request = mapper.readValue(jsonString, Request.class);
@@ -41,15 +42,14 @@ public class ServerSakao {
 		String operation_type = request.getOperation_type();
 		System.out.println(operation_type);
 		service = new Crud_Service();
-		this.response.setStudents(this.service.showPersonne());
+		this.response.setStudents(this.service.showPersonne());*/
+		
 		// this.response.setState(true);
-		String outjsonString = mapper.writeValueAsString(response);
-		out.write(outjsonString + "\n");
-		out.flush();
+		this.StartCrud();
 
 	}
 
-	public boolean sendMessageToClient() throws IOException, JSONException {
+	/*public boolean sendMessageToClient() throws IOException, JSONException {
 		boolean b = false;
 		mapper = new ObjectMapper();
 		String jsonString = in.readLine();
@@ -58,7 +58,7 @@ public class ServerSakao {
 		try {
 			String operation_type = request.getOperation_type();
 			service = new Crud_Service();
-			this.response.setStudents(this.service.showPersonne());
+			this.response.setStudents(this.service.showPersonne(this.request.getTarget()));
 			// this.response.setState(true);
 			String outjsonString = mapper.writeValueAsString(response);
 			out.write(outjsonString);
@@ -68,7 +68,7 @@ public class ServerSakao {
 		}
 
 		return b;
-	}
+	}*/
 
 	public void CloseConnection() throws IOException {
 		in.close();
@@ -87,7 +87,6 @@ public class ServerSakao {
 	}
 
 	public void StartCrud() throws JsonParseException, JsonMappingException, IOException {
-		System.out.println("ESSAIE");
 		mapper = new ObjectMapper();
 		String jsonString = in.readLine();
 		request = mapper.readValue(jsonString, Request.class);
@@ -99,8 +98,59 @@ public class ServerSakao {
 		case "SELECT_ALL":
 			service = new Crud_Service();
 			response.setStudents(this.service.showPersonne());
+
 			// response.setState(true);
+			
+			String outjsonStringSelectAll = mapper.writeValueAsString(response);
+			out.write(outjsonStringSelectAll + "\n");
+			out.flush();
 			break;
+			
+			
+		case "INSERT" :
+			service = new Crud_Service();
+			System.out.println(this.service.addPersonne(this.request.getName(), this.request.getAge()));
+			String outjsonStringInsert = mapper.writeValueAsString(response);
+			out.write(outjsonStringInsert + "\n");
+			out.flush();
+			break;
+		
+		
+		case "DELETE_ALL" : 
+			service = new Crud_Service();
+			System.out.println(this.service.deleteAllPersonne());
+			String outjsonStringDeleteAll = mapper.writeValueAsString(response);
+			out.write(outjsonStringDeleteAll + "\n");
+			out.flush();
+			break;
+		
+		
+		case "DELETE":
+			service = new Crud_Service();
+			System.out.println(this.service.deletePersonneById(this.request.getID()));
+			String outjsonStringDeleteAStudent = mapper.writeValueAsString(response);
+			out.write(outjsonStringDeleteAStudent + "\n");
+			out.flush();
+			break;
+		
+		
+		case "UPDATE_AGE" :
+			service = new Crud_Service();
+			System.out.println(this.service.updatePersonneAge(this.request.getID(), this.request.getAge()));
+			String outjsonStringUpdateAge = mapper.writeValueAsString(response);
+			out.write(outjsonStringUpdateAge + "\n");
+			out.flush();
+			break;
+		
+		
+		case "UPDATE_NAME" :
+			service = new Crud_Service();
+			System.out.println(this.service.updatePersonneName(this.request.getID(), this.request.getName()));
+			String outjsonStringUpdateName = mapper.writeValueAsString(response);
+			out.write(outjsonStringUpdateName + "\n");
+			out.flush();
+			break;
+
 		}
 
 	}

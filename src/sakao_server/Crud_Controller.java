@@ -76,7 +76,7 @@ public class Crud_Controller {
 
 	  
 	  
-	// Requete CREATE
+	// Requete INSERT
 
   public void addPersonne(Personne p) {
       try {

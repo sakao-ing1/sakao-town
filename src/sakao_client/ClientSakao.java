@@ -6,20 +6,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.type.CollectionType;
-import org.codehaus.jackson.type.TypeReference;
 import org.json.JSONException;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
-import sakao_common.Personne;
 import sakao_common.Request;
 import sakao_common.Response;
 
@@ -42,11 +33,11 @@ public class ClientSakao {
 
 		
 		public void startConnection(String ip,int port) throws IOException, JSONException {
-			System.out.println("Connexion au server");
+			System.out.println("Log in to the server");
 			clientSocket = new Socket(ip,port);
 			out = new OutputStreamWriter(clientSocket.getOutputStream(),StandardCharsets.UTF_8);
 			in = new BufferedReader (new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
-			System.out.println("Connexion au serveur reussi");
+			System.out.println("Log in succeed");
 			this.StartHMI();
 
 		}
@@ -60,7 +51,7 @@ public class ClientSakao {
 			String outjsonString = mapper.writeValueAsString(request);
 			out.write(outjsonString+"\n");
 			out.flush();
-			System.out.println("REQUETE ENVOYE");
+			System.out.println("REQUEST SENT");
 			String injsonString = in.readLine();
 			System.out.println(injsonString);
 			response=mapper.readValue(injsonString, Response.class);
@@ -72,11 +63,12 @@ public class ClientSakao {
 			mapper = new ObjectMapper();
 			request = new Request(DELETE_ALL,table);
 			String outjsonString = mapper.writeValueAsString(request);
-			out.write(outjsonString);
+			out.write(outjsonString+"\n");
 			out.flush();
+			System.out.println("REQUEST SENT");
 			String injsonString = in.readLine();
-			response = new Response();
-			response = mapper.readValue(injsonString, Response.class);
+			System.out.println(injsonString);
+			response=mapper.readValue(injsonString, Response.class);
 			return response.toString();
 		}
 		
@@ -85,19 +77,21 @@ public class ClientSakao {
 			mapper = new ObjectMapper();
 			request = new Request(INSERT,table,name,age);
 			String outjsonString = mapper.writeValueAsString(request);
-			out.write(outjsonString);
+			out.write(outjsonString+"\n");
 			out.flush();
+			System.out.println("REQUEST SENT");
 			String injsonString = in.readLine();
-			response = mapper.readValue(injsonString, Response.class);
+			System.out.println(injsonString);
+			response=mapper.readValue(injsonString, Response.class);
 			return response.toString();
 		}
 		
-		
+	
 		public String sendDeleteAStudentMessageToServer(String table,int id) throws IOException {
 			mapper = new ObjectMapper();
 			request = new Request(DELETE ,table,id);
 			String outjsonString = mapper.writeValueAsString(request);
-			out.write(outjsonString);
+			out.write(outjsonString + "\n");
 			out.flush();
 			String injsonString = in.readLine();
 			response = mapper.readValue(injsonString, Response.class);
@@ -108,18 +102,18 @@ public class ClientSakao {
 			mapper = new ObjectMapper();
 			request = new Request(UPDATE_NAME ,table,id,name);
 			String outjsonString = mapper.writeValueAsString(request);
-			out.write(outjsonString);
+			out.write(outjsonString +"\n");
 			out.flush();
 			String injsonString = in.readLine();
 			response = mapper.readValue(injsonString, Response.class);
 			return response.toString();
 		}
 		
-		public String sendUpdateANameMessageToServer(String table,int id, int age) throws IOException {
+		public String sendUpdateAnAgeMessageToServer(String table,int id, int age) throws IOException {
 			 mapper = new ObjectMapper();
 			request = new Request(UPDATE_AGE ,table,id,age);
 			String outjsonString = mapper.writeValueAsString(request);
-			out.write(outjsonString);
+			out.write(outjsonString + "\n");
 			out.flush();
 			String injsonString = in.readLine();
 			response = mapper.readValue(injsonString, Response.class);
@@ -128,28 +122,28 @@ public class ClientSakao {
 		
 		
 		public void CloseConnection() throws IOException {
-			System.out.println("Deconnexion");
+			System.out.println("Log out");
 			out.close();
 			in.close();
 			clientSocket.close();
-			System.out.println("Client deconnecte");
+			System.out.println("Client disconnected");
 		}
 			
 		
 		public void StartHMI() {
 			
 			Scanner sc = new Scanner(System.in);
-			System.out.println("MENU CRUD");
+			System.out.println("CRUD MENU");
 			int choice  = 0;
 
 			while(choice < 7 && choice >=0) {
-				System.out.println("1.Ajouter une personne");
-				System.out.println("2.Consulter la liste des personnes ");
-				System.out.println("3.Supprimer une personnes");
-				System.out.println("4.Modifier lage dune personne");
-				System.out.println("5.Modifier le nom dune personne");
-				System.out.println("6.Supprimer toutes les lignes");
-				System.out.println("7.Fin");
+				System.out.println("1.Add a student");
+				System.out.println("2.View all students");
+				System.out.println("3.Delete a student");
+				System.out.println("4.Update the age of a student");
+				System.out.println("5.Update the name of a student");
+				System.out.println("6.Delete all students");
+				System.out.println("7.Log out");
 				System.out.println("********************");
 				System.out.println("");
 
@@ -163,65 +157,110 @@ public class ClientSakao {
 				
 				
 				case 1 :
-					System.out.println("Veuillez renseigner un nom");
-					String name = sc.next();
-					System.out.println("Veuillez renseigner un age");
-					int age = sc.nextInt();
-
+					System.out.println("Please enter the table");
+					String tableInsert = sc.next();
+					System.out.println("Please enter the name");
+					String nameInsert = sc.next();
+					System.out.println("Please enter the age");
+					int ageInsert = sc.nextInt();
+					try {
+						this.sendInsertMessageToServer(tableInsert, nameInsert, ageInsert);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
+					System.out.println("Insert done");
 					System.out.println("********************");
 					break;
 					
-				case 2 :
-					System.out.println("Veuillez renseigner la table");
-					String table = sc.next();
+				case 2 ://///OK
+					System.out.println("Please enter the table");
+					String tableSelect = sc.next();
 					try {
-					System.out.println(this.sendSelectAllMessageToServer(table));
+					this.sendSelectAllMessageToServer(tableSelect);
 					} catch (IOException | JSONException e) {
 						e.printStackTrace();
 					}
+					System.out.println("Display done");
 					System.out.println("********************");
 					break;
 					
 				case 3 :
-					System.out.println("Veuillez renseigner un id");
+					System.out.println("Please enter the table");
+					String tableDeleteAStudent = sc.next();
+					System.out.println("Please enter the id");
 					int idtodelete = sc.nextInt();
+					try {
+						this.sendDeleteAStudentMessageToServer(tableDeleteAStudent, idtodelete);
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
+					System.out.println("Delete done");
 					System.out.println("********************");
 
 					break;
 					
 				case 4 :
-					System.out.println("Veuillez renseigner un id");
+					System.out.println("Please enter the table");
+					String TableUpdateAge = sc.next();
+					System.out.println("Please enter the id");
 					int idupdateage = sc.nextInt();
-					System.out.println("");
-					System.out.println("Veuillez renseigner le nouvel age");
+					System.out.println("Please enter the new age");
 					int ageupdateage = sc.nextInt();
+					try {
+						this.sendUpdateAnAgeMessageToServer(TableUpdateAge, idupdateage, ageupdateage);
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
+					System.out.println("Update age done");
 					System.out.println("********************");
 
 					break;
 					
 					
 				case 5 :
-					System.out.println("Veuillez renseigner un id");
+					System.out.println("Please enter the table");
+					String TableUpdateName = sc.next();
+					System.out.println("Please enter the id");
 					int idupdatename = sc.nextInt();
 					System.out.println("");
-					System.out.println("Veuillez renseigner le nouveau nom");
+					System.out.println("Please enter the new name");
 					String nameupdatename = sc.next();
+					try {
+						this.sendUpdateANameMessageToServer(TableUpdateName, idupdatename, nameupdatename);
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
+					System.out.println("Update name done");
 					System.out.println("********************");
 
 					break;
 					
 				case 6 :
+					System.out.println("Please enter the table");
+					String tableDeleteAll = sc.next();
+					try {
+						this.sendDeleteAllMessageToServer(tableDeleteAll);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					} catch (JSONException e1) {
+						e1.printStackTrace();
+					}
+					System.out.println("Delete all done");
+					System.out.println("********************");
 					break;
 					
 					
 					
-				case 7 :
+				case 7 : /////OK
 					try {
 						this.CloseConnection();
+						sc.close();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				System.out.println("Vous avez quitte le menu");
+				System.out.println("********************");
+				System.out.println("You left the menu, see you soon !");
 				
 				}
 

@@ -1,7 +1,6 @@
 package sakao_server;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import sakao_common.Personne;
 
@@ -22,6 +21,8 @@ public class Crud_Service {
 		try {
 			Personne p = new Personne(name, age);
 			controller.addPersonne(p);
+			this.controller.getDatasource().reset(controller.getDatasource().getListConnectionbusy().get(controller.getDatasource().getListConnectionbusy().size() - 1));
+
 			b = true;
 		}
 		catch(Exception e) {
@@ -35,6 +36,8 @@ public class Crud_Service {
 		boolean b = false;
 		try {
 			controller.deletePersonneByName(name);
+			this.controller.getDatasource().reset(controller.getDatasource().getListConnectionbusy().get(controller.getDatasource().getListConnectionbusy().size() - 1));
+
 			b = true;
 		}
 		catch(Exception e) {
@@ -45,10 +48,12 @@ public class Crud_Service {
 	}
 	
 	
-	public boolean deletePersonneById(int ID) {
+	public boolean deletePersonneById(int ID) { 
 		boolean b = false;
 		try {
 			controller.deletePersonneById(ID);
+			this.controller.getDatasource().reset(controller.getDatasource().getListConnectionbusy().get(controller.getDatasource().getListConnectionbusy().size() - 1));
+
 			b = true;
 		}
 		catch(Exception e) {
@@ -62,6 +67,8 @@ public class Crud_Service {
 		boolean b = false;
 		try {
 			controller.updatePersonneAge(id, age);
+			this.controller.getDatasource().reset(controller.getDatasource().getListConnectionbusy().get(controller.getDatasource().getListConnectionbusy().size() - 1));
+
 			b = true;
 		}
 		catch(Exception e) {
@@ -76,6 +83,8 @@ public class Crud_Service {
 		boolean b = false;
 		try {
 			controller.deleteAllPersonne();
+			this.controller.getDatasource().reset(controller.getDatasource().getListConnectionbusy().get(controller.getDatasource().getListConnectionbusy().size() - 1));
+
 			b = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,6 +96,8 @@ public class Crud_Service {
 		boolean b = false;
 		try {
 			controller.updatePersonneName(id, name);
+			this.controller.getDatasource().reset(controller.getDatasource().getListConnectionbusy().get(controller.getDatasource().getListConnectionbusy().size() - 1));
+
 			b = true;
 		}
 		
@@ -96,10 +107,18 @@ public class Crud_Service {
 		}
 		return b;
 	}
+
+	public Crud_Controller getController() {
+		return controller;
+	}
+
+	public void setController(Crud_Controller controller) {
+		this.controller = controller;
+	}
 	
 	
 	
-	public void StartCRUD() {
+/*	public void StartCRUD() {
 		
 		Scanner sc = new Scanner(System.in);
 		System.out.println("MENU CRUD");
@@ -195,7 +214,7 @@ public class Crud_Service {
 		
 		
 		
-	}
+	}*/
 	
 
 }
