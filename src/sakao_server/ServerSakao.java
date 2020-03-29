@@ -1,52 +1,33 @@
 package sakao_server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
-
-import sakao_common.Request;
-import sakao_common.Response;
 
 public class ServerSakao {
 	private ServerSocket serverSocket;
-	private Socket clientSocket;
-	private OutputStreamWriter out;
-	private BufferedReader in;
-	private Request request = new Request();
+	///private Socket clientSocket;
+	///private OutputStreamWriter out;
+	///private BufferedReader in;
+	/*private Request request = new Request();
 	private Response response = new Response();
 	private Crud_Service service;
-	private ObjectMapper mapper;
+	private ObjectMapper mapper;*/
 
 	public void start(int port) throws IOException, JSONException {
 		serverSocket = new ServerSocket(port);
-		clientSocket = serverSocket.accept();
+		/*clientSocket = serverSocket.accept();
 		out = new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8);
 		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
 		System.out.println("Client connected");
-		///// System.out.println(this.sendMessageToClient());
-
-		/*mapper = new ObjectMapper();
-		String jsonString = in.readLine();
-		System.out.println(jsonString);
-		request = mapper.readValue(jsonString, Request.class);
-		System.out.println("Message recu");
-		String operation_type = request.getOperation_type();
-		System.out.println(operation_type);
-		service = new Crud_Service();
-		this.response.setStudents(this.service.showPersonne());*/
-		
-		// this.response.setState(true);
-		this.StartCrud();
-
+		while(true) {
+			this.StartCrud();
+		}
+		*/
+		while(true) {
+        	new ClientThread(serverSocket.accept()).start();
+		}		
 	}
 
 	/*public boolean sendMessageToClient() throws IOException, JSONException {
@@ -71,9 +52,9 @@ public class ServerSakao {
 	}*/
 
 	public void CloseConnection() throws IOException {
-		in.close();
+		/*in.close();
 		out.close();
-		clientSocket.close();
+		clientSocket.close();*/
 		serverSocket.close();
 		System.out.println("Server deconnecte");
 	}
@@ -86,7 +67,7 @@ public class ServerSakao {
 		this.serverSocket = serverSocket;
 	}
 
-	public void StartCrud() throws JsonParseException, JsonMappingException, IOException {
+	/*public void StartCrud() throws JsonParseException, JsonMappingException, IOException {
 		mapper = new ObjectMapper();
 		String jsonString = in.readLine();
 		request = mapper.readValue(jsonString, Request.class);
@@ -153,20 +134,14 @@ public class ServerSakao {
 
 		}
 
-	}
+	}*/
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, JSONException {
 		ServerSakao serveur1 = new ServerSakao();
-		try {
+		
 			serveur1.start(3030);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// serveur1.CloseConnection();
+			serveur1.CloseConnection();
+
 	}
 
 }
