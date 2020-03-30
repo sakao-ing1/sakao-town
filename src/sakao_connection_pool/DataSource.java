@@ -1,40 +1,45 @@
 package sakao_connection_pool;
 
+
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DataSource {
 
-	private static JDBCConnectionPool instance;
+	private static JDBCConnectionPool instance = new JDBCConnectionPool(); 
 
 	public DataSource() throws ClassNotFoundException {
-		instance = new JDBCConnectionPool();
-		instance.fill();
 	}
 
-	// methode statique qui renvoie une connexion de l'attribut
-	public Connection getConnection() {
-		return instance.getConnection();
+	
+	public static ArrayList<Connection> getListConnectionavailable() {
+		return instance.getListConnectionavailable();
 	}
-
-	// methode statique qui remet une connexion dans l'attribut
-	public void reset(Connection con) {
-		instance.setConnection(con);
+	
+	
+	public static ArrayList<Connection> getListConnectionbusy() {
+		return instance.getListConnectionbusy();
 	}
+	
 
+	
+	public static Connection getConnection() throws ClassNotFoundException,SQLException{
+		Connection connection = instance.getConnectionFromPool();
+		return connection;
+	}
+	
+	
+	public static void returnConnection(Connection connection) {
+		instance.returConnectionToPool(connection);
+	}
+	
 	// methode statique qui clot l'attribut.
 	public static void closeInstance() {
 		instance.closeAllConnection();
 	}
-
-	public ArrayList<Connection> getListConnectionavailable() {
-		return instance.getListConnectionavailable();
-	}
-
-	public ArrayList<Connection> getListConnectionbusy() {
-		return instance.getListConnectionbusy();
-	}
-
+	
+	
 	public static JDBCConnectionPool getInstance() {
 		return instance;
 	}
@@ -42,5 +47,6 @@ public class DataSource {
 	public static void setInstance(JDBCConnectionPool instance) {
 		DataSource.instance = instance;
 	}
+	
 
 }

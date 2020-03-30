@@ -31,7 +31,7 @@ public class ClientThread extends Thread {
 		this.clientSocket = socket;
 	}
 
-	public void StartCrud() throws JsonParseException, JsonMappingException, IOException {
+	public void StartCrud() throws JsonParseException, JsonMappingException, IOException, ClassNotFoundException {
 		mapper = new ObjectMapper();
 		String jsonString = in.readLine();
 		request = mapper.readValue(jsonString, Request.class);
@@ -108,6 +108,9 @@ public class ClientThread extends Thread {
 			clientSocket.close();
 
 		} catch (IOException e) {
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

@@ -12,22 +12,18 @@ import sakao_connection_pool.JDBCConnectionPool;
 
 public class Crud_Controller {
 
-	private DataSource datasource;
+	private static DataSource datasource;
 
-	public Crud_Controller() {
-		try {
-			this.datasource = new DataSource();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+	public Crud_Controller() throws ClassNotFoundException {
+		datasource = new DataSource();
 	}
 
 	// Requete SELECT
 
-	public ArrayList<Personne> showPersonne() {
+	public ArrayList<Personne> showPersonne() throws ClassNotFoundException {
 		ArrayList<Personne> retour = new ArrayList<Personne>();
 		try {
-			PreparedStatement pt = this.datasource.getConnection().prepareStatement("select * from personne");
+			PreparedStatement pt = DataSource.getConnection().prepareStatement("select * from personne");
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt(1);
@@ -45,9 +41,9 @@ public class Crud_Controller {
 	}
 
 	// Requete DELETE a ameliorer car supprimer par nom est dangereux
-	public void deletePersonneByName(String name) {
+	public void deletePersonneByName(String name) throws ClassNotFoundException {
 		try {
-			PreparedStatement pt = this.datasource.getConnection()
+			PreparedStatement pt = DataSource.getConnection()
 					.prepareStatement("delete from personne where name like ?");
 			pt.setString(1, name);
 			pt.execute();
@@ -58,9 +54,9 @@ public class Crud_Controller {
 
 	}
 
-	public void deletePersonneById(int ID) {
+	public void deletePersonneById(int ID) throws ClassNotFoundException {
 		try {
-			PreparedStatement pt = this.datasource.getConnection()
+			PreparedStatement pt = DataSource.getConnection()
 					.prepareStatement("delete from personne where id = " + ID);
 			pt.execute();
 			System.out.println("removal by id done");
@@ -72,11 +68,11 @@ public class Crud_Controller {
 
 	// Requete INSERT
 
-	public void addPersonne(Personne p) {
+	public void addPersonne(Personne p) throws ClassNotFoundException {
 		try {
 
 			String req = "insert into personne(name,age) values (?,?)";
-			PreparedStatement pstm = this.datasource.getConnection().prepareStatement(req);
+			PreparedStatement pstm = DataSource.getConnection().prepareStatement(req);
 			pstm.setString(1, p.getName());
 			pstm.setInt(2, p.getAge());
 			pstm.executeUpdate();
@@ -88,9 +84,9 @@ public class Crud_Controller {
 
 	// Requete UPDATE
 
-	public void updatePersonneAge(int id, int age) {
+	public void updatePersonneAge(int id, int age) throws ClassNotFoundException {
 		try {
-			PreparedStatement pstm = this.datasource.getConnection()
+			PreparedStatement pstm = DataSource.getConnection()
 					.prepareStatement(" UPDATE personne SET age = ?  WHERE id = ?");
 			pstm.setInt(1, age);
 			pstm.setInt(2, id);
@@ -101,9 +97,9 @@ public class Crud_Controller {
 		}
 	}
 
-	public void updatePersonneName(int id, String name) {
+	public void updatePersonneName(int id, String name) throws ClassNotFoundException {
 		try {
-			PreparedStatement pstm = this.datasource.getConnection()
+			PreparedStatement pstm = DataSource.getConnection()
 					.prepareStatement(" UPDATE personne SET name = ?  WHERE id = ?");
 			pstm.setString(1, name);
 			pstm.setInt(2, id);
@@ -117,7 +113,7 @@ public class Crud_Controller {
 	}
 
 	public void deleteAllPersonne() throws SQLException {
-		Statement query = this.datasource.getListConnectionavailable().get(0).createStatement();
+		Statement query = DataSource.getListConnectionavailable().get(0).createStatement();
 		int result = query.executeUpdate("Delete from personne");
 		System.out.println("all rows deleted");
 
@@ -128,7 +124,7 @@ public class Crud_Controller {
 	}
 
 	public void setDatasource(DataSource datasource) {
-		this.datasource = datasource;
+		Crud_Controller.datasource = datasource;
 	}
 
 }

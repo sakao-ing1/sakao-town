@@ -1,6 +1,5 @@
 package sakao_connection_pool;
 
-import java.io.FileInputStream;
 /////import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +9,7 @@ import java.util.Properties;
 public final class ConnectionFileReader {
 
 	private Properties p;
+	private final static int MAX_CONNECTIONS = 5;
 
 	/// Constructeur qu'on utilise juste pour creer un objet
 	public ConnectionFileReader() {
@@ -41,6 +41,10 @@ public final class ConnectionFileReader {
 
 	public void setP(Properties p) {
 		this.p = p;
+	}
+
+	public static int getMaxConnections() {
+		return MAX_CONNECTIONS;
 	}
 
 }
