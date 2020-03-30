@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Response {
 	private ArrayList<Personne> students;
-	/////private boolean state;
 
 	public Response() {
 	}
@@ -20,9 +19,4 @@ public class Response {
 	public void setStudents(ArrayList<Personne> students) {
 		this.students = students;
 	}
-	/*
-	 * public boolean isState() { return state; } public void setState(boolean
-	 * state) { this.state = state; }
-	 */
-
 }

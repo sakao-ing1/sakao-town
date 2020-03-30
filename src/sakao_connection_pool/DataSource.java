@@ -1,12 +1,11 @@
 package sakao_connection_pool;
 
-
 import java.sql.Connection;
 import java.util.ArrayList;
 
 public class DataSource {
 
-	private static JDBCConnectionPool instance; 
+	private static JDBCConnectionPool instance;
 
 	public DataSource() throws ClassNotFoundException {
 		instance = new JDBCConnectionPool();
@@ -27,19 +26,14 @@ public class DataSource {
 	public static void closeInstance() {
 		instance.closeAllConnection();
 	}
-	
-	
+
 	public ArrayList<Connection> getListConnectionavailable() {
 		return instance.getListConnectionavailable();
 	}
-	
-	
+
 	public ArrayList<Connection> getListConnectionbusy() {
 		return instance.getListConnectionbusy();
 	}
-	
-	
-	
 
 	public static JDBCConnectionPool getInstance() {
 		return instance;
@@ -48,7 +42,5 @@ public class DataSource {
 	public static void setInstance(JDBCConnectionPool instance) {
 		DataSource.instance = instance;
 	}
-	
-	
 
 }

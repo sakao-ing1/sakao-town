@@ -7,19 +7,16 @@ import java.io.InputStream;
 ///import java.util.Enumeration;
 import java.util.Properties;
 
-
-
 public final class ConnectionFileReader {
 
 	private Properties p;
 
-	///Constructeur qu'on utilise juste pour creer un objet
+	/// Constructeur qu'on utilise juste pour creer un objet
 	public ConnectionFileReader() {
-		 p = new Properties();
+		p = new Properties();
 	}
-	
-	
-	/////Methode qui permet douvrir le fichier et de le lire
+
+	///// Methode qui permet douvrir le fichier et de le lire
 	public void Read() {
 		InputStream fis;
 		try {
@@ -29,15 +26,15 @@ public final class ConnectionFileReader {
 			e.printStackTrace();
 		}
 	}
-	
-	/////Creer une methode qui retourne la cle du fichier pour ne pas a avoir a tout tapper a la main 
+
+	///// Creer une methode qui retourne la cle du fichier pour ne pas a avoir a
+	///// tout tapper a la main
 	///// Cette methode va nous permettre de parcourir le fichier
 	public String getProperty(String key) {
 		return p.getProperty(key);
-		
+
 	}
-	
-	
+
 	public Properties getP() {
 		return p;
 	}
@@ -45,6 +42,5 @@ public final class ConnectionFileReader {
 	public void setP(Properties p) {
 		this.p = p;
 	}
-
 
 }

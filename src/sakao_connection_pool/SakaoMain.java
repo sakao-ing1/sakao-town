@@ -8,8 +8,7 @@ public class SakaoMain {
 		Crud_Service cs = new Crud_Service();
 		cs.addPersonne("alain", 22);
 		System.out.println("hi");
-		
+
 	}
 
 }
-

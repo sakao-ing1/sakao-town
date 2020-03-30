@@ -24,8 +24,7 @@ public class ClientThread extends Thread {
 	private ObjectMapper mapper;
 	private static int position = 1;
 	private boolean shouldRun = true;
-	
-	
+
 	public ClientThread(Socket socket) {
 		super("ClientConnection" + position);
 		position++;
@@ -46,31 +45,28 @@ public class ClientThread extends Thread {
 			response.setStudents(this.service.showPersonne());
 
 			// response.setState(true);
-			
+
 			String outjsonStringSelectAll = mapper.writeValueAsString(response);
 			out.write(outjsonStringSelectAll + "\n");
 			out.flush();
 			break;
-			
-			
-		case "INSERT" :
+
+		case "INSERT":
 			service = new Crud_Service();
 			System.out.println(this.service.addPersonne(this.request.getName(), this.request.getAge()));
 			String outjsonStringInsert = mapper.writeValueAsString(response);
 			out.write(outjsonStringInsert + "\n");
 			out.flush();
 			break;
-		
-		
-		case "DELETE_ALL" : 
+
+		case "DELETE_ALL":
 			service = new Crud_Service();
 			System.out.println(this.service.deleteAllPersonne());
 			String outjsonStringDeleteAll = mapper.writeValueAsString(response);
 			out.write(outjsonStringDeleteAll + "\n");
 			out.flush();
 			break;
-		
-		
+
 		case "DELETE":
 			service = new Crud_Service();
 			System.out.println(this.service.deletePersonneById(this.request.getID()));
@@ -78,18 +74,16 @@ public class ClientThread extends Thread {
 			out.write(outjsonStringDeleteAStudent + "\n");
 			out.flush();
 			break;
-		
-		
-		case "UPDATE_AGE" :
+
+		case "UPDATE_AGE":
 			service = new Crud_Service();
 			System.out.println(this.service.updatePersonneAge(this.request.getID(), this.request.getAge()));
 			String outjsonStringUpdateAge = mapper.writeValueAsString(response);
 			out.write(outjsonStringUpdateAge + "\n");
 			out.flush();
 			break;
-		
-		
-		case "UPDATE_NAME" :
+
+		case "UPDATE_NAME":
 			service = new Crud_Service();
 			System.out.println(this.service.updatePersonneName(this.request.getID(), this.request.getName()));
 			String outjsonStringUpdateName = mapper.writeValueAsString(response);
@@ -99,21 +93,21 @@ public class ClientThread extends Thread {
 
 		}
 	}
-	
-	
-    public void run()  {
-	    try {
+
+	public void run() {
+		try {
 			out = new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8);
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			System.out.println("Client connected");
-			while(shouldRun) {
+			while (shouldRun) {
 				this.StartCrud();
 			}
-			
+
 			in.close();
 			out.close();
 			clientSocket.close();
-			
-	    } catch (IOException e) {}
-}
+
+		} catch (IOException e) {
+		}
+	}
 }
