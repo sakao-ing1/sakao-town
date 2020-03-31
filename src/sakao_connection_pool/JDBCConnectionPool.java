@@ -8,12 +8,7 @@ import java.util.ArrayList;
 public class JDBCConnectionPool {
 
 	private static ArrayList<Connection> listConnectionavailable = new ArrayList<Connection>();/////OK
-	
-	private static ArrayList<Connection> listConnectionbusy = new ArrayList<Connection>();/////PAS SUR
-	
-	/////private ConnectionFileReader connectionfilereader;
-	/////private static final int maxconnection = 5;
-	/////private static int position = 0;
+		
 
 	/////Creer le pool de connection
 	public JDBCConnectionPool() {
@@ -104,18 +99,6 @@ public class JDBCConnectionPool {
 
 	public void setListConnectionavailable(ArrayList<Connection> listConnectionavailable) {
 		JDBCConnectionPool.listConnectionavailable = listConnectionavailable;
-	}
-
-
-
-	public ArrayList<Connection> getListConnectionbusy() {
-		return listConnectionbusy;
-	}
-
-
-
-	public void setListConnectionbusy(ArrayList<Connection> listConnectionbusy) {
-		JDBCConnectionPool.listConnectionbusy = listConnectionbusy;
 	}
 
 

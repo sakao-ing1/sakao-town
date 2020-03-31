@@ -17,12 +17,7 @@ public class DataSource {
 	public static ArrayList<Connection> getListConnectionavailable() {
 		return instance.getListConnectionavailable();
 	}
-	
-	
-	public static ArrayList<Connection> getListConnectionbusy() {
-		return instance.getListConnectionbusy();
-	}
-	
+
 
 	
 	public static Connection getConnection() throws ClassNotFoundException,SQLException{
