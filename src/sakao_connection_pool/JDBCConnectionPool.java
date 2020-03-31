@@ -72,7 +72,7 @@ public class JDBCConnectionPool {
 		}
 			connection = listConnectionavailable.get(0);
 			listConnectionavailable.remove(0);
-		
+			this.notifyAll();
 		return connection;
 	}
 
