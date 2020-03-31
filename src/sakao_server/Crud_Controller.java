@@ -1,6 +1,5 @@
  package sakao_server;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,6 +27,8 @@ public class Crud_Controller {
 				int age = rs.getInt(3);
 				retour.add(new Personne(id, name, age));
 			}
+			DataSource.returnConnection((DataSource.getConnection()));
+
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
 		}
@@ -42,6 +43,8 @@ public class Crud_Controller {
 					.prepareStatement("delete from personne where name like ?");
 			pt.setString(1, name);
 			pt.execute();
+			DataSource.returnConnection((DataSource.getConnection()));
+
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
 		}
@@ -52,6 +55,8 @@ public class Crud_Controller {
 		try {
 			PreparedStatement pt = DataSource.getConnection().prepareStatement("delete from personne where id = " + ID);
 			pt.execute();
+			DataSource.returnConnection((DataSource.getConnection()));
+
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
 		}
@@ -68,6 +73,8 @@ public class Crud_Controller {
 			pstm.setString(1, p.getName());
 			pstm.setInt(2, p.getAge());
 			pstm.executeUpdate();
+			DataSource.returnConnection((DataSource.getConnection()));
+
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -82,6 +89,8 @@ public class Crud_Controller {
 			pstm.setInt(1, age);
 			pstm.setInt(2, id);
 			pstm.executeUpdate();
+			DataSource.returnConnection((DataSource.getConnection()));
+
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
 		}
@@ -94,6 +103,7 @@ public class Crud_Controller {
 			pstm.setString(1, name);
 			pstm.setInt(2, id);
 			pstm.executeUpdate();
+			DataSource.returnConnection((DataSource.getConnection()));
 
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
@@ -101,8 +111,10 @@ public class Crud_Controller {
 
 	}
 
-	public void deleteAllPersonne() throws SQLException {
-			Statement query = DataSource.getListConnectionavailable().get(0).createStatement();
+	public void deleteAllPersonne() throws SQLException, ClassNotFoundException {
+			Statement query = DataSource.getConnection().createStatement();
 			int result = query.executeUpdate("TRUNCATE TABLE personne");
+			DataSource.returnConnection((DataSource.getConnection()));
+
 	}
 }
