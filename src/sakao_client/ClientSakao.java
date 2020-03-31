@@ -30,11 +30,11 @@ public class ClientSakao {
 	private final static String UPDATE_AGE = "UPDATE_AGE";
 
 	public void startConnection(String ip, int port) throws IOException, JSONException {
-		System.out.println("Log in to the server");
+		System.out.println("waiting for connection in to the server");
 		clientSocket = new Socket(ip, port);
 		out = new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8);
 		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
-		System.out.println("Log in succeed");
+		System.out.println("connection succeed");
 		this.StartHMI();
 	}
 
@@ -60,11 +60,11 @@ public class ClientSakao {
 	}
 
 	public void CloseConnection() throws IOException {
-		System.out.println("Log out");
+		System.out.println("waiting for disconnection");
 		out.close();
 		in.close();
 		clientSocket.close();
-		System.out.println("Client disconnected");
+		System.out.println("disconnected");
 	}
 
 	public void StartHMI() {

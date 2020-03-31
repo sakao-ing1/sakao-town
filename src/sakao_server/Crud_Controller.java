@@ -1,4 +1,4 @@
-package sakao_server;
+ package sakao_server;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,8 +28,6 @@ public class Crud_Controller {
 				int age = rs.getInt(3);
 				retour.add(new Personne(id, name, age));
 			}
-			System.out.println("display done");
-
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
 		}
@@ -44,7 +42,6 @@ public class Crud_Controller {
 					.prepareStatement("delete from personne where name like ?");
 			pt.setString(1, name);
 			pt.execute();
-			System.out.println("removal by name done");
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
 		}
@@ -55,7 +52,6 @@ public class Crud_Controller {
 		try {
 			PreparedStatement pt = DataSource.getConnection().prepareStatement("delete from personne where id = " + ID);
 			pt.execute();
-			System.out.println("removal by id done");
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
 		}
@@ -72,7 +68,6 @@ public class Crud_Controller {
 			pstm.setString(1, p.getName());
 			pstm.setInt(2, p.getAge());
 			pstm.executeUpdate();
-			System.out.println("addition done");
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -87,7 +82,6 @@ public class Crud_Controller {
 			pstm.setInt(1, age);
 			pstm.setInt(2, id);
 			pstm.executeUpdate();
-			System.out.println("update age done");
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
 		}
@@ -100,7 +94,6 @@ public class Crud_Controller {
 			pstm.setString(1, name);
 			pstm.setInt(2, id);
 			pstm.executeUpdate();
-			System.out.println("update name done");
 
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
@@ -109,13 +102,7 @@ public class Crud_Controller {
 	}
 
 	public void deleteAllPersonne() throws SQLException {
-		try {
 			Statement query = DataSource.getListConnectionavailable().get(0).createStatement();
 			int result = query.executeUpdate("TRUNCATE TABLE personne");
-			System.out.println("all rows deleted");
-		} catch (IndexOutOfBoundsException e) {
-			System.out.println("all rows deleted");
-		}
 	}
-
 }
