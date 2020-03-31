@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -24,6 +25,7 @@ public class ClientThread extends Thread {
 	private ObjectMapper mapper;
 	private static int position = 1;
 	private boolean shouldRun = true;
+	///// private Connection con; ON PEUT AJOTUER UNE CONNECTION 
 
 	public ClientThread(Socket socket) {
 		super("ClientConnection" + position);
@@ -31,7 +33,7 @@ public class ClientThread extends Thread {
 		this.clientSocket = socket;
 	}
 
-	public void StartCrud() throws JsonParseException, JsonMappingException, IOException, ClassNotFoundException {
+	public void StartCrud() throws JsonParseException, JsonMappingException, IOException, ClassNotFoundException,NullPointerException {
 		mapper = new ObjectMapper();
 		String jsonString = in.readLine();
 		request = mapper.readValue(jsonString, Request.class);
@@ -41,7 +43,6 @@ public class ClientThread extends Thread {
 		switch (operation_type) {
 
 		case "SELECT_ALL":
-			service = new Crud_Service();
 			response.setStudents(this.service.showPersonne());
 
 			// response.setState(true);
@@ -52,7 +53,6 @@ public class ClientThread extends Thread {
 			break;
 
 		case "INSERT":
-			service = new Crud_Service();
 			System.out.println(this.service.addPersonne(this.request.getName(), this.request.getAge()));
 			String outjsonStringInsert = mapper.writeValueAsString(response);
 			out.write(outjsonStringInsert + "\n");
@@ -60,7 +60,6 @@ public class ClientThread extends Thread {
 			break;
 
 		case "DELETE_ALL":
-			service = new Crud_Service();
 			System.out.println(this.service.deleteAllPersonne());
 			String outjsonStringDeleteAll = mapper.writeValueAsString(response);
 			out.write(outjsonStringDeleteAll + "\n");
@@ -68,7 +67,6 @@ public class ClientThread extends Thread {
 			break;
 
 		case "DELETE":
-			service = new Crud_Service();
 			System.out.println(this.service.deletePersonneById(this.request.getID()));
 			String outjsonStringDeleteAStudent = mapper.writeValueAsString(response);
 			out.write(outjsonStringDeleteAStudent + "\n");
@@ -76,7 +74,6 @@ public class ClientThread extends Thread {
 			break;
 
 		case "UPDATE_AGE":
-			service = new Crud_Service();
 			System.out.println(this.service.updatePersonneAge(this.request.getID(), this.request.getAge()));
 			String outjsonStringUpdateAge = mapper.writeValueAsString(response);
 			out.write(outjsonStringUpdateAge + "\n");
@@ -84,7 +81,6 @@ public class ClientThread extends Thread {
 			break;
 
 		case "UPDATE_NAME":
-			service = new Crud_Service();
 			System.out.println(this.service.updatePersonneName(this.request.getID(), this.request.getName()));
 			String outjsonStringUpdateName = mapper.writeValueAsString(response);
 			out.write(outjsonStringUpdateName + "\n");
@@ -99,6 +95,7 @@ public class ClientThread extends Thread {
 			out = new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8);
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			System.out.println("Client connected");
+			/////con = DataSource.getConnection();
 			while (shouldRun) {
 				this.StartCrud();
 			}
@@ -111,6 +108,9 @@ public class ClientThread extends Thread {
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		catch(NullPointerException e) {
+			System.out.println("Client deconnecte");
 		}
 	}
 }

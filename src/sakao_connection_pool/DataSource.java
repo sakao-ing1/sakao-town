@@ -7,9 +7,10 @@ import java.util.ArrayList;
 
 public class DataSource {
 
-	private static JDBCConnectionPool instance = new JDBCConnectionPool(); 
+	private static JDBCConnectionPool instance;
 
 	public DataSource() throws ClassNotFoundException {
+		instance  = new JDBCConnectionPool(); 
 	}
 
 	

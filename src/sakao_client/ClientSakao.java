@@ -49,6 +49,7 @@ public class ClientSakao {
 	public String sendMessageToServer(Request request) throws IOException {
 		mapper = new ObjectMapper();
 		String outjsonString = mapper.writeValueAsString(request);
+		/////System.out.println(request);
 		out.write(outjsonString + "\n");
 		out.flush();
 		System.out.println("REQUEST SENT");

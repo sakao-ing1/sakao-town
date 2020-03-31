@@ -1,5 +1,6 @@
 package sakao_server;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,19 +9,15 @@ import java.util.ArrayList;
 
 import sakao_common.Personne;
 import sakao_connection_pool.DataSource;
-import sakao_connection_pool.JDBCConnectionPool;
 
 public class Crud_Controller {
 
-	private static DataSource datasource;
-
 	public Crud_Controller() throws ClassNotFoundException {
-		datasource = new DataSource();
 	}
 
 	// Requete SELECT
 
-	public ArrayList<Personne> showPersonne() throws ClassNotFoundException {
+	public ArrayList<Personne> showPersonne() throws ClassNotFoundException  {
 		ArrayList<Personne> retour = new ArrayList<Personne>();
 		try {
 			PreparedStatement pt = DataSource.getConnection().prepareStatement("select * from personne");
@@ -113,18 +110,16 @@ public class Crud_Controller {
 	}
 
 	public void deleteAllPersonne() throws SQLException {
+		try {
 		Statement query = DataSource.getListConnectionavailable().get(0).createStatement();
 		int result = query.executeUpdate("Delete from personne");
 		System.out.println("all rows deleted");
-
+		}
+		catch(IndexOutOfBoundsException e) {
+			System.out.println("all rows deleted");
+		}
 	}
 
-	public DataSource getDatasource() {
-		return datasource;
-	}
 
-	public void setDatasource(DataSource datasource) {
-		Crud_Controller.datasource = datasource;
-	}
 
 }

@@ -18,6 +18,7 @@ public class JDBCConnectionPool {
 	/////Creer le pool de connection
 	public JDBCConnectionPool() {
 		this.initializeConnectionPool();
+		System.out.println("5 connexions has been created");
 	}
 	
 	

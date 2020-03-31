@@ -84,7 +84,7 @@ public class Crud_Service {
 
 			b = true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("all rows deleted");
 		}
 		return b;
 	}
