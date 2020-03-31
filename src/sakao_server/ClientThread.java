@@ -25,15 +25,17 @@ public class ClientThread extends Thread {
 	private ObjectMapper mapper;
 	private static int position = 1;
 	private boolean shouldRun = true;
-	///// private Connection con; ON PEUT AJOTUER UNE CONNECTION 
+	///// private Connection con; ON PEUT AJOTUER UNE CONNECTION
 
-	public ClientThread(Socket socket) {
+	public ClientThread(Socket socket) throws ClassNotFoundException {
 		super("ClientConnection" + position);
 		position++;
 		this.clientSocket = socket;
+		service = new Crud_Service();
 	}
 
-	public void StartCrud() throws JsonParseException, JsonMappingException, IOException, ClassNotFoundException,NullPointerException {
+	public void StartCrud()
+			throws JsonParseException, JsonMappingException, IOException, ClassNotFoundException, NullPointerException {
 		mapper = new ObjectMapper();
 		String jsonString = in.readLine();
 		request = mapper.readValue(jsonString, Request.class);
@@ -95,7 +97,7 @@ public class ClientThread extends Thread {
 			out = new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8);
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			System.out.println("Client connected");
-			/////con = DataSource.getConnection();
+			///// con = DataSource.getConnection();
 			while (shouldRun) {
 				this.StartCrud();
 			}
@@ -108,8 +110,7 @@ public class ClientThread extends Thread {
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			System.out.println("Client deconnecte");
 		}
 	}

@@ -22,7 +22,7 @@ public class Crud_Service {
 		try {
 			Personne p = new Personne(name, age);
 			controller.addPersonne(p);
-		DataSource.returnConnection((DataSource.getConnection()));
+			DataSource.returnConnection((DataSource.getConnection()));
 
 			b = true;
 		} catch (Exception e) {
@@ -81,7 +81,6 @@ public class Crud_Service {
 			controller.deleteAllPersonne();
 			DataSource.returnConnection((DataSource.getConnection()));
 
-
 			b = true;
 		} catch (Exception e) {
 			System.out.println("all rows deleted");
@@ -94,7 +93,6 @@ public class Crud_Service {
 		try {
 			controller.updatePersonneName(id, name);
 			DataSource.returnConnection((DataSource.getConnection()));
-
 
 			b = true;
 		}

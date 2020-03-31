@@ -23,20 +23,13 @@ public class JDBCConnectionPool {
 	
 	
 	
-	
-	
-	
-	
-	
-	
 	/////Creating a new connection in order to put it in the connection pool
 	public Connection createNewConnection() throws ClassNotFoundException, SQLException {
 		ConnectionFileReader connectionfilereader = new ConnectionFileReader();
 		connectionfilereader.Read();
 			Class.forName(connectionfilereader.getProperty("driver"));
 			Connection con = DriverManager.getConnection(connectionfilereader.getProperty("url"), connectionfilereader.getProperty("login"),connectionfilereader.getProperty("password"));		
-		System.out.println("A connection has been created");
-		System.out.println("");
+		System.out.println("A connection has been created\n");
 		return con;
 
 	}
@@ -59,7 +52,7 @@ public class JDBCConnectionPool {
 ///Check if there are less than 5 connection available in the pool
 	public synchronized boolean IsFull() {
 		final int MAX_POOL_CONNECTION = ConnectionFileReader.getMaxConnections();
-		return (listConnectionavailable.size() < MAX_POOL_CONNECTION);
+		return (listConnectionavailable.size() == MAX_POOL_CONNECTION);
 	}
 	
 	public synchronized boolean IsEmpty() {

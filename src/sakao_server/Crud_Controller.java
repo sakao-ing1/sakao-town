@@ -17,7 +17,7 @@ public class Crud_Controller {
 
 	// Requete SELECT
 
-	public ArrayList<Personne> showPersonne() throws ClassNotFoundException  {
+	public ArrayList<Personne> showPersonne() throws ClassNotFoundException {
 		ArrayList<Personne> retour = new ArrayList<Personne>();
 		try {
 			PreparedStatement pt = DataSource.getConnection().prepareStatement("select * from personne");
@@ -53,8 +53,7 @@ public class Crud_Controller {
 
 	public void deletePersonneById(int ID) throws ClassNotFoundException {
 		try {
-			PreparedStatement pt = DataSource.getConnection()
-					.prepareStatement("delete from personne where id = " + ID);
+			PreparedStatement pt = DataSource.getConnection().prepareStatement("delete from personne where id = " + ID);
 			pt.execute();
 			System.out.println("removal by id done");
 		} catch (SQLException ex) {
@@ -111,15 +110,12 @@ public class Crud_Controller {
 
 	public void deleteAllPersonne() throws SQLException {
 		try {
-		Statement query = DataSource.getListConnectionavailable().get(0).createStatement();
-		int result = query.executeUpdate("Delete from personne");
-		System.out.println("all rows deleted");
-		}
-		catch(IndexOutOfBoundsException e) {
+			Statement query = DataSource.getListConnectionavailable().get(0).createStatement();
+			int result = query.executeUpdate("TRUNCATE TABLE personne");
+			System.out.println("all rows deleted");
+		} catch (IndexOutOfBoundsException e) {
 			System.out.println("all rows deleted");
 		}
 	}
-
-
 
 }
