@@ -9,7 +9,7 @@ import java.util.Properties;
 public final class ConnectionFileReader {
 
 	private Properties p;
-	private final static int MAX_CONNECTIONS = 2;
+	private final static int MAX_CONNECTIONS = 3;
 
 	/// Constructeur qu'on utilise juste pour creer un objet
 	public ConnectionFileReader() {

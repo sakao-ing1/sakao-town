@@ -22,6 +22,8 @@ public class Crud_Service {
 		try {
 			Personne p = new Personne(name, age);
 			controller.addPersonne(p);
+			DataSource.returnConnection((DataSource.getConnection()));
+
 			b = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -34,6 +36,8 @@ public class Crud_Service {
 		boolean b = false;
 		try {
 			controller.deletePersonneByName(name);
+			DataSource.returnConnection((DataSource.getConnection()));
+
 			b = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -46,6 +50,8 @@ public class Crud_Service {
 		boolean b = false;
 		try {
 			controller.deletePersonneById(ID);
+			DataSource.returnConnection((DataSource.getConnection()));
+
 			b = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -58,6 +64,8 @@ public class Crud_Service {
 		boolean b = false;
 		try {
 			controller.updatePersonneAge(id, age);
+			DataSource.returnConnection((DataSource.getConnection()));
+
 			b = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,6 +79,8 @@ public class Crud_Service {
 		boolean b = false;
 		try {
 			controller.deleteAllPersonne();
+			DataSource.returnConnection((DataSource.getConnection()));
+
 			b = true;
 		} catch (Exception e) {
 			System.out.println("all rows deleted");
@@ -82,6 +92,8 @@ public class Crud_Service {
 		boolean b = false;
 		try {
 			controller.updatePersonneName(id, name);
+			DataSource.returnConnection((DataSource.getConnection()));
+
 			b = true;
 		}
 

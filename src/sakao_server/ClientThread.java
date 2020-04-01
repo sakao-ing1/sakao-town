@@ -41,6 +41,7 @@ public class ClientThread extends Thread {
 		request = mapper.readValue(jsonString, Request.class);
 		System.out.println("Request received from " + this.getName());
 		String operation_type = request.getOperation_type();
+		
 
 		switch (operation_type) {
 
