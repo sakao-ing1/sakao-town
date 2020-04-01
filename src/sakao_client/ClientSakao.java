@@ -18,7 +18,6 @@ public class ClientSakao {
 	private Socket clientSocket;
 	private OutputStreamWriter out;
 	private BufferedReader in;
-	private Request request;
 	private Response response = new Response();
 
 	private ObjectMapper mapper;
@@ -28,6 +27,7 @@ public class ClientSakao {
 	private final static String DELETE = "DELETE";
 	private final static String UPDATE_NAME = "UPDATE_NAME";
 	private final static String UPDATE_AGE = "UPDATE_AGE";
+	private final static String STUDENT = "Student";
 
 	public void startConnection(String ip, int port) throws IOException, JSONException {
 		System.out.println("waiting for connection in to the server");
@@ -54,7 +54,9 @@ public class ClientSakao {
 		out.flush();
 		System.out.println("REQUEST SENT");
 		String injsonString = in.readLine();
-		System.out.println(injsonString);
+		if(request.getOperation_type().equals(SELECT_ALL)) {
+			System.out.println(injsonString);
+		}
 		response = mapper.readValue(injsonString, Response.class);
 		return response.toString();
 	}
@@ -66,8 +68,47 @@ public class ClientSakao {
 		clientSocket.close();
 		System.out.println("disconnected");
 	}
-
+	
+	
 	public void StartHMI() {
+		Scanner sco = new Scanner(System.in);
+		System.out.println("LIST OF TABLES, PLEASE CHOOSE A TABLE");
+		int choice = 0;
+		
+		
+		while(choice < 6 && choice >= 0) { ///It is for later, 16 refers to the number of table that we have in our DB for the application
+			System.out.println("1.Student");
+			System.out.println("2.upcoming soon");	
+			System.out.println("3.upcoming soon");	
+			System.out.println("4.upcoming soon");	
+			System.out.println("5.upcoming soon");
+			System.out.println("6.Log out");
+
+			
+			
+			
+			int choix = sco.nextInt();
+			choice = choix;
+			
+			switch(choix) {
+			case 1 :
+				this.StartHMIStudent();
+			
+			
+			case 6 :
+				try {
+					this.CloseConnection();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}
+		
+		
+	}
+
+	public void StartHMIStudent() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("CRUD MENU");
 		int choice = 0;
@@ -79,7 +120,7 @@ public class ClientSakao {
 			System.out.println("4.Update the age of a student");
 			System.out.println("5.Update the name of a student");
 			System.out.println("6.Delete all students");
-			System.out.println("7.Log out");
+			System.out.println("7.Go back to the list of tables");
 			System.out.println("********************");
 			System.out.println("");
 
@@ -89,28 +130,25 @@ public class ClientSakao {
 			switch (choix) {
 
 			case 1:
-				System.out.println("Please enter the table");
-				String tableInsert = sc.next();
 				System.out.println("Please enter the name");
 				String nameInsert = sc.next();
 				System.out.println("Please enter the age");
 				int ageInsert = sc.nextInt();
 				try {
-					Request request = new Request(INSERT, tableInsert, nameInsert, ageInsert);
+					Request request = new Request(INSERT,STUDENT,nameInsert, ageInsert);
 					this.sendMessageToServer(request);
+					System.out.println("Insert done");
+					System.out.println("********************");
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 
-				System.out.println("Insert done");
-				System.out.println("********************");
+
 				break;
 
 			case 2:///// OK
-				System.out.println("Please enter the table");
-				String tableSelect = sc.next();
 				try {
-					Request request = new Request(SELECT_ALL, tableSelect);
+					Request request = new Request(SELECT_ALL,STUDENT);
 					this.sendMessageToServer(request);
 					System.out.println("Display done");
 					System.out.println("********************");
@@ -121,12 +159,10 @@ public class ClientSakao {
 				break;
 
 			case 3:
-				System.out.println("Please enter the table");
-				String tableDeleteAStudent = sc.next();
 				System.out.println("Please enter the id");
 				int idtodelete = sc.nextInt();
 				try {
-					Request request = new Request(DELETE, tableDeleteAStudent, idtodelete);
+					Request request = new Request(DELETE, STUDENT, idtodelete);
 					this.sendMessageToServer(request);
 					System.out.println("Delete done");
 					System.out.println("********************");
@@ -137,14 +173,12 @@ public class ClientSakao {
 				break;
 
 			case 4:
-				System.out.println("Please enter the table");
-				String TableUpdateAge = sc.next();
 				System.out.println("Please enter the id");
 				int idupdateage = sc.nextInt();
 				System.out.println("Please enter the new age");
 				int ageupdateage = sc.nextInt();
 				try {
-					Request request = new Request(UPDATE_AGE, TableUpdateAge, idupdateage, ageupdateage);
+					Request request = new Request(UPDATE_AGE, STUDENT, idupdateage, ageupdateage);
 					this.sendMessageToServer(request);
 					System.out.println("Update age done");
 					System.out.println("********************");
@@ -156,30 +190,27 @@ public class ClientSakao {
 				break;
 
 			case 5:
-				System.out.println("Please enter the table");
-				String TableUpdateName = sc.next();
 				System.out.println("Please enter the id");
 				int idupdatename = sc.nextInt();
 				System.out.println("");
 				System.out.println("Please enter the new name");
 				String nameupdatename = sc.next();
 				try {
-					Request request = new Request(UPDATE_NAME, TableUpdateName, idupdatename, nameupdatename);
+					Request request = new Request(UPDATE_NAME, STUDENT, idupdatename, nameupdatename);
 					this.sendMessageToServer(request);
 					System.out.println("Update name done");
 					System.out.println("********************");
 				} catch (IOException e2) {
 					e2.printStackTrace();
 				}
+			
 
 
 				break;
 
 			case 6:
-				System.out.println("Please enter the table");
-				String tableDeleteAll = sc.next();
 				try {
-					Request request = new Request(DELETE_ALL, tableDeleteAll);
+					Request request = new Request(DELETE_ALL, STUDENT);
 					this.sendMessageToServer(request);
 					System.out.println("Delete all done");
 					System.out.println("********************");
@@ -191,14 +222,12 @@ public class ClientSakao {
 
 			case 7: ///// OK
 				try {
-					this.CloseConnection();
-					sc.close();
 					System.out.println("********************");
-					System.out.println("You left the menu, see you soon !");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+					System.out.println("Back to the list of tables !");
+					this.StartHMI();
 
+				}
+				catch(Exception e) {;}
 
 			}
 

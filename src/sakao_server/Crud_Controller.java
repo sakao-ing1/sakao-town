@@ -29,8 +29,8 @@ public class Crud_Controller {
 				String name = rs.getString(2);
 				int age = rs.getInt(3);
 				retour.add(new Personne(id, name, age));
+				DataSource.returnConnection(con);
 			}
-			DataSource.returnConnection(con);
 
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
