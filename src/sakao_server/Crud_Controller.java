@@ -21,6 +21,7 @@ public class Crud_Controller {
 		ArrayList<Personne> retour = new ArrayList<Personne>();
 		try {
 			Connection con = DataSource.getConnection();
+			
 			PreparedStatement pt = con.prepareStatement("select * from personne");
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
@@ -42,7 +43,7 @@ public class Crud_Controller {
 	public void deletePersonneByName(String name) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
-
+			
 			PreparedStatement pt = con
 					.prepareStatement("delete from personne where name like ?");
 			pt.setString(1, name);

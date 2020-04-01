@@ -112,11 +112,12 @@ public class ClientSakao {
 				try {
 					Request request = new Request(SELECT_ALL, tableSelect);
 					this.sendMessageToServer(request);
+					System.out.println("Display done");
+					System.out.println("********************");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				System.out.println("Display done");
-				System.out.println("********************");
+
 				break;
 
 			case 3:
@@ -127,11 +128,11 @@ public class ClientSakao {
 				try {
 					Request request = new Request(DELETE, tableDeleteAStudent, idtodelete);
 					this.sendMessageToServer(request);
+					System.out.println("Delete done");
+					System.out.println("********************");
 				} catch (IOException e2) {
 					e2.printStackTrace();
 				}
-				System.out.println("Delete done");
-				System.out.println("********************");
 
 				break;
 
@@ -145,11 +146,12 @@ public class ClientSakao {
 				try {
 					Request request = new Request(UPDATE_AGE, TableUpdateAge, idupdateage, ageupdateage);
 					this.sendMessageToServer(request);
+					System.out.println("Update age done");
+					System.out.println("********************");
 				} catch (IOException e2) {
 					e2.printStackTrace();
 				}
-				System.out.println("Update age done");
-				System.out.println("********************");
+
 
 				break;
 
@@ -164,11 +166,12 @@ public class ClientSakao {
 				try {
 					Request request = new Request(UPDATE_NAME, TableUpdateName, idupdatename, nameupdatename);
 					this.sendMessageToServer(request);
+					System.out.println("Update name done");
+					System.out.println("********************");
 				} catch (IOException e2) {
 					e2.printStackTrace();
 				}
-				System.out.println("Update name done");
-				System.out.println("********************");
+
 
 				break;
 
@@ -178,22 +181,24 @@ public class ClientSakao {
 				try {
 					Request request = new Request(DELETE_ALL, tableDeleteAll);
 					this.sendMessageToServer(request);
+					System.out.println("Delete all done");
+					System.out.println("********************");
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				System.out.println("Delete all done");
-				System.out.println("********************");
+
 				break;
 
 			case 7: ///// OK
 				try {
 					this.CloseConnection();
 					sc.close();
+					System.out.println("********************");
+					System.out.println("You left the menu, see you soon !");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				System.out.println("********************");
-				System.out.println("You left the menu, see you soon !");
+
 
 			}
 

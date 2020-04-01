@@ -13,7 +13,7 @@ public class JDBCConnectionPool {
 	/////Creer le pool de connection
 	public JDBCConnectionPool() {
 		this.initializeConnectionPool();
-		System.out.println("5 connexions has been created");
+		System.out.println(ConnectionFileReader.getMaxConnections()+" connexion(s) ha(s/ve) been created");
 	}
 	
 	
@@ -59,8 +59,9 @@ public class JDBCConnectionPool {
 		Connection connection = null;
 		while(this.IsEmpty()) {
 			try {
-				this.wait();
 				System.out.println("No connection available please wait");
+
+				this.wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

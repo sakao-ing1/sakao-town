@@ -58,13 +58,15 @@ public class ClientThread extends Thread {
 			break;
 
 		case "INSERT":
-			System.out.println(this.service.addPersonne(this.request.getName(), this.request.getAge()));
+			try {
+			System.out.println(this.service.addPersonne(this.request.getName(),this.request.getAge()));
 			String outjsonStringInsert = mapper.writeValueAsString(response);
 			out.write(outjsonStringInsert + "\n");
 			out.flush();
 			System.out.println("Insert done for " + this.getName());
 			System.out.println("********************");
-
+			}
+			catch(Exception e) {}
 
 			break;
 
