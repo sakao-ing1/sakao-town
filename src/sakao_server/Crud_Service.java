@@ -45,8 +45,10 @@ public class Crud_Service {
 	public boolean deleteStudentById(int ID) {
 		boolean b = false;
 		try {
-			controller.deleteStudentById(ID);
-
+			while(controller.existStudent(ID)==null)
+				System.out.println("Id inexistant");
+				controller.deleteStudentById(ID);
+				
 			b = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -58,6 +60,8 @@ public class Crud_Service {
 	public boolean updateStudentAge(int id, int age) {
 		boolean b = false;
 		try {
+			while(controller.existStudent(id)==null)
+				System.out.println("Id inexistant");
 			controller.updateStudentAge(id, age);
 
 			b = true;
@@ -84,6 +88,8 @@ public class Crud_Service {
 	public boolean updateStudentName(int id, String name) {
 		boolean b = false;
 		try {
+			while(controller.existStudent(id)==null)
+				System.out.println("Id inexistant");
 			controller.updateStudentName(id, name);
 
 			b = true;

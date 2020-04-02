@@ -15,6 +15,31 @@ public class Crud_Controller {
 	public Crud_Controller() throws ClassNotFoundException {
 	}
 
+	public Student existStudent(int id) throws ClassNotFoundException {
+		Student retour=null;
+		try {
+			Connection con = DataSource.getConnection();
+			
+			PreparedStatement pt = con.prepareStatement("select * from personne where id ="+id);
+			ResultSet rs = pt.executeQuery();
+			while (rs.next()) {
+				int idS = rs.getInt(1);
+				String name = rs.getString(2);
+				int age = rs.getInt(3);
+				retour = new Student(idS, name, age);
+				DataSource.returnConnection(con);
+			}
+
+		} catch (SQLException ex) {
+			System.out.println("erreur " + ex.getMessage());
+		}
+		return retour;
+
+	}
+
+	
+	
+	
 	// Requete SELECT
 
 	public ArrayList<Student> showStudent() throws ClassNotFoundException {
