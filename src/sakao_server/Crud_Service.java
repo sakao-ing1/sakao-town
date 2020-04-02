@@ -2,8 +2,7 @@ package sakao_server;
 
 import java.util.ArrayList;
 
-import sakao_common.Personne;
-import sakao_connection_pool.DataSource;
+import sakao_common.Student;
 
 public class Crud_Service {
 
@@ -13,15 +12,15 @@ public class Crud_Service {
 		this.controller = new Crud_Controller();
 	}
 
-	public ArrayList<Personne> showPersonne() throws ClassNotFoundException {
-		return controller.showPersonne();
+	public ArrayList<Student> showStudent() throws ClassNotFoundException {
+		return controller.showStudent();
 	}
 
-	public boolean addPersonne(String name, int age) {
+	public boolean addStudent(String name, int age) {
 		boolean b = false;
 		try {
-			Personne p = new Personne(name, age);
-			controller.addPersonne(p);
+			Student p = new Student(name, age);
+			controller.addStudent(p);
 			b = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -30,10 +29,23 @@ public class Crud_Service {
 		return b;
 	}
 
-	public boolean deletePersonneByName(String name) {
+	/*public boolean deleteStudentByName(String name) {
 		boolean b = false;
 		try {
-			controller.deletePersonneByName(name);
+			controller.deleteStudentByName(name);
+
+			b = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return b;
+	}*/
+
+	public boolean deleteStudentById(int ID) {
+		boolean b = false;
+		try {
+			controller.deleteStudentById(ID);
 
 			b = true;
 		} catch (Exception e) {
@@ -43,23 +55,10 @@ public class Crud_Service {
 		return b;
 	}
 
-	public boolean deletePersonneById(int ID) {
+	public boolean updateStudentAge(int id, int age) {
 		boolean b = false;
 		try {
-			controller.deletePersonneById(ID);
-
-			b = true;
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		}
-		return b;
-	}
-
-	public boolean updatePersonneAge(int id, int age) {
-		boolean b = false;
-		try {
-			controller.updatePersonneAge(id, age);
+			controller.updateStudentAge(id, age);
 
 			b = true;
 		} catch (Exception e) {
@@ -70,10 +69,10 @@ public class Crud_Service {
 		return b;
 	}
 
-	public boolean deleteAllPersonne() {
+	public boolean deleteAllStudent() {
 		boolean b = false;
 		try {
-			controller.deleteAllPersonne();
+			controller.deleteAllStudent();
 
 			b = true;
 		} catch (Exception e) {
@@ -82,10 +81,10 @@ public class Crud_Service {
 		return b;
 	}
 
-	public boolean updatePersonneName(int id, String name) {
+	public boolean updateStudentName(int id, String name) {
 		boolean b = false;
 		try {
-			controller.updatePersonneName(id, name);
+			controller.updateStudentName(id, name);
 
 			b = true;
 		}

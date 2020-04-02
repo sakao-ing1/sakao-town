@@ -46,7 +46,7 @@ public class ClientThread extends Thread {
 		switch (operation_type) {
 
 		case "SELECT_ALL":
-			response.setStudents(this.service.showPersonne());
+			response.setStudents(this.service.showStudent());
 
 			// response.setState(true);
 
@@ -59,7 +59,7 @@ public class ClientThread extends Thread {
 
 		case "INSERT":
 			try {
-			System.out.println(this.service.addPersonne(this.request.getName(),this.request.getAge()));
+			System.out.println(this.service.addStudent(this.request.getName(),this.request.getAge()));
 			String outjsonStringInsert = mapper.writeValueAsString(response);
 			out.write(outjsonStringInsert + "\n");
 			out.flush();
@@ -71,7 +71,7 @@ public class ClientThread extends Thread {
 			break;
 
 		case "DELETE_ALL":
-			System.out.println(this.service.deleteAllPersonne());
+			System.out.println(this.service.deleteAllStudent());
 			String outjsonStringDeleteAll = mapper.writeValueAsString(response);
 			out.write(outjsonStringDeleteAll + "\n");
 			out.flush();
@@ -82,7 +82,7 @@ public class ClientThread extends Thread {
 			break;
 
 		case "DELETE":
-			System.out.println(this.service.deletePersonneById(this.request.getID()));
+			System.out.println(this.service.deleteStudentById(this.request.getID()));
 			String outjsonStringDeleteAStudent = mapper.writeValueAsString(response);
 			out.write(outjsonStringDeleteAStudent + "\n");
 			out.flush();
@@ -93,7 +93,7 @@ public class ClientThread extends Thread {
 			break;
 
 		case "UPDATE_AGE":
-			System.out.println(this.service.updatePersonneAge(this.request.getID(), this.request.getAge()));
+			System.out.println(this.service.updateStudentAge(this.request.getID(), this.request.getAge()));
 			String outjsonStringUpdateAge = mapper.writeValueAsString(response);
 			out.write(outjsonStringUpdateAge + "\n");
 			out.flush();
@@ -104,7 +104,7 @@ public class ClientThread extends Thread {
 			break;
 
 		case "UPDATE_NAME":
-			System.out.println(this.service.updatePersonneName(this.request.getID(), this.request.getName()));
+			System.out.println(this.service.updateStudentName(this.request.getID(), this.request.getName()));
 			String outjsonStringUpdateName = mapper.writeValueAsString(response);
 			out.write(outjsonStringUpdateName + "\n");
 			out.flush();

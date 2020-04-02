@@ -3,20 +3,20 @@ package sakao_common;
 import java.util.ArrayList;
 
 public class Response {
-	private ArrayList<Personne> students;
+	private ArrayList<Student> students;
 
 	public Response() {
 	}
 
 	public String toString() {
-		return "personnes : [ " + this.getStudents() + "; ]";
+		return "Students : [ " + this.getStudents() + "; ]";
 	}
 
-	public ArrayList<Personne> getStudents() {
+	public ArrayList<Student> getStudents() {
 		return students;
 	}
 
-	public void setStudents(ArrayList<Personne> students) {
+	public void setStudents(ArrayList<Student> students) {
 		this.students = students;
 	}
 }

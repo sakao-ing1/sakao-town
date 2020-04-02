@@ -5,10 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import sakao_client.ClientSakao;
+import sakao_server.ClientThread;
+
 public class JDBCConnectionPool {
 
 	private static ArrayList<Connection> listConnectionavailable = new ArrayList<Connection>();/////OK
-		
 
 	/////Creer le pool de connection
 	public JDBCConnectionPool() {
@@ -24,7 +26,6 @@ public class JDBCConnectionPool {
 		connectionfilereader.Read();
 			Class.forName(connectionfilereader.getProperty("driver"));
 			Connection con = DriverManager.getConnection(connectionfilereader.getProperty("url"), connectionfilereader.getProperty("login"),connectionfilereader.getProperty("password"));		
-		System.out.println("A connection has been created\n");
 		return con;
 
 	}
@@ -59,8 +60,7 @@ public class JDBCConnectionPool {
 		Connection connection = null;
 		while(this.IsEmpty()) {
 			try {
-				System.out.println("No connection available please wait");
-
+				System.out.println("Please wait");
 				this.wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();

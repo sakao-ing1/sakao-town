@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -35,7 +36,7 @@ public class ClientSakao {
 		out = new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8);
 		in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
 		System.out.println("connection succeed");
-		this.StartHMI();
+		this.StartHMIStudent();
 	}
 
 	///// IMPORTANT NOUS FAISON UNE METHODE POUR CHAQUE ACTION DU CRUD A OPTIMISER
@@ -49,14 +50,18 @@ public class ClientSakao {
 	public String sendMessageToServer(Request request) throws IOException {
 		mapper = new ObjectMapper();
 		String outjsonString = mapper.writeValueAsString(request);
-		///// System.out.println(request);
+		System.out.println("REQUEST SENT");
+		System.out.println(outjsonString);
+		System.out.println(" _____");
+		System.out.println("");
 		out.write(outjsonString + "\n");
 		out.flush();
-		System.out.println("REQUEST SENT");
 		String injsonString = in.readLine();
 		if(request.getOperation_type().equals(SELECT_ALL)) {
+			System.out.println("Response");
 			System.out.println(injsonString);
 		}
+
 		response = mapper.readValue(injsonString, Response.class);
 		return response.toString();
 	}
@@ -107,9 +112,27 @@ public class ClientSakao {
 		
 		
 	}
+	
+	
+	
+	
+	
+	/*
+
+while (true) {
+   try {
+      age = clavier.nextInt();
+      break;
+   } catch (Exception) {
+      System.out.println("Uniquement des chiffres s'il-te-plaît !");
+   }
+}
+	
+	*/
 
 	public void StartHMIStudent() {
 		Scanner sc = new Scanner(System.in);
+
 		System.out.println("CRUD MENU");
 		int choice = 0;
 
@@ -120,12 +143,14 @@ public class ClientSakao {
 			System.out.println("4.Update the age of a student");
 			System.out.println("5.Update the name of a student");
 			System.out.println("6.Delete all students");
-			System.out.println("7.Go back to the list of tables");
+			System.out.println("7.Log out");
 			System.out.println("********************");
 			System.out.println("");
 
 			int choix = sc.nextInt();
+
 			choice = choix;
+			
 
 			switch (choix) {
 
@@ -220,11 +245,15 @@ public class ClientSakao {
 
 				break;
 
+				
+				
+				
 			case 7: ///// OK
 				try {
 					System.out.println("********************");
-					System.out.println("Back to the list of tables !");
-					this.StartHMI();
+					System.out.println("You left the menu, see you soon thank you !");
+					sc.close();
+					this.CloseConnection();
 
 				}
 				catch(Exception e) {;}
@@ -240,4 +269,5 @@ public class ClientSakao {
 		client1.startConnection("localhost", 3030);
 
 	}
+
 }

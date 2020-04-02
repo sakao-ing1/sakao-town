@@ -1,21 +1,19 @@
 package sakao_common;
 
-import java.util.ArrayList;
-
-public class Personne {
+public class Student {
 	private int id;
 	private String name;
 	private int age;
 
-	public Personne() {
+	public Student() {
 	}
 
-	public Personne(String name, int age) {
+	public Student(String name, int age) {
 		this.name = name;
 		this.age = age;
 	}
 
-	public Personne(int id, String name, int age) {
+	public Student(int id, String name, int age) {
 		this.id = id;
 		this.name = name;
 		this.age = age;
@@ -46,7 +44,7 @@ public class Personne {
 	}
 
 	public String toString() {
-		return "Personne : { id : " + id + "; name : " + name + "; age : " + age + "; }";
+		return "Student : { id : " + id + "; name : " + name + "; age : " + age + "; }";
 	}
 
 }

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import sakao_common.Personne;
+import sakao_common.Student;
 import sakao_connection_pool.DataSource;
 
 public class Crud_Controller {
@@ -17,8 +17,8 @@ public class Crud_Controller {
 
 	// Requete SELECT
 
-	public ArrayList<Personne> showPersonne() throws ClassNotFoundException {
-		ArrayList<Personne> retour = new ArrayList<Personne>();
+	public ArrayList<Student> showStudent() throws ClassNotFoundException {
+		ArrayList<Student> retour = new ArrayList<Student>();
 		try {
 			Connection con = DataSource.getConnection();
 			
@@ -28,7 +28,7 @@ public class Crud_Controller {
 				int id = rs.getInt(1);
 				String name = rs.getString(2);
 				int age = rs.getInt(3);
-				retour.add(new Personne(id, name, age));
+				retour.add(new Student(id, name, age));
 				DataSource.returnConnection(con);
 			}
 
@@ -40,12 +40,17 @@ public class Crud_Controller {
 	}
 
 	// Requete DELETE a ameliorer car supprimer par nom est dangereux
-	public void deletePersonneByName(String name) throws ClassNotFoundException {
+	/*public void deleteStudentByName(int ID) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
+			Statement stmt = con.createStatement();
+			ResultSet rslt = stmt.executeQuery("select id from Student where name = " + name);
+			while(rslt.next()) {
+				if(rslt.equals(obj))
+			}
 			
 			PreparedStatement pt = con
-					.prepareStatement("delete from personne where name like ?");
+					.prepareStatement("delete from Student where name like ?");
 			pt.setString(1, name);
 			pt.execute();
 			DataSource.returnConnection(con);
@@ -54,25 +59,26 @@ public class Crud_Controller {
 			System.out.println("erreur " + ex.getMessage());
 		}
 
-	}
+	}*/
 
-	public void deletePersonneById(int ID) throws ClassNotFoundException {
+	public void deleteStudentById(int ID) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
+	           PreparedStatement pt = con.prepareStatement("delete from personne where id = " + ID);
+	            pt.execute();
+				DataSource.returnConnection(con);
 
-			PreparedStatement pt = con.prepareStatement("delete from personne where id = " + ID);
-			pt.execute();
-			DataSource.returnConnection(con);
-
-		} catch (SQLException ex) {
-			System.out.println("erreur " + ex.getMessage());
 		}
 
+		catch (SQLException ex) {
+			System.out.println("erreur " + ex.getMessage());
+			///System.out.println("Please try again the ID is not available");
+		}
 	}
 
 	// Requete INSERT
 
-	public void addPersonne(Personne p) throws ClassNotFoundException {
+	public void addStudent(Student p) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
 
@@ -90,7 +96,7 @@ public class Crud_Controller {
 
 	// Requete UPDATE
 
-	public void updatePersonneAge(int id, int age) throws ClassNotFoundException {
+	public void updateStudentAge(int id, int age) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
 
@@ -106,7 +112,7 @@ public class Crud_Controller {
 		}
 	}
 
-	public void updatePersonneName(int id, String name) throws ClassNotFoundException {
+	public void updateStudentName(int id, String name) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
 
@@ -123,7 +129,7 @@ public class Crud_Controller {
 
 	}
 
-	public void deleteAllPersonne() throws SQLException, ClassNotFoundException {
+	public void deleteAllStudent() throws SQLException, ClassNotFoundException {
 		Connection con = DataSource.getConnection();
 
 			Statement query = con.createStatement();
