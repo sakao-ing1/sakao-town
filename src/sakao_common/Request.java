@@ -50,9 +50,10 @@ public class Request {
 	public Request() {
 	}
 
-	/*public String toString() {
-		return "operation_type : " + this.operation_type + "; target : " + this.target + "; };";
-	}*/
+	/*
+	 * public String toString() { return "operation_type : " + this.operation_type +
+	 * "; target : " + this.target + "; };"; }
+	 */
 
 	/*
 	 * public String toString() {

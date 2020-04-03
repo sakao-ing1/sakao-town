@@ -1,9 +1,7 @@
 package sakao_connection_pool;
 
-/////import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-///import java.util.Enumeration;
 import java.util.Properties;
 
 public final class ConnectionFileReader {
@@ -11,12 +9,12 @@ public final class ConnectionFileReader {
 	private Properties p;
 	private final static int MAX_CONNECTIONS = 3;
 
-	/// Constructeur qu'on utilise juste pour creer un objet
+
 	public ConnectionFileReader() {
 		p = new Properties();
 	}
 
-	///// Methode qui permet douvrir le fichier et de le lire
+	///// open the file and read it
 	public void Read() {
 		InputStream fis;
 		try {
@@ -27,9 +25,9 @@ public final class ConnectionFileReader {
 		}
 	}
 
-	///// Creer une methode qui retourne la cle du fichier pour ne pas a avoir a
-	///// tout tapper a la main
-	///// Cette methode va nous permettre de parcourir le fichier
+	///// return the keys of the file
+	///// 
+	///// this function allows to browse the file
 	public String getProperty(String key) {
 		return p.getProperty(key);
 

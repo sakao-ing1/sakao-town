@@ -39,13 +39,7 @@ public class ClientSakao {
 		this.StartHMIStudent();
 	}
 
-	///// IMPORTANT NOUS FAISON UNE METHODE POUR CHAQUE ACTION DU CRUD A OPTIMISER
-	///// POUR EN FAIRE QUUNE SEULE
 
-	/*
-	 * Si le client tape SELECT ALL OU DELETE ALL : request.operation_type =
-	 * "Select_all" "Delete_All
-	 */
 
 	public String sendMessageToServer(Request request) throws IOException {
 		mapper = new ObjectMapper();
@@ -57,7 +51,7 @@ public class ClientSakao {
 		out.write(outjsonString + "\n");
 		out.flush();
 		String injsonString = in.readLine();
-		if(request.getOperation_type().equals(SELECT_ALL)) {
+		if (request.getOperation_type().equals(SELECT_ALL)) {
 			System.out.println("Response");
 			System.out.println(injsonString);
 		}
@@ -73,62 +67,46 @@ public class ClientSakao {
 		clientSocket.close();
 		System.out.println("disconnected");
 	}
-	
-	
+
+	/////The following function will be use in the futur to decide first in which table you want to send request
 	public void StartHMI() {
 		Scanner sco = new Scanner(System.in);
 		System.out.println("LIST OF TABLES, PLEASE CHOOSE A TABLE");
 		int choice = 0;
-		
-		
-		while(choice < 6 && choice >= 0) { ///It is for later, 16 refers to the number of table that we have in our DB for the application
+
+		while (choice < 6 && choice >= 0) { 
 			System.out.println("1.Student");
-			System.out.println("2.upcoming soon");	
-			System.out.println("3.upcoming soon");	
-			System.out.println("4.upcoming soon");	
+			System.out.println("2.upcoming soon");
+			System.out.println("3.upcoming soon");
+			System.out.println("4.upcoming soon");
 			System.out.println("5.upcoming soon");
 			System.out.println("6.Log out");
 
-			
-			
-			
 			int choix = sco.nextInt();
 			choice = choix;
-			
-			switch(choix) {
-			case 1 :
+
+			switch (choix) {
+			case 1:
 				this.StartHMIStudent();
-			
-			
-			case 6 :
+
+			case 6:
 				try {
 					this.CloseConnection();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-			
-		}
-		
-		
-	}
-	
-	
-	
-	
-	
-	/*
 
-while (true) {
-   try {
-      age = clavier.nextInt();
-      break;
-   } catch (Exception) {
-      System.out.println("Uniquement des chiffres s'il-te-plaît !");
-   }
-}
-	
-	*/
+		}
+
+	}
+
+	/*
+	 * 
+	 * while (true) { try { age = clavier.nextInt(); break; } catch (Exception) {
+	 * System.out.println("Uniquement des chiffres s'il-te-plaît !"); } }
+	 * 
+	 */
 
 	public void StartHMIStudent() {
 		Scanner sc = new Scanner(System.in);
@@ -150,7 +128,6 @@ while (true) {
 			int choix = sc.nextInt();
 
 			choice = choix;
-			
 
 			switch (choix) {
 
@@ -160,7 +137,7 @@ while (true) {
 				System.out.println("Please enter the age");
 				int ageInsert = sc.nextInt();
 				try {
-					Request request = new Request(INSERT,STUDENT,nameInsert, ageInsert);
+					Request request = new Request(INSERT, STUDENT, nameInsert, ageInsert);
 					this.sendMessageToServer(request);
 					System.out.println("Insert done");
 					System.out.println("********************");
@@ -168,12 +145,11 @@ while (true) {
 					e1.printStackTrace();
 				}
 
-
 				break;
 
 			case 2:///// OK
 				try {
-					Request request = new Request(SELECT_ALL,STUDENT);
+					Request request = new Request(SELECT_ALL, STUDENT);
 					this.sendMessageToServer(request);
 					System.out.println("Display done");
 					System.out.println("********************");
@@ -211,7 +187,6 @@ while (true) {
 					e2.printStackTrace();
 				}
 
-
 				break;
 
 			case 5:
@@ -228,8 +203,6 @@ while (true) {
 				} catch (IOException e2) {
 					e2.printStackTrace();
 				}
-			
-
 
 				break;
 
@@ -245,9 +218,6 @@ while (true) {
 
 				break;
 
-				
-				
-				
 			case 7: ///// OK
 				try {
 					System.out.println("********************");
@@ -255,8 +225,9 @@ while (true) {
 					sc.close();
 					this.CloseConnection();
 
+				} catch (Exception e) {
+					;
 				}
-				catch(Exception e) {;}
 
 			}
 

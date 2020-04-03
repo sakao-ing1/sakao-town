@@ -25,7 +25,6 @@ public class ClientThread extends Thread {
 	private ObjectMapper mapper;
 	private static int position = 1;
 	private boolean shouldRun = true;
-	///// private Connection con; ON PEUT AJOTUER UNE CONNECTION
 
 	public ClientThread(Socket socket) throws ClassNotFoundException {
 		super("Client" + position);
@@ -41,14 +40,12 @@ public class ClientThread extends Thread {
 		request = mapper.readValue(jsonString, Request.class);
 		System.out.println("Request received from " + this.getName());
 		String operation_type = request.getOperation_type();
-		
 
 		switch (operation_type) {
 
 		case "SELECT_ALL":
 			response.setStudents(this.service.showStudent());
 
-			// response.setState(true);
 
 			String outjsonStringSelectAll = mapper.writeValueAsString(response);
 			out.write(outjsonStringSelectAll + "\n");
@@ -59,14 +56,14 @@ public class ClientThread extends Thread {
 
 		case "INSERT":
 			try {
-			System.out.println(this.service.addStudent(this.request.getName(),this.request.getAge()));
-			String outjsonStringInsert = mapper.writeValueAsString(response);
-			out.write(outjsonStringInsert + "\n");
-			out.flush();
-			System.out.println("Insert done for " + this.getName());
-			System.out.println("********************");
+				System.out.println(this.service.addStudent(this.request.getName(), this.request.getAge()));
+				String outjsonStringInsert = mapper.writeValueAsString(response);
+				out.write(outjsonStringInsert + "\n");
+				out.flush();
+				System.out.println("Insert done for " + this.getName());
+				System.out.println("********************");
+			} catch (Exception e) {
 			}
-			catch(Exception e) {}
 
 			break;
 
@@ -78,7 +75,6 @@ public class ClientThread extends Thread {
 			System.out.println("All rows deleted for " + this.getName());
 			System.out.println("********************");
 
-
 			break;
 
 		case "DELETE":
@@ -89,7 +85,6 @@ public class ClientThread extends Thread {
 			System.out.println("A row deleted for " + this.getName());
 			System.out.println("********************");
 
-
 			break;
 
 		case "UPDATE_AGE":
@@ -99,7 +94,6 @@ public class ClientThread extends Thread {
 			out.flush();
 			System.out.println("Update age done for " + this.getName());
 			System.out.println("********************");
-
 
 			break;
 
@@ -123,7 +117,6 @@ public class ClientThread extends Thread {
 			System.out.println(this.getName() + " connected");
 			System.out.println("********************");
 
-			///// con = DataSource.getConnection();
 			while (shouldRun) {
 				this.StartCrud();
 			}
@@ -134,10 +127,9 @@ public class ClientThread extends Thread {
 
 		} catch (IOException e) {
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NullPointerException e) {
-			System.out.println( this.getName()+ " disconnected");
+			System.out.println(this.getName() + " disconnected");
 			System.out.println("********************");
 
 		}

@@ -1,4 +1,4 @@
- package sakao_server;
+package sakao_server;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,11 +16,11 @@ public class Crud_Controller {
 	}
 
 	public Student existStudent(int id) throws ClassNotFoundException {
-		Student retour=null;
+		Student retour = null;
 		try {
 			Connection con = DataSource.getConnection();
-			
-			PreparedStatement pt = con.prepareStatement("select * from personne where id ="+id);
+
+			PreparedStatement pt = con.prepareStatement("select * from personne where id =" + id);
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
 				int idS = rs.getInt(1);
@@ -37,16 +37,13 @@ public class Crud_Controller {
 
 	}
 
-	
-	
-	
 	// Requete SELECT
 
 	public ArrayList<Student> showStudent() throws ClassNotFoundException {
 		ArrayList<Student> retour = new ArrayList<Student>();
 		try {
 			Connection con = DataSource.getConnection();
-			
+
 			PreparedStatement pt = con.prepareStatement("select * from personne");
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
@@ -65,39 +62,35 @@ public class Crud_Controller {
 	}
 
 	// Requete DELETE a ameliorer car supprimer par nom est dangereux
-	/*public void deleteStudentByName(int ID) throws ClassNotFoundException {
-		try {
-			Connection con = DataSource.getConnection();
-			Statement stmt = con.createStatement();
-			ResultSet rslt = stmt.executeQuery("select id from Student where name = " + name);
-			while(rslt.next()) {
-				if(rslt.equals(obj))
-			}
-			
-			PreparedStatement pt = con
-					.prepareStatement("delete from Student where name like ?");
-			pt.setString(1, name);
-			pt.execute();
-			DataSource.returnConnection(con);
-
-		} catch (SQLException ex) {
-			System.out.println("erreur " + ex.getMessage());
-		}
-
-	}*/
+	/*
+	 * public void deleteStudentByName(int ID) throws ClassNotFoundException { try {
+	 * Connection con = DataSource.getConnection(); Statement stmt =
+	 * con.createStatement(); ResultSet rslt =
+	 * stmt.executeQuery("select id from Student where name = " + name);
+	 * while(rslt.next()) { if(rslt.equals(obj)) }
+	 * 
+	 * PreparedStatement pt = con
+	 * .prepareStatement("delete from Student where name like ?"); pt.setString(1,
+	 * name); pt.execute(); DataSource.returnConnection(con);
+	 * 
+	 * } catch (SQLException ex) { System.out.println("erreur " + ex.getMessage());
+	 * }
+	 * 
+	 * }
+	 */
 
 	public void deleteStudentById(int ID) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
-	           PreparedStatement pt = con.prepareStatement("delete from personne where id = " + ID);
-	            pt.execute();
-				DataSource.returnConnection(con);
+			PreparedStatement pt = con.prepareStatement("delete from personne where id = " + ID);
+			pt.execute();
+			DataSource.returnConnection(con);
 
 		}
 
 		catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
-			///System.out.println("Please try again the ID is not available");
+			/// System.out.println("Please try again the ID is not available");
 		}
 	}
 
@@ -125,8 +118,7 @@ public class Crud_Controller {
 		try {
 			Connection con = DataSource.getConnection();
 
-			PreparedStatement pstm = con
-					.prepareStatement(" UPDATE personne SET age = ?  WHERE id = ?");
+			PreparedStatement pstm = con.prepareStatement(" UPDATE personne SET age = ?  WHERE id = ?");
 			pstm.setInt(1, age);
 			pstm.setInt(2, id);
 			pstm.executeUpdate();
@@ -141,8 +133,7 @@ public class Crud_Controller {
 		try {
 			Connection con = DataSource.getConnection();
 
-			PreparedStatement pstm = con
-					.prepareStatement(" UPDATE personne SET name = ?  WHERE id = ?");
+			PreparedStatement pstm = con.prepareStatement(" UPDATE personne SET name = ?  WHERE id = ?");
 			pstm.setString(1, name);
 			pstm.setInt(2, id);
 			pstm.executeUpdate();
@@ -157,9 +148,9 @@ public class Crud_Controller {
 	public void deleteAllStudent() throws SQLException, ClassNotFoundException {
 		Connection con = DataSource.getConnection();
 
-			Statement query = con.createStatement();
-			int result = query.executeUpdate("TRUNCATE TABLE personne");
-			DataSource.returnConnection(con);
+		Statement query = con.createStatement();
+		int result = query.executeUpdate("TRUNCATE TABLE personne");
+		DataSource.returnConnection(con);
 
 	}
 }
