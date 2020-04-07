@@ -237,7 +237,7 @@ public class ClientSakao {
 
 	public static void main(String[] args) throws IOException, JSONException {
 		ClientSakao client1 = new ClientSakao();
-		client1.startConnection("localhost", 3030);
+		client1.startConnection("172.31.249.254", 3030);
 
 	}
 

@@ -37,7 +37,7 @@ public class Crud_Controller {
 
 	}
 
-	// Requete SELECT
+	// Request SELECT
 
 	public ArrayList<Student> showStudent() throws ClassNotFoundException {
 		ArrayList<Student> retour = new ArrayList<Student>();
@@ -61,7 +61,7 @@ public class Crud_Controller {
 
 	}
 
-	// Requete DELETE a ameliorer car supprimer par nom est dangereux
+
 	/*
 	 * public void deleteStudentByName(int ID) throws ClassNotFoundException { try {
 	 * Connection con = DataSource.getConnection(); Statement stmt =
@@ -90,11 +90,10 @@ public class Crud_Controller {
 
 		catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
-			/// System.out.println("Please try again the ID is not available");
 		}
 	}
 
-	// Requete INSERT
+	// Request INSERT
 
 	public void addStudent(Student p) throws ClassNotFoundException {
 		try {
@@ -112,7 +111,7 @@ public class Crud_Controller {
 		}
 	}
 
-	// Requete UPDATE
+	// Request UPDATE
 
 	public void updateStudentAge(int id, int age) throws ClassNotFoundException {
 		try {
