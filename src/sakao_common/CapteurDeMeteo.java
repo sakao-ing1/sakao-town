@@ -1,12 +1,16 @@
 package sakao_common;
 
-public class CapteurDeMeteo {
+public class CapteurDeMeteo extends Capteur{
 	private int idCapteurMeteo;
 	private double Temperature;
 	private String etatDuCiel;
-	private int idCapteur;
 	
-	public CapteurDeMeteo() { 
+	
+	public CapteurDeMeteo(/*int idCapteur, String EtatCapteur, String TypeCapteur, int idConfiguration, int idBorne, int idZone,
+			int idAgent*/) { // J'ai mis juste les parametres du super
+		super();
+		//super(idCapteur, EtatCapteur,TypeCapteur,idConfiguration,idBorne,idZone,idAgent);
+		
 	}
 	public int getIdCapteurMeteo() {
 		return idCapteurMeteo;
@@ -26,11 +30,6 @@ public class CapteurDeMeteo {
 	public void setEtatDuCiel(String etatDuCiel) {
 		this.etatDuCiel = etatDuCiel;
 	}
-	public int getIdCapteur() {
-		return idCapteur;
-	}
-	public void setIdCapteur(int idCapteur) {
-		this.idCapteur = idCapteur;
-	}
+
 	
 }
