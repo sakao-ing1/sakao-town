@@ -2,7 +2,14 @@ package sakao_client;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Line2D.Double;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
@@ -10,13 +17,15 @@ import javax.swing.JComponent;
 
 public class Display extends JComponent {
 	private static final long serialVersionUID = -1416435289803099003L;
-	private int widthKM = 4;
-	private int heightKM = 2;
-	private int widthPX = widthKM * 100;
-	private int heightPX = heightKM * 100;
-	private ArrayList<Point> graphPoints;
-	private int CityBudget = 81;
-	private int aStationCost = 9;
+	private double widthKM = 5.0;///user
+	private double heightKM = 5.0;///user
+	private double widthPX = widthKM * 100; 
+	private double heightPX = heightKM * 100;
+	private ArrayList<Point2D.Double> graphPoints;
+	/////private ArrayList<Point>> Points = new ArrayList<>();
+	/////HashMap<Double,ArrayList<Point> grahpoints = new HasMapHashMap<Double,ArrayList<Point>> ();
+	private int CityBudget = 1;///user
+	private int aStationCost = 1;///user
 	private int MaxStation = CityBudget/aStationCost;
 	private int aLinkPrice = 15000;
 	private int rest = 0;
@@ -25,59 +34,34 @@ public class Display extends JComponent {
 	@Override
 	protected void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
-		graphPoints = new ArrayList<Point>(MaxStation);
-		
+		graphPoints = new ArrayList<Point2D.Double>(MaxStation);
+		Graphics2D g2d = (Graphics2D) graphics;
+
 		
 		graphics.setColor(Color.BLACK);
-		graphics.fillOval(0,0, widthPX, heightPX);
+		Ellipse2D.Double oval = new Ellipse2D.Double(0.0, 0.0, widthPX, heightPX);
+		g2d.fill(oval);
 		
+	
 		
 		graphics.setColor(Color.WHITE);
-		graphics.drawLine(0, heightPX/2, widthPX, heightPX/2);
-		graphics.drawLine(widthPX/2, 0, widthPX/2, heightPX);
-		
-		
-		graphics.drawString("0",(int) (widthPX  * 0.51), (int) (heightPX * 0.57));
-		graphics.drawString("-"+ widthKM,(int) (widthPX  * 0.03), (int) (heightPX * 0.57));
-		graphics.drawString(""+widthKM,(int) (widthPX  * 0.95), (int) (heightPX * 0.57));
-		graphics.drawString("-" +heightKM,(int) (widthPX  * 0.51), (int) (heightPX * 0.97));	
-		graphics.drawString( heightKM +"",(int) (widthPX  * 0.51), (int) (heightPX * 0.07));	
-		
+		g2d.draw(new Line2D.Double(0, heightPX/2, widthPX, heightPX/2));
+		g2d.draw(new Line2D.Double(widthPX/2, 0, widthPX/2, heightPX));
+
 
 		
-		/*graphics.setColor(Color.RED);
-		graphics.fillRect(xToPixel(-1.80),yToPixel(1.0), 5, 5);
-		graphics.fillRect(xToPixel(-1.0),yToPixel(1.0), 5, 5);		
-		graphics.drawLine(xToPixel(-2.0),yToPixel(1.0),xToPixel(-1.0),yToPixel(1.0));
-		graphics.drawLine(xToPixel(-1.0),yToPixel(1.0),xToPixel(1.0),yToPixel(1.0));
-		graphics.fillRect(xToPixel(1.0),yToPixel(1.0), 5, 5);
-		graphics.fillRect(xToPixel(2.0),yToPixel(1.0), 5, 5);		
-		graphics.drawLine(xToPixel(1.0),yToPixel(1.0),xToPixel(3.0),yToPixel(1.0));
+		g2d.drawString("0", (float)(widthPX  * 0.51), (float)(heightPX * 0.57));
+		g2d.drawString("-"+ widthKM,(float)(widthPX  * 0.03),(float) (heightPX * 0.57));
+		g2d.drawString(""+widthKM,(float) (widthPX  * 0.95), (float) (heightPX * 0.57));
+		g2d.drawString("-" +heightKM,(float) (widthPX  * 0.51), (float)(heightPX * 0.97));	
+		g2d.drawString( heightKM  +"",(float) (widthPX  * 0.51), (float) (heightPX * 0.07));	
 		
-		graphics.drawLine(xToPixel(2.0),yToPixel(1.0),xToPixel(-2.0),yToPixel(0.0));
-
-		graphics.fillRect(xToPixel(-2.0),yToPixel(0.0), 5, 5);
-		graphics.fillRect(xToPixel(-1.0),yToPixel(0.0), 5, 5);		
-		graphics.drawLine(xToPixel(-2.0),yToPixel(0.0),xToPixel(-1.0),yToPixel(0.0));
-		graphics.drawLine(xToPixel(-1.0),yToPixel(0.0),xToPixel(1.0),yToPixel(0.0));
-		graphics.fillRect(xToPixel(1.0),yToPixel(0.0), 5, 5);
-		graphics.fillRect(xToPixel(2.0),yToPixel(0.0), 5, 5);		
-		graphics.drawLine(xToPixel(1.0),yToPixel(0.0),xToPixel(2.0),yToPixel(0.0));
-		
-		graphics.drawLine(xToPixel(2.0),yToPixel(0.0),xToPixel(-2.0),yToPixel(-1.0));
-		graphics.fillRect(xToPixel(-2.0),yToPixel(-1.0), 5, 5);
-		graphics.fillRect(xToPixel(-1.0),yToPixel(-1.0), 5, 5);		
-		graphics.drawLine(xToPixel(-2.0),yToPixel(-1.0),xToPixel(-1.0),yToPixel(-1.0));
-		graphics.drawLine(xToPixel(-1.0),yToPixel(-1.0),xToPixel(1.0),yToPixel(-1.0));
-		graphics.fillRect(xToPixel(1.0),yToPixel(-1.0), 5, 5);
-		graphics.fillRect(xToPixel(2.0),yToPixel(-1.0), 5, 5);		
-		graphics.drawLine(xToPixel(1.0),yToPixel(-1.0),xToPixel(2.0),yToPixel(-1.0));
-		*/
 		
 		graphics.setColor(Color.RED);
-		graphics.fillRect(xToPixel(4.0),yToPixel(-3.0), 5, 5);		
-		System.out.println(this.isInTheEllipse(4.0, -3.0));
-		/////this.StationAlgo(graphics);
+		this.StationAlgo(graphics);
+        /*Rectangle2D.Double rectangle = new  Rectangle2D.Double(xToPixel(-(widthKM-2)), yToPixel((heightKM - 3)),5, 5);
+        g2d.fill(rectangle);
+*/
 		
 	}
 	
@@ -87,10 +71,10 @@ public class Display extends JComponent {
 	
 	public boolean isInTheCircle(double x, double y) {
 		boolean b;
-		Point p = new Point(xToPixel(x),yToPixel(y));
-		Point center = new Point(xToPixel(0.0),yToPixel(0.0));
+		Point2D.Double p = new Point2D.Double(xToPixel(x),yToPixel(y));
+		Point2D.Double center = new Point2D.Double(xToPixel(0.0),yToPixel(0.0));
 		double distance = p.distance(center);
-		System.out.println(distance);
+		/////System.out.println("distance : " + distance);
 		if(distance <= this.widthPX/2) {
 			b = true;
 		}
@@ -121,23 +105,98 @@ public class Display extends JComponent {
 		return b;
 	}
 ////////////////////////////////////////////////////////////////////////////
-	/* Gives the multiple of the maximum station number in order to know how to organize the stations on the maps */
+	/* Gives the biggest multiple of MaxStation in order to know how to organize stations on the map */
 	
 	
-	public boolean MaxDiviserWithoutRest() {
-		boolean b = true;
-		for(int i = 1; i <= MaxStation; i++) {
-			if(MaxStation % i == 0 && maxDiviser <= i && maxDiviser < MaxStation) {
-				maxDiviser = i;
+	public int StationDiviser() {
+		System.out.println("MaxStation : " + MaxStation);
+		if(MaxStation == 1) {
+			maxDiviser = 1;
+			return maxDiviser;
+		}
+		else {
+			for(int i = 1; i < MaxStation; i++) {
+				if(MaxStation % i == 0 && maxDiviser <= i && maxDiviser < MaxStation) {
+					maxDiviser = i;
+				}
+				
 			}
-			else {
-				setRest(maxDiviser % i);
-				maxDiviser = maxDiviser/i;
-				b = false;
+			if (maxDiviser == 1) {
+				rest = 1; ///// TO USE DURING THE ALGORITHM DON'T FORGET THIS LAST STATION
+				for(int i = 1; i < MaxStation - rest; i++) {
+					if((MaxStation - rest) % i == 0 && maxDiviser <= i && maxDiviser < (MaxStation - rest)) {
+						maxDiviser = i;
+					}
+				}
 			}
 		}
-		return b;
+		System.out.println("MaxDiviser : " + maxDiviser);
+		return maxDiviser;
 	}
+	
+	
+	public Point2D.Double xSymetric(Point2D.Double p) {
+		
+		double x = p.x;
+		double y = -(p.y);
+		
+		Point2D.Double symX = new Point2D.Double(x,y);
+		return symX;
+	}
+	
+	
+	public Point2D.Double ySymetric(Point2D.Double p) {
+		
+		double x = -(p.x);
+		double y = p.y;
+		
+		Point2D.Double symY = new Point2D.Double(x,y);
+		return symY;
+	}
+	
+	public Point2D.Double OSymetric(Point2D.Double p) {
+		
+		double x = -(p.x);
+		double y = -(p.y);
+		
+		Point2D.Double symO = new Point2D.Double(x,y);
+		return symO;
+	}
+	
+	public Point2D.Double xMidSymetric(Point2D.Double p) {
+		double x =0;
+		double y = p.y;
+		
+		Point2D.Double symmidx = new Point2D.Double(x,y);
+		
+		return symmidx;
+	}
+	
+	
+	public Point2D.Double yMidSymetric(Point2D.Double p) {
+		double x =p.x;
+		double y = 0;
+		
+		Point2D.Double symmidy = new Point2D.Double(x,y);
+		
+		return symmidy;
+	}
+	
+	public boolean pontExist(Point2D.Double p) {
+		boolean b = false;
+		
+		for(Point2D.Double point : this.graphPoints) {
+			if((point.x == p.x) && (point.y == p.y)) {
+				b = true;
+				break;
+			}
+		}
+		
+		return b;
+		
+	}
+	
+	
 	
 	
 ////////////////////////////////////////////////////////////////////////////
@@ -146,89 +205,197 @@ public class Display extends JComponent {
 	public void StationAlgo(Graphics g) {
 		
 		
-		///int step = MaxStation/maxDiviser;
-
-
-		/////Establish points position and add them to the list heart of the algorithm
+		int TotalStationsToPack = this.StationDiviser();
+		int StationsToPackEachLine = MaxStation/TotalStationsToPack;
+		Graphics2D gr2d = (Graphics2D) g;
+		/////Establish points position and add them to the list______ heart of the algorithm <3
+		if(this.maxDiviser == 1) {
+			this.graphPoints.add(new Point2D.Double (0.0,0.0));
+	        for (int i = 0; i < graphPoints.size(); i++) {
+	            double x = graphPoints.get(i).x;
+	            double y = graphPoints.get(i).y ;
+	            Rectangle2D.Double rectangle = new  Rectangle2D.Double(xToPixel(x), yToPixel(y),5, 5);
+	            gr2d.fill(rectangle);
+	        }
+	        System.out.println("rest : " + this.rest);
+	        System.out.println("size : " + graphPoints.size());
+		}
+		else {
 		
-		if(this.widthKM == this.heightKM) {/////Circle case
-			for(int i = 0; i < MaxStation; i++) {
-				for(int j = 0; j < maxDiviser; j++) {
-					int x = 0;
-					int y = this.heightKM - i;
-					this.graphPoints.add(new Point(x,y));
-					for(int k = i; k < maxDiviser; k++) {
-						int x1 = this.widthKM - i;
-						int y1 = 0;
-						this.graphPoints.add(new Point(x1,y1));
-					}
-				}
+			if(this.widthKM == this.heightKM) {/////Circle case
+				///int step = (TotalStationsToPack - StationsToPackEachLine);
+				double xp = (-widthPX);
+				double yp = heightPX;
+				int compteur = 0;
+				
+				/*switch(MaxStation) {
+				case 1 :
+					Point2D.Double p = new Point2D.Double(0,0);
+					this.graphPoints.add(p);
+				}*/
+				
+				for(int i = 0; i< TotalStationsToPack; i++) {
+					for(int j = 0; j < StationsToPackEachLine;j++) {
+						while(!this.isInTheCircle((double)xp,(double)yp)) {
+							xp = xp + this.widthKM/10.0;
+							yp = yp  - this.widthKM/10.0;
 	
+	
+						}
+						Point2D.Double p = new Point2D.Double(xp,yp);
+						this.graphPoints.add(p);
+						xp = xp + 0.5;
+						yp = yp - 0.5;
+														/////this.+ operation InsertX(x), InsertY(y) to insert points position in table Station
+						}
+				}
+				if(this.rest == 1) {
+					Point2D.Double p = new Point2D.Double(0,0);
+					while(this.pontExist(p)) {
+						p.x = p.x - (widthKM/10.0);
+						
+						System.out.println(p);
+					}
+					this.graphPoints.add(p);
+
+					
+				}
+					
+					/*for(int k = 0; k<StationsToPackEachLine; k++) {
+						yp = yp  - 1;
+						Point p = new Point(xp,yp);
+						this.graphPoints.add(p);
+						while(!this.isInTheCircle((double)xp,(double)yp)) {
+							xp = xp + 1;
+							yp = yp  - 1;
+							break;
+						}
+					}*/
+	
+					/*this.graphPoints.add(new Point(xSymetric(p)));
+					this.graphPoints.add(new Point(ySymetric(p)));
+					this.graphPoints.add(new Point(OSymetric(p)));
+					this.graphPoints.add(new Point(xMidSymetric(p)));
+					this.graphPoints.add(new Point(yMidSymetric(p)));*/	
+				
+					
+			
+				
+				
+		///// Draw points
+		        for (int i = 0; i < graphPoints.size(); i++) {
+		            double x = graphPoints.get(i).x;
+		            double y = graphPoints.get(i).y ;
+		            Rectangle2D.Double rectangle = new  Rectangle2D.Double(xToPixel(x), yToPixel(y),5, 5);
+		            gr2d.fill(rectangle);
+		        }
+		        
+		        
+		        System.out.println("rest : " + this.rest);
+		        System.out.println("size : " + graphPoints.size());
+	
+		        
+		        
+		/////Draw Lines
+		        /////g2d.draw(new Line2D.Double(0, y, getWidth(), y));
+		        
+		        /*for (int i = 0; i < graphPoints.size() ; i++) {
+		        	for(int j = i+1; j<graphPoints.size(); j++) {
+			            double x1 = graphPoints.get(i).x;
+			            double y1 = graphPoints.get(i).y;
+			            double x2 = graphPoints.get(j).x;
+			            double y2 = graphPoints.get(j).y;
+			            gr2d.draw(new Line2D.Double(xToPixel(x1), yToPixel(y1), xToPixel( x2), yToPixel( y2)));
+		        	}
+		        }*/
+			
 			}
 			
-	///// Draw points
-	        for (int i = 0; i < graphPoints.size(); i++) {
-	            int x = graphPoints.get(i).x;
-	            int y = graphPoints.get(i).y ;
-	            g.fillRect(x, y, 5,5);
-	        }
-	/////Draw Lines
-	        
-	        for (int i = 0; i < graphPoints.size() -1; i++) {
-	            int x1 = graphPoints.get(i).x;
-	            int y1 = graphPoints.get(i).y;
-	            int x2 = graphPoints.get(i + 1).x;
-	            int y2 = graphPoints.get(i + 1).y;
-	            g.drawLine(x1, y1, x2, y2);
-	        }
-		}
-		else if (this.widthKM != this.heightKM) {/////Ellipse case
 			
-		}
-		
-		
-		else {
 			
+			
+			
+			
+			///////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+			
+		/////Establish points position and add them to the list______ heart of the algorithm <3
+			else if (this.widthKM != this.heightKM) {/////Ellipse case
+				
+				
+				
+				
+				
+				
+				
+				///// Draw points
+		        for (int i = 0; i < graphPoints.size(); i++) {
+		            double x = graphPoints.get(i).x;
+		            double y = graphPoints.get(i).y ;
+		            Rectangle2D.Double rectangle = new  Rectangle2D.Double(x, y,5, 5);
+		            gr2d.fill(rectangle);
+		        }
+		/////Draw Lines
+		        
+		       /* for (int i = 0; i < graphPoints.size() -1; i++) {
+		        	double x1 = graphPoints.get(i).x;
+		        	double y1 = graphPoints.get(i).y;
+		        	double x2 = graphPoints.get(i + 1).x;
+		        	double y2 = graphPoints.get(i + 1).y;
+		        	
+		        	 gr2d.draw(new Line2D.Double(xToPixel(x1), yToPixel(y1), xToPixel( x2), yToPixel( y2)));	        }
+				*/
+			}
+			
+			
+			else {
+				
+			}
 		}
 	}
+
 	
 ////////////////////////////////////////////////////////////////////////////
 
 	
 
 	/////Logical values into physical values
-	public int xToPixel(Double x) {
-		return (int) ((this.widthKM*50) + (x*50));
+	public double xToPixel(double x) {
+		return  ((this.widthKM*50) + (x*50));
 	}
 	
 	
-	public int yToPixel(Double y) {
-		return (int) ((this.heightKM*50) + (-y*50));
+	public double yToPixel(double y) {
+		return  ((this.heightKM*50) + (-y*50));
 	}
 	 
 
-	public int getWidthPX() {
+	public double getWidthPX() {
 		return widthPX;
 	}
 
-	public void setWidthPX(int widthPX) {
+	public void setWidthPX(double widthPX) {
 		this.widthPX = widthPX;
 	}
 
-	public int getHeightPX() {
+	public double getHeightPX() {
 		return heightPX;
 	}
 
-	public void setHeightPX(int heightPX) {
+	public void setHeightPX(double heightPX) {
 		this.heightPX = heightPX;
 	}
 
 
-	public ArrayList<Point> getGraphPoints() {
+	public ArrayList<Point2D.Double> getGraphPoints() {
 		return graphPoints;
 	}
 
-	public void setGraphPoints(ArrayList<Point> graphPoints) {
+	public void setGraphPoints(ArrayList<Point2D.Double> graphPoints) {
 		this.graphPoints = graphPoints;
 		this.repaint();
 	}

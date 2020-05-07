@@ -16,7 +16,7 @@ public class Tracer extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel contentPane = (JPanel) this.getContentPane();
 		contentPane.add(new Display(),BorderLayout.CENTER);
-		this.setSize(display.getWidthPX() + 25, display.getHeightPX() + 50);
+		this.setSize((int)display.getWidthPX() + 25, (int)display.getHeightPX() + 50);
 		this.setLocationRelativeTo(null);
 
 		this.setVisible(true);

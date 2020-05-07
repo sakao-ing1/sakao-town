@@ -136,14 +136,10 @@ public class ClientSakao {
 				String nameInsert = sc.next();
 				System.out.println("Please enter the age");
 				int ageInsert = sc.nextInt();
-				try {
-					Request request = new Request(INSERT, STUDENT, nameInsert, ageInsert);
-					this.sendMessageToServer(request);
-					System.out.println("Insert done");
-					System.out.println("********************");
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				///Request request = new Request(INSERT, STUDENT, nameInsert, ageInsert);
+				///this.sendMessageToServer(request);
+				System.out.println("Insert done");
+				System.out.println("********************");
 
 				break;
 
@@ -162,14 +158,10 @@ public class ClientSakao {
 			case 3:
 				System.out.println("Please enter the id");
 				int idtodelete = sc.nextInt();
-				try {
-					Request request = new Request(DELETE, STUDENT, idtodelete);
-					this.sendMessageToServer(request);
-					System.out.println("Delete done");
-					System.out.println("********************");
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				}
+				/*Request request = new Request(DELETE, STUDENT, idtodelete);
+				this.sendMessageToServer(request);*/
+				System.out.println("Delete done");
+				System.out.println("********************");
 
 				break;
 
@@ -178,14 +170,10 @@ public class ClientSakao {
 				int idupdateage = sc.nextInt();
 				System.out.println("Please enter the new age");
 				int ageupdateage = sc.nextInt();
-				try {
-					Request request = new Request(UPDATE_AGE, STUDENT, idupdateage, ageupdateage);
-					this.sendMessageToServer(request);
-					System.out.println("Update age done");
-					System.out.println("********************");
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				}
+				/*Request request = new Request(UPDATE_AGE, STUDENT, idupdateage, ageupdateage);
+				this.sendMessageToServer(request);*/
+				System.out.println("Update age done");
+				System.out.println("********************");
 
 				break;
 
@@ -195,14 +183,10 @@ public class ClientSakao {
 				System.out.println("");
 				System.out.println("Please enter the new name");
 				String nameupdatename = sc.next();
-				try {
-					Request request = new Request(UPDATE_NAME, STUDENT, idupdatename, nameupdatename);
-					this.sendMessageToServer(request);
-					System.out.println("Update name done");
-					System.out.println("********************");
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				}
+				/*Request request = new Request(UPDATE_NAME, STUDENT, idupdatename, nameupdatename);
+				this.sendMessageToServer(request);*/
+				System.out.println("Update name done");
+				System.out.println("********************");
 
 				break;
 

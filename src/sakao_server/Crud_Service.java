@@ -12,15 +12,15 @@ public class Crud_Service {
 		this.controller = new Crud_Controller();
 	}
 
-	public ArrayList<Student> showStudent() throws ClassNotFoundException {
+	/*public ArrayList<Student> showStudent() throws ClassNotFoundException {
 		return controller.showStudent();
-	}
+	}*/
 
-	public boolean addStudent(String name, int age) {
+	public boolean addOnTable(String target,ArrayList<String> list) {
 		boolean b = false;
 		try {
-			Student p = new Student(name, age);
-			controller.addStudent(p);
+			///Student p = new Student(name, age);
+			controller.addOnTable(target,list);
 			b = true;
 		} catch (Exception e) {
 			e.printStackTrace();

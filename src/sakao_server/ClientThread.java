@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import sakao_common.Request;
 import sakao_common.Response;
@@ -34,16 +36,19 @@ public class ClientThread extends Thread {
 	}
 
 	public void StartCrud()
-			throws JsonParseException, JsonMappingException, IOException, ClassNotFoundException, NullPointerException {
+			throws JsonParseException, JsonMappingException, IOException, ClassNotFoundException, NullPointerException, JSONException {
 		mapper = new ObjectMapper();
-		String jsonString = in.readLine();
-		request = mapper.readValue(jsonString, Request.class);
+		String outjsonString = in.readLine();		
+		request = mapper.readValue(outjsonString, Request.class);
+		System.out.println(request.getList());
+		System.out.println(request.getList().size());
 		System.out.println("Request received from " + this.getName());
-		String operation_type = request.getOperation_type();
-
+		/////String operation_type = request.getOperation_type();
+		String operation_type = this.request.getOperation_type();
+		
 		switch (operation_type) {
 
-		case "SELECT_ALL":
+		/*case "SELECT_ALL":
 			response.setStudents(this.service.showStudent());
 
 
@@ -52,11 +57,13 @@ public class ClientThread extends Thread {
 			out.flush();
 			System.out.println("Display done to " + this.getName());
 			System.out.println("********************");
-			break;
+			break;*/
 
 		case "INSERT":
 			try {
-				System.out.println(this.service.addStudent(this.request.getName(), this.request.getAge()));
+				System.out.println("OK");
+				System.out.println(this.service.addOnTable(this.request.getTarget(), this.request.getList()));
+				response.getObject().add("C INSERE");
 				String outjsonStringInsert = mapper.writeValueAsString(response);
 				out.write(outjsonStringInsert + "\n");
 				out.flush();
@@ -66,8 +73,9 @@ public class ClientThread extends Thread {
 			}
 
 			break;
+		}
 
-		case "DELETE_ALL":
+		/*case "DELETE_ALL":
 			System.out.println(this.service.deleteAllStudent());
 			String outjsonStringDeleteAll = mapper.writeValueAsString(response);
 			out.write(outjsonStringDeleteAll + "\n");
@@ -107,7 +115,7 @@ public class ClientThread extends Thread {
 
 			break;
 
-		}
+		}*/
 	}
 
 	public void run() {
@@ -125,13 +133,18 @@ public class ClientThread extends Thread {
 			out.close();
 			clientSocket.close();
 
-		} catch (IOException e) {
-		} catch (ClassNotFoundException e) {
+		} 
+		catch (IOException e) {
+		} 
+		catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
 			System.out.println(this.getName() + " disconnected");
 			System.out.println("********************");
 
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

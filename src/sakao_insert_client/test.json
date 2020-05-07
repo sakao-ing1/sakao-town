@@ -1,0 +1,10 @@
+
+ {
+ "operation_type": "INSERT",
+ "target": "test", 
+ "list" : [{
+ 	"a" : "5",
+ 	"b" : "555",
+ 	"c" : "55555"}]}
+
+

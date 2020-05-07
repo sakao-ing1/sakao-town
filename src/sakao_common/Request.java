@@ -1,12 +1,24 @@
 package sakao_common;
 
+import java.util.ArrayList;
+
 public class Request {
 	private String operation_type;
 	private String target;
-	private int ID;
+	private ArrayList<String> list = new ArrayList<String>();/////VALUE
+	
+
+	public Request() {;}
+	
+	public Request(String o, String t) {
+		this.operation_type = o;
+		this.target = t;
+
+	}
+	/*private int ID;
 	private String name;
 	private int age;
-
+	 
 	public Request(String operation_type, String target, int ID, String name, int age) {
 		this.operation_type = operation_type;
 		this.target = target;
@@ -55,12 +67,13 @@ public class Request {
 	 * "; target : " + this.target + "; };"; }
 	 */
 
-	/*
-	 * public String toString() {
-	 * 
-	 * return "operation_type : " + this.operation_type + "; target : " +
-	 * this.target + " name : " + this.name + " age : " + this.age; }
-	 */
+	
+	  public String toString() {
+	 
+	  return "{\"operation_type\":\""+this.operation_type + "\"," + "\"target\":\""+this.target + "\"," + "\"list\":\""+ list + "\"}";
+	  }
+	
+	
 	public String getOperation_type() {
 		return operation_type;
 	}
@@ -77,28 +90,14 @@ public class Request {
 		this.target = target;
 	}
 
-	public int getID() {
-		return ID;
+	public ArrayList<String> getList() {
+		return list;
 	}
 
-	public void setID(int iD) {
-		ID = iD;
+	public void setList(ArrayList<String> list) {
+		this.list = list;
 	}
 
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
 
 }

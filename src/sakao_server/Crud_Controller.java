@@ -39,12 +39,12 @@ public class Crud_Controller {
 
 	// Request SELECT
 
-	public ArrayList<Student> showStudent() throws ClassNotFoundException {
-		ArrayList<Student> retour = new ArrayList<Student>();
+	public ArrayList<Object> showStudent(String target) throws ClassNotFoundException {
+		ArrayList<Object> retour = new ArrayList<Object>();
 		try {
 			Connection con = DataSource.getConnection();
 
-			PreparedStatement pt = con.prepareStatement("select * from personne");
+			PreparedStatement pt = con.prepareStatement("select * from" + target);
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt(1);
@@ -95,15 +95,41 @@ public class Crud_Controller {
 
 	// Request INSERT
 
-	public void addStudent(Student p) throws ClassNotFoundException {
+	public void addOnTable(String target, ArrayList<String> list) throws ClassNotFoundException {
 		try {
-			Connection con = DataSource.getConnection();
 
-			String req = "insert into personne(name,age) values (?,?)";
-			PreparedStatement pstm = con.prepareStatement(req);
-			pstm.setString(1, p.getName());
-			pstm.setInt(2, p.getAge());
+			Connection con = DataSource.getConnection();
+			System.out.println(con);
+			String req1 = "insert into test(a,b,c) values(1,2,3)";
+
+			String req = "insert into " + target + "(";
+			
+			int i = 1;
+			while(i < list.size() - 2 ) {
+				if(i == list.size() - 3) {
+					req = req + list.get(i) + ") ";
+				}
+				else { 
+					req = req + list.get(i) + "," ;
+					i = i+2;
+				}
+			}
+			req = req + "values (";
+			int j = 2;
+			while(j < list.size() - 1) {
+				if(j == list.size() - 2) {
+					req = req + list.get(j) + ")";
+				}
+				else {
+					req = req + list.get(j) + ",";
+				}
+			}
+			System.out.println(req);
+			PreparedStatement pstm = con.prepareStatement(req1);
+			/*pstm.setString(1, p.getName());
+			pstm.setInt(2, p.getAge());*/
 			pstm.executeUpdate();
+			System.out.println(req);
 			DataSource.returnConnection(con);
 
 		} catch (SQLException ex) {
