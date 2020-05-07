@@ -24,7 +24,7 @@ public class Display extends JComponent {
 	private ArrayList<Point2D.Double> graphPoints;
 	/////private ArrayList<Point>> Points = new ArrayList<>();
 	/////HashMap<Double,ArrayList<Point> grahpoints = new HasMapHashMap<Double,ArrayList<Point>> ();
-	private int CityBudget = 1;///user
+	private int CityBudget = 11;///user
 	private int aStationCost = 1;///user
 	private int MaxStation = CityBudget/aStationCost;
 	private int aLinkPrice = 15000;
@@ -254,7 +254,6 @@ public class Display extends JComponent {
 					while(this.pontExist(p)) {
 						p.x = p.x - (widthKM/10.0);
 						
-						System.out.println(p);
 					}
 					this.graphPoints.add(p);
 
