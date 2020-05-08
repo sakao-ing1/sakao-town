@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import sakao_server.Display;
+
 public class Tracer extends JFrame {
 
 	private static final long serialVersionUID = 786392524822582941L;

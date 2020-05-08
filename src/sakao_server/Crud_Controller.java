@@ -100,7 +100,6 @@ public class Crud_Controller {
 
 			Connection con = DataSource.getConnection();
 			System.out.println(con);
-			String req1 = "insert into test(a,b,c) values(1,2,3)";
 
 			String req = "insert into " + target + "(";
 			
@@ -108,6 +107,7 @@ public class Crud_Controller {
 			while(i < list.size() - 2 ) {
 				if(i == list.size() - 3) {
 					req = req + list.get(i) + ") ";
+					break;
 				}
 				else { 
 					req = req + list.get(i) + "," ;
@@ -119,13 +119,15 @@ public class Crud_Controller {
 			while(j < list.size() - 1) {
 				if(j == list.size() - 2) {
 					req = req + list.get(j) + ")";
+					break;
 				}
 				else {
 					req = req + list.get(j) + ",";
+					j = j + 2;
 				}
 			}
 			System.out.println(req);
-			PreparedStatement pstm = con.prepareStatement(req1);
+			PreparedStatement pstm = con.prepareStatement(req);
 			/*pstm.setString(1, p.getName());
 			pstm.setInt(2, p.getAge());*/
 			pstm.executeUpdate();
