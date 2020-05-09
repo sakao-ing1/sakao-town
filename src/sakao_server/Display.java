@@ -3,13 +3,11 @@ package sakao_server;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Line2D.Double;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
@@ -24,12 +22,13 @@ public class Display extends JComponent {
 	private ArrayList<Point2D.Double> graphPoints;
 	/////private ArrayList<Point>> Points = new ArrayList<>();
 	/////HashMap<Double,ArrayList<Point> grahpoints = new HasMapHashMap<Double,ArrayList<Point>> ();
-	private int CityBudget = 16;///user
+	private int CityBudget =29;///user
 	private int aStationCost = 1;///user
 	private int MaxStation = CityBudget/aStationCost;
 	private int aLinkPrice = 15000;
 	private int rest = 0;
 	private int maxDiviser = 1;
+	private int debt = 0;
 
 	@Override
 	protected void paintComponent(Graphics graphics) {
@@ -80,7 +79,11 @@ public class Display extends JComponent {
 		}
 		else {
 		b = false;
+		/////Point2D.Double p1 = new Point2D.Double(x,y);
+		/////System.out.println("False : " + p1);
+
 		}
+
 		return b;
 	}
 	
@@ -113,6 +116,10 @@ public class Display extends JComponent {
 		if(MaxStation == 1 ||  MaxStation == 2) {
 			maxDiviser = 1;
 		}
+		else if(MaxStation == 3) {
+			maxDiviser = 2;
+			rest =1;
+		}
 		else {
 			for(int i = 1; i < MaxStation; i++) {
 				if(MaxStation % i == 0 && maxDiviser <= i && maxDiviser < MaxStation) {
@@ -123,6 +130,7 @@ public class Display extends JComponent {
 			if (maxDiviser == 1) {
 				rest = 1; ///// TO USE DURING THE ALGORITHM DON'T FORGET THIS LAST STATION
 				for(int i = 1; i < MaxStation - rest; i++) {
+
 					if((MaxStation - rest) % i == 0 && maxDiviser <= i && maxDiviser < (MaxStation - rest)) {
 						maxDiviser = i;
 					}
@@ -135,40 +143,61 @@ public class Display extends JComponent {
 	}
 	
 	
+	
+	
 	public Point2D.Double xSymetric(Point2D.Double p) {
+		Point2D.Double symX;
+		if(p.x == 0.0 && p.y == 0.0) {
+			symX = new Point2D.Double(0.0,0.0);
+		}
 		
-		double x = p.x;
-		double y = -(p.y);
 		
-		Point2D.Double symX = new Point2D.Double(x,y);
+		else {
+			double x = p.x;
+			double y = -(p.y);
+			symX = new Point2D.Double(x,y);
+		}
 		return symX;
 	}
 	
 	
 	public Point2D.Double ySymetric(Point2D.Double p) {
-		
-		double x = -(p.x);
-		double y = p.y;
-		
-		Point2D.Double symY = new Point2D.Double(x,y);
+		Point2D.Double symY;
+		if(p.x == 0.0 && p.y == 0.0) {
+			symY = new Point2D.Double(0.0,0.0);
+		}
+		else {
+			double x = -(p.x);
+			double y = p.y;
+			symY = new Point2D.Double(x,y);
+		}
 		return symY;
 	}
 	
 	public Point2D.Double OSymetric(Point2D.Double p) {
-		
-		double x = -(p.x);
-		double y = -(p.y);
-		
-		Point2D.Double symO = new Point2D.Double(x,y);
+		Point2D.Double symO;
+		if(p.x == 0.0 && p.y == 0.0) {
+			symO = new Point2D.Double(0.0,0.0);
+		}
+		else {
+			double x = -(p.x);
+			double y = -(p.y);
+			symO = new Point2D.Double(x,y);
+		}
 		return symO;
 	}
 	
 	public Point2D.Double xMidSymetric(Point2D.Double p) {
-		double x =0;
-		double y = p.y;
-		
-		Point2D.Double symmidx = new Point2D.Double(x,y);
-		
+		Point2D.Double symmidx;
+			if(p.x == 0.0 && p.y == 0.0) {
+				symmidx = new Point2D.Double(0.0,0.0);
+			}
+			
+			else {
+				double x =0;
+				double y = p.y;
+				symmidx = new Point2D.Double(x,y);
+			}
 		return symmidx;
 	}
 	
@@ -184,13 +213,12 @@ public class Display extends JComponent {
 	
 	public boolean pontExist(Point2D.Double p) {
 		boolean b = false;
-		
-		for(Point2D.Double point : this.graphPoints) {
-			if((point.x == p.x) && (point.y == p.y)) {
-				b = true;
-				break;
+			for(Point2D.Double point : this.graphPoints) {
+				if((point.x == p.x) && (point.y == p.y)) {
+					b = true;
+					break;
+				}
 			}
-		}
 		
 		return b;
 		
@@ -229,15 +257,88 @@ public class Display extends JComponent {
 		}
 	}
 	
-	public int HowManyNotInTheCircle(double x, double y) {
+	public int HowManyNotInTheCircle() {
 		int PointInTheGraph = 0;
 		
-		if(!this.isInTheCircle(x, y)) {
-			PointInTheGraph = this.MaxStation - this.graphPoints.size();
+		
+		
+		for(Point2D.Double p : graphPoints) {
+			if(!this.isInTheCircle(p.x, p.y)) {
+				PointInTheGraph = PointInTheGraph + 1;
+			}
+		}
+		
+		return PointInTheGraph;
+	}
+	
+	
+	public int clean() {/////PAS DE FOR EACH SI C POUR MODIFIER UN ELEMENT
+		int compteur = 0;
+		for(int i = 0; i < this.graphPoints.size();i++) {
+			while(!this.isInTheCircle(this.graphPoints.get(i).x,this.graphPoints.get(i).y)) {
+				this.graphPoints.remove(this.graphPoints.get(i));
+				compteur = compteur + 1;
+				
+			}
 		}
 		
 		
-		return PointInTheGraph;
+		return compteur;
+	}
+	
+	public void DeroulerUnSousAlgo(int TotalLineToPack, int StationsToPackEachLine) {
+		double stepX1 = -(0.30 * (widthKM));/////LORSQUE 2 A PLACER
+		double stepX2 =-( 0.60 * widthKM);/////LORSQUE 2 OU 3 A PLACER
+		double stepX3 = -(0.80 * widthKM);/////LORSQUE 2 A PLACER
+		
+		double stepY = (this.heightKM *2)/TotalLineToPack;/////LORSQUE 2 OU 3 A PLACER
+		
+		double xp = 0.0;
+		double yp = (this.heightKM*0.80);
+		for(int i = 1; i<= TotalLineToPack; i ++) {
+			for(int j = 1; j <= StationsToPackEachLine-1 ; j++) {
+				/////QD ON PLACE DEUX PAR LIGNE A FAIRE CELUI DE TROIS PAR LIGNE EXEMPLE POUR 9
+					
+					if(i%2 == 1) {
+						xp = stepX1;
+						if(i == 1) {
+							yp = (this.heightKM)* 0.80;
+						}
+						else {
+							yp = yp -stepY;
+						}
+					}
+					///// VOIR COMMENT FAIRE POUR REMETTRE LES POINTSOUT DANS LE GRAPHE
+					
+					else if((i%2 == 0) && (this.isInTheCircle(stepX2, yp))) {
+						xp = stepX2;
+						yp = yp -stepY;
+					}
+					/*else {/////SI on est sur une ligne paire = eloigne alors on prend comme x celui le plus grand
+						System.out.println("jssuis dans le else");
+
+						xp = stepX3;
+						yp = yp -stepY;
+					}*/
+					
+
+					Point2D.Double P = new Point2D.Double(xp,yp);
+
+					while(this.pontExist(P)) {
+						if(P.x < 0) {
+							P.x = P.x - (widthKM/10.0);
+
+						}
+						else if(P.x > 0) {
+							P.x = P.x - (widthKM/10.0);
+						}		
+					}
+
+					this.graphPoints.add(P);
+					this.graphPoints.add(this.ySymetric(P));							
+			}
+		}
+			
 	}
 	
 	
@@ -247,7 +348,6 @@ public class Display extends JComponent {
 	
 	public void StationAlgo(Graphics g) {
 		Graphics2D gr2d = (Graphics2D) g;
-		
 		/////Establish points position and add them to the list______ heart of the algorithm <3
 		
 		if(this.MaxStation == 1) {
@@ -256,7 +356,7 @@ public class Display extends JComponent {
 		}
 		
 		
-		/*else if(this.MaxStation == 2) {
+		else if(this.MaxStation == 2) {
 			Point2D.Double p = new Point2D.Double ((-this.heightKM )* 0.60,this.heightKM * 0.60);
 			this.graphPoints.add(p);
 			this.graphPoints.add(OSymetric(p));
@@ -273,107 +373,191 @@ public class Display extends JComponent {
 		}
 		
 		else if (this.MaxStation == 4) {
-			Point2D.Double p = new Point2D.Double ((-this.heightKM )* 0.60,this.heightKM * 0.60);
+			Point2D.Double p = new Point2D.Double ((-this.heightKM )* 0.50,this.heightKM * 0.50);
 			this.graphPoints.add(p);
 			this.graphPoints.add(xSymetric(p));
+			this.graphPoints.add(ySymetric(p));
+			this.graphPoints.add(OSymetric(p));
+			this.DrawPoints(gr2d);
+
 
 		}
 		
 		else if (this.MaxStation == 5) {
-			
-		}*/
+			Point2D.Double p = new Point2D.Double ((-this.heightKM )* 0.50,this.heightKM * 0.50);
+			this.graphPoints.add(p);
+			this.graphPoints.add(xSymetric(p));
+			this.graphPoints.add(ySymetric(p));
+			this.graphPoints.add(OSymetric(p));
+			this.graphPoints.add(new Point2D.Double(0.0,0.0));
+			this.DrawPoints(gr2d);
+		}
 		
 		
 		else {
+			int TotalLineToPack;
+			int StationsToPackEachLine;
+
+			if(this.MaxStation/this.StationDiviser() == 2 || this.MaxStation/this.StationDiviser() == 3) {
+				TotalLineToPack = this.StationDiviser();
+				StationsToPackEachLine = MaxStation/TotalLineToPack;
+			}
+
+			else {
+				MaxStation = MaxStation-1;
+				TotalLineToPack = this.StationDiviser();
+				StationsToPackEachLine = MaxStation/TotalLineToPack;
+				this.debt = 1;
+			}
 			
-			if(this.rest == 1) { /////WHEN U HAVE AN IMPAIR MAXSTATION TO PLACE THE LAST ONE IS PLACED
-				Point2D.Double p = new Point2D.Double(0,0);
-				while(this.pontExist(p)) {
-					p.x = p.x - (widthKM/10.0);
+			
+
+
+		
+			if(this.widthKM == this.heightKM || this.widthKM != this.heightKM) {/////Circle case
+				///int step = (TotalStationsToPack - StationsToPackEachLine);
+				int PointOuTheGraph = 0;
+				int PointInTheGraph = 0;
+				
+
+				if(StationsToPackEachLine == 2) {
+					this.DeroulerUnSousAlgo(TotalLineToPack, StationsToPackEachLine);
+				}
+				else if (StationsToPackEachLine == 3) {
 					
 				}
-				this.graphPoints.add(p);
-			}
-			
-			int TotalLineToPack = this.StationDiviser();
-			int StationsToPackEachLine = MaxStation/TotalLineToPack;
-		
-			if(this.widthKM == this.heightKM) {/////Circle case
-				///int step = (TotalStationsToPack - StationsToPackEachLine);
-	
-				double stepX1 = -(0.30 * (widthKM));/////LORSQUE 2 A PLACER
-				double stepX2 =-( 0.60 * widthKM);/////LORSQUE 2 OU 3 A PLACER
-				double stepX3 = -(0.80 * widthKM);/////LORSQUE 2 A PLACER
-				
-				double stepY = (this.heightKM *2)/TotalLineToPack;/////LORSQUE 2 OU 3 A PLACER
-				
-				double xp = 0.0;
-				double yp = (this.heightKM * 0.80);
-				int PointInTheGraph = 0;
-				int PointOut = 0;				
-				
-				for(int i = 1; i<= TotalLineToPack; i ++) {
-					for(int j = 1; j <= StationsToPackEachLine-1 ; j++) {
-						System.out.println("je suis dans la deuxieme boucle");
-						if(StationsToPackEachLine == 2) {
-							
-							if(i%2 == 1) {
-								System.out.println("jssuis dans if = 1");
-								xp = stepX1;
-								if(i == 1) {
-									yp = (this.heightKM * 0.80);
-								}
-								else {
-									yp = yp -stepY;
-								}
-							}
-							///// VOIR COMMENT FAIRE POUR REMETTRE LES POINTSOUT DANS LE GRAPHE
-							
-							else if((i%2 == 0) && (this.isInTheCircle(stepX2, yp))) {
-								System.out.println("jssuis dans if = 0");
-
-								xp = stepX2;
-								yp = yp -stepY;
-							}
-							
-							
-							/*else {/////SI on est sur une ligne paire = eloigne alors on prend comme x celui le plus grand
-								System.out.println("jssuis dans le else");
-
-								xp = stepX3;
-								yp = yp -stepY;
-							}*/
-							
-		
-							Point2D.Double P = new Point2D.Double(xp,yp);
-							this.graphPoints.add(P);
-							this.graphPoints.add(this.ySymetric(P));
-							///this.graphPoints.add(ySymetric(P));
-						}
-
-					}
+				else {
+					this.DeroulerUnSousAlgo(TotalLineToPack, StationsToPackEachLine);
 				}
 				
-			
 				
 				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+//////////////////////////////////////////////////////////////////////////////:
+				if(this.rest == 1) { /////WHEN U HAVE AN IMPAIR MAXSTATION TO PLACE THE LAST ONE IS PLACED
+					Point2D.Double p = new Point2D.Double(0,0);
+					while(this.pontExist(p)) {
+					p.x = p.x - (widthKM/10.0);
+					}
+					this.graphPoints.add(p);
+				}
+				
+				
+				if(this.debt == 1) {
+					Point2D.Double p = new Point2D.Double(0,0);
+					while(this.pontExist(p)) {
+					p.x = p.x - (widthKM/10.0);
+					}
+					this.graphPoints.add(p);
+					MaxStation = MaxStation + 1;
+
+				}
+						
+							/////TOUS LES POINTS SONT PLACES
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+							
+							
+							
+				PointOuTheGraph =this.HowManyNotInTheCircle();
+							
+							
+				if(PointOuTheGraph == 2) {
+								double y = this.heightKM*0.5;
+								double x = 0.0;
+								Point2D.Double P1 = new Point2D.Double(x,y);
+								this.graphPoints.add(P1);
+								this.graphPoints.add(xSymetric(P1));
+								
+							}
+							else if(PointOuTheGraph == 1) {
+
+								this.graphPoints.add(new Point2D.Double(0.0,0.0) );
+							}
+							else {
+							
+								
+								if(PointOuTheGraph%2 == 0) {/////CAS PAIR A PLACER 
+									System.out.println("1er if");
+									double y = this.heightKM*0.80;
+									double x = 0.0;
+									double stepYPointOut = ((this.heightKM) * 2) / PointOuTheGraph;
+									for(int k =0; k < PointOuTheGraph; k++) {
+										if(k == 0) {
+											 y = this.heightKM*0.80;
+											 x = 0.0;
+										}
+										else {
+											x = 0.0;
+											y = y - stepYPointOut;
+										}
+										Point2D.Double P1 = new Point2D.Double(x,y);
+										this.graphPoints.add(P1);
+						
+									}
 	
-				
-				
-				
-				
-				
-				System.out.println("Station to pack each line : " + StationsToPackEachLine);
-				System.out.println("Pont in the graph : " + PointInTheGraph);
-				System.out.println("Point to place : " +( this.MaxStation - this.graphPoints.size()));
-				this.DrawPoints(gr2d);
+								}
+								else if(PointOuTheGraph%2 == 1 && PointOuTheGraph >= 3 ) { ///// CAR IMPAIRE SUP OU EGAL A 3 A PLACER
+									System.out.println("2eme if");
+									double stepYPointOut =  (this.heightKM*2)/PointOuTheGraph;
+									double x = 0.0;
+									double y = this.heightKM*0.80;
+									int PointOuTheGraphBis = PointOuTheGraph - 1;
+									
+									for(int k =0; k < PointOuTheGraphBis; k++) {
+										if(k == 0) {
+											 y = this.heightKM*0.80;
+											 x = 0.0;
+										}
+										else {
+											x = 0.0;
+											y = y - stepYPointOut;
+										}
+										Point2D.Double P1 = new Point2D.Double(x,y);
+										this.graphPoints.add(P1);
+									}
+	
+								}
+							}
+							
+							
+							PointOuTheGraph = this.HowManyNotInTheCircle();
+							this.clean();
+							this.DrawPoints(gr2d);
+							System.out.println("Not in the circle : " + PointOuTheGraph);
+							System.out.println("In the circle : " + (this.graphPoints.size() -  PointOuTheGraph));
+							System.out.println("Station to pack each line : " + StationsToPackEachLine);
+							System.out.println("Number of line : " + TotalLineToPack);
+							System.out.println("Lack : " + (MaxStation - graphPoints.size()));
+							System.out.println("");
+							System.out.println("size : " + this.graphPoints.size());
+							System.out.println("Not in the circle : " + this.HowManyNotInTheCircle());
+							System.out.println("In the circle : " + (this.graphPoints.size() - this.HowManyNotInTheCircle()));
+							System.out.println("Station to pack each line : " + StationsToPackEachLine);
+							System.out.println("Number of line : " + TotalLineToPack);
+							System.out.println("Lack : " + (MaxStation - graphPoints.size()));
+							System.out.println("MaxStation : " + MaxStation);
+							
+							if(this.clean() == this.HowManyNotInTheCircle()) {
+								System.out.println("tout est ok");
+							}
+							else {
+								System.out.println("refaire");
+								System.out.println("clean : " + this.clean());
+								System.out.println("out : " + this.HowManyNotInTheCircle() );
+							}
 			}
-			
-			
-			
-			
-			
-			
+	
 			///////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -383,30 +567,7 @@ public class Display extends JComponent {
 			
 		/////Establish points position and add them to the list______ heart of the algorithm <3
 			else if (this.widthKM != this.heightKM) {/////Ellipse case
-				
-				
-				
-				
-				
-				
-				
-				///// Draw points
-		        for (int i = 0; i < graphPoints.size(); i++) {
-		            double x = graphPoints.get(i).x;
-		            double y = graphPoints.get(i).y ;
-		            Rectangle2D.Double rectangle = new  Rectangle2D.Double(x, y,5, 5);
-		            gr2d.fill(rectangle);
-		        }
-		/////Draw Lines
-		        
-		       /* for (int i = 0; i < graphPoints.size() -1; i++) {
-		        	double x1 = graphPoints.get(i).x;
-		        	double y1 = graphPoints.get(i).y;
-		        	double x2 = graphPoints.get(i + 1).x;
-		        	double y2 = graphPoints.get(i + 1).y;
-		        	
-		        	 gr2d.draw(new Line2D.Double(xToPixel(x1), yToPixel(y1), xToPixel( x2), yToPixel( y2)));	        }
-				*/
+
 			}
 			
 			
