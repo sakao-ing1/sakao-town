@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import sakao_server.Display;
 
@@ -21,15 +24,16 @@ public class Tracer extends JFrame {
 		this.setSize((int)display.getWidthPX() + 25, (int)display.getHeightPX() + 50);
 		this.setLocationRelativeTo(null);
 
-		this.setVisible(true);
 
 		
 	}
 	
 	
 	
-	public static void main (String[] args) {
+	public static void main (String[] args) throws UnsupportedLookAndFeelException {
+		UIManager.setLookAndFeel(new NimbusLookAndFeel());
 		Tracer tracer = new Tracer();
+		tracer.setVisible(true);
 	}
 
 

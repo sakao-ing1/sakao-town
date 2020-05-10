@@ -173,6 +173,128 @@ System.out.println("size : " + graphPoints.size());
 						/////this.+ operation InsertX(x), InsertY(y) to insert points position in table Station
 		}
 }*/
+/*
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * CEST POUR LA REPATIION XSTEP ETC A FAIRE POUR A PARTIR DE 20 A 22
+				/*if (i % 2 == 1) { /////If we are on a odd line, xp = stepX1
+					if (i == 1) {
+						System.out.println("jsuis dans le if i = 1 de i impair");
+						yp = (this.heightKM) * 0.80;
+						xp = stepX1;
 
+					} 
+					else {
+						System.out.println("jsuis dans le else de i impair");
+						if(comptor % 2 == 1) {
+							System.out.println("jsuis dans le if compteur impaire du else du i impair");
+							yp = yp - stepY;
+							xp = stepX1;
+							comptor = comptor + 1;
+						}
+						else  {
+							System.out.println("jsuis dans le else du else du i impair");
+							yp = yp - stepY;
+							xp = stepX4;
+							comptor = comptor + 1;
+						}
+					}
+				}
+
+				else if ((i % 2 == 0) ) {
+					System.out.println("jsuis dans le i pair");
+					if ((this.isInTheCircle(stepX2, yp)) && (comptor % 2 == 1)) {/////If we are in a peer line and stepX2 is in the circle and stepX2 is not we take stepX2
+						System.out.println("jsuis dans le if i pair");
+
+						xp = stepX2;
+						yp = yp - stepY;
+						comptor = comptor + 1;
+					}
+					else if (this.isInTheCircle(stepX3, yp)&& (comptor % 2 == 0) && (this.MaxStation >= 25))
+					
+					
+					{
+						System.out.println("jsuis dans le else if i pair");
+						xp = stepX3;
+						yp = yp - stepY;
+						comptor = comptor + 1;
+					}
+					else {
+						System.out.println("jsuis dans le else i pair");
+						xp = stepX2;
+						yp = yp - stepY;
+						comptor = comptor + 1;
+					}
+	
+				}*/
+				
+				  /*else if((i % 2 == 0) && (this.isInTheCircle(stepX3, yp))){/////SI on est sur une ligne paire = eloigne alors on prend comme celui le plus grand 
+					  System.out.println("jssuis dans le else");
+					  xp = stepX3; 
+					  yp = yp -stepY; 
+				  }*/
+				 
+ /*
+  * 		for (int i = 1; i <= TotalLineToPack; i++) {
+			for (int j = 1; j <= StationsToPackEachLine - 1; j++) {
+				///// QD ON PLACE DEUX PAR LIGNE A FAIRE CELUI DE TROIS PAR LIGNE EXEMPLE POUR 9
+
+				if (this.MaxStation >= 0) {
+					if (i % 2 == 1) {
+						if (comportO % 2 == 1) {
+							xp = stepX2;
+							yp = yp - stepY;
+							comportO = comportO + 1;
+						} else {
+							stepX1 = -(0.30 * widthKM);
+
+							xp = stepX1;
+							yp = yp - stepY;
+							comportO = comportO + 1;
+
+						}
+					} else {
+						if (comptorP % 2 == 1) {
+							xp = stepX3;
+							yp = yp - stepY;
+							comptorP = comptorP + 1;
+
+						} else {
+							xp = stepX4;
+							yp = yp - stepY;
+							comptorP = comptorP + 1;
+
+						}
+					}
+				}
+
+				else {
+					if (i % 2 == 1) {
+						xp = stepX2;
+						if (i == 1) {
+							yp = (this.heightKM) * 0.80;
+						} else {
+							yp = yp - stepY;
+						}
+					}
+
+					else if ((i % 2 == 0) && (this.isInTheCircle(stepX2, yp))) {
+						xp = stepX3;
+						yp = yp - stepY;
+					} else {
+						xp = 0.0;
+						yp = yp - stepY;
+
+					}
+				}
+
+  */
 
 }
