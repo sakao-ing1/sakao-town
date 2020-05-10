@@ -3,7 +3,7 @@ package sakao_common;
 import java.util.ArrayList;
 
 public class Response {
- ArrayList<String> list;
+	ArrayList<Object> list;
 
 	public Response() {
 	}
@@ -12,11 +12,11 @@ public class Response {
 		return "Students : [ " + this.getObject() + "; ]";
 	}
 
-	public ArrayList<String> getObject() {
+	public ArrayList<Object> getObject() {
 		return list;
 	}
 
-	public void setObject(ArrayList<String> list) {
+	public void setObject(ArrayList<Object> list) {
 		this.list = list;
 	}
 }

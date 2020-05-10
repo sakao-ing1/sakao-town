@@ -8,7 +8,7 @@ public class Request {
 	private ArrayList<String> list = new ArrayList<String>();/////VALUE
 	
 
-	public Request() {;}
+	public Request() {}
 	
 	public Request(String o, String t) {
 		this.operation_type = o;
