@@ -22,7 +22,7 @@ public class Display extends JComponent {
 	private ArrayList<Point2D.Double> graphPoints;
 	/////private ArrayList<Point>> Points = new ArrayList<>();
 	/////HashMap<Double,ArrayList<Point> grahpoints = new HasMapHashMap<Double,ArrayList<Point>> ();
-	private int CityBudget = 20;///user
+	private int CityBudget = 35;///user
 	private int aStationCost = 1;///user
 	private int MaxStation =CityBudget/aStationCost ;
 	private int aLinkPrice = 15000;
@@ -238,7 +238,7 @@ public class Display extends JComponent {
 			Rectangle2D.Double rectangle = new Rectangle2D.Double(xToPixel(x), yToPixel(y), 5, 5);
 			g.fill(rectangle);
 		}
-		/// this.DisplayCoord();
+		 this.DisplayCoord();
 
 		///// System.out.println("size : " + graphPoints.size());
 	}
@@ -265,9 +265,18 @@ public class Display extends JComponent {
 	public int HowManyNotInTheCircle() {
 		int PointInTheGraph = 0;
 
-		for (Point2D.Double p : graphPoints) {
-			if (!this.isInTheCircle(p.x, p.y)) {
-				PointInTheGraph = PointInTheGraph + 1;
+		if(this.isACircle()) {
+			for (Point2D.Double p : graphPoints) {
+				if (!this.isInTheCircle(p.x, p.y)) {
+					PointInTheGraph = PointInTheGraph + 1;
+				}
+			}
+		}
+		else {
+			for (Point2D.Double p : graphPoints) {
+				if (!this.isInTheEllipse(p.x, p.y)) {
+					PointInTheGraph = PointInTheGraph + 1;
+				}
 			}
 		}
 
@@ -277,7 +286,7 @@ public class Display extends JComponent {
 	public int cleanAndDraw(Graphics2D gr2d, int MaxStation) {
 		int comptor = 0;///// PAS DE FOR EACH SI C POUR MODIFIER UN ELEMENT
 
-		if (this.widthKM == this.heightKM) {
+		if (this.isACircle()) {
 			for (int i = 0; i < this.graphPoints.size(); i++) {
 				Point2D.Double p = new Point2D.Double(this.graphPoints.get(i).x, this.graphPoints.get(i).y);
 				if (!this.isInTheCircle(p.x, p.y)) {
@@ -359,7 +368,7 @@ public class Display extends JComponent {
 						}
 					}
 
-					else if ((i % 2 == 0) && (this.isInTheCircle(stepX3, yp))) {
+					else if ((i % 2 == 0) && (this.isInTheCircle(stepX3, yp)) ||(i % 2 == 0) && (this.isInTheEllipse(stepX3, yp)) ) {
 						xp = stepX3;
 						yp = yp - stepY;
 					} else {
@@ -561,13 +570,15 @@ public class Display extends JComponent {
 				}
 
 //////////////////////////////////////////////////////////////////////////////:
-				this.PlaceTheRestOrTheDebt();
 
 				///// TOUS LES POINTS SONT PLACES
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				System.out.println("size : " + this.graphPoints.size());
 
 				PointOuTheGraph = this.HowManyNotInTheCircle();
 				this.ReplacePointOutTheGraph(PointOuTheGraph);
+				this.PlaceTheRestOrTheDebt();
+
 
 				/*System.out.println("");
 				System.out.println("");
@@ -579,6 +590,7 @@ public class Display extends JComponent {
 				System.out.println("");
 				 */
 				this.cleanAndDraw(gr2d, MaxStation);
+				System.out.println("size : " + this.graphPoints.size());
 
 				/*System.out.println("");
 				System.out.println("");
@@ -643,6 +655,23 @@ public class Display extends JComponent {
 		return  ((this.heightKM*50) + (-y*50));
 	}
 	 
+	
+	public boolean isACircle() {
+		boolean b = false;
+		if (this.widthKM == this.heightKM) {
+			b = true;
+		}
+		return b;
+	}
+	
+	
+	public boolean isAnEllipse() {
+		boolean b = false;
+		if (this.widthKM != this.heightKM) {
+			b = true;
+		}
+		return b;
+	}
 
 	public double getWidthPX() {
 		return widthPX;
