@@ -6,64 +6,46 @@ import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
-
+import javax.swing.JFrame;
 
 public class Display extends JComponent {
 	private static final long serialVersionUID = -1416435289803099003L;
-	private double widthKM = 5.0;///user
-	private double heightKM = 5.0;///user
-	private double widthPX = widthKM * 100; 
-	private double heightPX = heightKM * 100;
+	private double widthKM;/// user
+	private double heightKM ;/// user
+	private double widthPX;
+	private double heightPX;
 	private ArrayList<Point2D.Double> graphPoints;
-	/////private ArrayList<Point>> Points = new ArrayList<>();
-	/////HashMap<Double,ArrayList<Point> grahpoints = new HasMapHashMap<Double,ArrayList<Point>> ();
-	private int CityBudget = 35;///user
-	private int aStationCost = 1;///user
-	private int MaxStation =CityBudget/aStationCost ;
+	private int CityBudget;/// user MODIFIER A PARTIR DE MAXS  = 30 le x2
+	private int aStationCost;/// user
+	private int MaxStation;
 	private int aLinkPrice = 15000;
 	private int rest = 0;
 	private int maxDiviser = 1;
 	private int debt = 0;
+	private boolean shouldRun = false;
 
 	@Override
 	protected void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
-		
+
 		Graphics2D g2d = (Graphics2D) graphics;
-
 		
-		graphics.setColor(Color.BLACK);
-		Ellipse2D.Double oval = new Ellipse2D.Double(0.0, 0.0, widthPX, heightPX);
-		g2d.fill(oval);
+			this.StationAlgo(graphics, widthKM, heightKM, CityBudget, aStationCost);
 		
-	
-		
-		graphics.setColor(Color.WHITE);
-		g2d.draw(new Line2D.Double(0, heightPX/2, widthPX, heightPX/2));
-		g2d.draw(new Line2D.Double(widthPX/2, 0, widthPX/2, heightPX));
 
 
-		
-		g2d.drawString("0", (float)(widthPX  * 0.51), (float)(heightPX * 0.57));
-		g2d.drawString("-"+ widthKM,(float)(widthPX  * 0.03),(float) (heightPX * 0.57));
-		g2d.drawString(""+widthKM,(float) (widthPX  * 0.95), (float) (heightPX * 0.57));
-		g2d.drawString("-" +heightKM,(float) (widthPX  * 0.51), (float)(heightPX * 0.97));	
-		g2d.drawString( heightKM  +"",(float) (widthPX  * 0.51), (float) (heightPX * 0.07));	
-		
-		
-		graphics.setColor(Color.RED);
-		this.StationAlgo(graphics);
-        /*Rectangle2D.Double rectangle = new  Rectangle2D.Double(xToPixel(-(widthKM-2)), yToPixel((heightKM - 3)),5, 5);
-        g2d.fill(rectangle);
-         */
-		
+
+		/*
+		 * Rectangle2D.Double rectangle = new Rectangle2D.Double(xToPixel(-(widthKM-2)),
+		 * yToPixel((heightKM - 3)),5, 5); g2d.fill(rectangle);
+		 */
+
 	}
-	
+
 ////////////////////////////////////////////////////////////////////////////
 	/*
 	 * Test if the point is in the circle Here in the circle also means on the
@@ -107,33 +89,31 @@ public class Display extends JComponent {
 
 		return b;
 	}
-	
-	
-	
+
 ////////////////////////////////////////////////////////////////////////////
-	/* Gives the biggest multiple of MaxStation in order to know how to organize stations on the map */
-	
-	
+	/*
+	 * Gives the biggest multiple of MaxStation in order to know how to organize
+	 * stations on the map
+	 */
+
 	public int StationDiviser() {
-		if(MaxStation == 1 ||  MaxStation == 2) {
+		if (MaxStation == 1 || MaxStation == 2) {
 			maxDiviser = 1;
-		}
-		else if(MaxStation == 3) {
+		} else if (MaxStation == 3) {
 			maxDiviser = 2;
-			rest =1;
-		}
-		else {
-			for(int i = 1; i < MaxStation; i++) {
-				if(MaxStation % i == 0 && maxDiviser <= i && maxDiviser < MaxStation) {
+			rest = 1;
+		} else {
+			for (int i = 1; i < MaxStation; i++) {
+				if (MaxStation % i == 0 && maxDiviser <= i && maxDiviser < MaxStation) {
 					maxDiviser = i;
 				}
-				
+
 			}
 			if (maxDiviser == 1) {
 				rest = 1; ///// TO USE DURING THE ALGORITHM DON'T FORGET THIS LAST STATION
-				for(int i = 1; i < MaxStation - rest; i++) {
+				for (int i = 1; i < MaxStation - rest; i++) {
 
-					if((MaxStation - rest) % i == 0 && maxDiviser <= i && maxDiviser < (MaxStation - rest)) {
+					if ((MaxStation - rest) % i == 0 && maxDiviser <= i && maxDiviser < (MaxStation - rest)) {
 						maxDiviser = i;
 					}
 				}
@@ -142,78 +122,70 @@ public class Display extends JComponent {
 		System.out.println("_____");
 		System.out.println("MaxStation : " + MaxStation);
 		System.out.println("MaxDiviser : " + maxDiviser);
-        System.out.println("rest : " + this.rest);
+		System.out.println("rest : " + this.rest);
 		System.out.println("_____");
 
 		return maxDiviser;
 	}
-	
-	
-	
-	
+
 	public Point2D.Double xSymetric(Point2D.Double p) {
 		Point2D.Double symX;
-		if(p.x == 0.0 && p.y == 0.0) {
-			symX = new Point2D.Double(0.0,0.0);
+		if (p.x == 0.0 && p.y == 0.0) {
+			symX = new Point2D.Double(0.0, 0.0);
 		}
-		
-		
+
 		else {
 			double x = p.x;
 			double y = -(p.y);
-			symX = new Point2D.Double(x,y);
+			symX = new Point2D.Double(x, y);
 		}
 		return symX;
 	}
-	
-	
+
 	public Point2D.Double ySymetric(Point2D.Double p) {
 		Point2D.Double symY;
-		if(p.x == 0.0 && p.y == 0.0) {
-			symY = new Point2D.Double(0.0,0.0);
-		}
-		else {
+		if (p.x == 0.0 && p.y == 0.0) {
+			symY = new Point2D.Double(0.0, 0.0);
+		} else {
 			double x = -(p.x);
 			double y = p.y;
-			symY = new Point2D.Double(x,y);
+			symY = new Point2D.Double(x, y);
 		}
 		return symY;
 	}
-	
+
 	public Point2D.Double OSymetric(Point2D.Double p) {
 		Point2D.Double symO;
-		if(p.x == 0.0 && p.y == 0.0) {
-			symO = new Point2D.Double(0.0,0.0);
-		}
-		else {
+		if (p.x == 0.0 && p.y == 0.0) {
+			symO = new Point2D.Double(0.0, 0.0);
+		} else {
 			double x = -(p.x);
 			double y = -(p.y);
-			symO = new Point2D.Double(x,y);
+			symO = new Point2D.Double(x, y);
 		}
 		return symO;
 	}
-	
+
 	public Point2D.Double xMidSymetric(Point2D.Double p) {
 		Point2D.Double symmidx;
-			if(p.x == 0.0 && p.y == 0.0) {
-				symmidx = new Point2D.Double(0.0,0.0);
-			}
-			
-			else {
-				double x =0;
-				double y = p.y;
-				symmidx = new Point2D.Double(x,y);
-			}
+		if (p.x == 0.0 && p.y == 0.0) {
+			symmidx = new Point2D.Double(0.0, 0.0);
+		}
+
+		else {
+			double x = 0;
+			double y = p.y;
+			symmidx = new Point2D.Double(x, y);
+		}
 		return symmidx;
 	}
-	
-	
+
 	public Point2D.Double yMidSymetric(Point2D.Double p) {
-		double x =p.x;
+		double x = p.x;
 		double y = 0;
-		
-		Point2D.Double symmidy = new Point2D.Double(x,y);
-		
+
+		Point2D.Double symmidy = new Point2D.Double(x, y);
+
 		return symmidy;
 	}
 
@@ -229,8 +201,7 @@ public class Display extends JComponent {
 		return b;
 
 	}
-	
-	
+
 	public void DrawPoints(Graphics2D g) {
 		for (int i = 0; i < graphPoints.size(); i++) {
 			double x = graphPoints.get(i).x;
@@ -238,12 +209,11 @@ public class Display extends JComponent {
 			Rectangle2D.Double rectangle = new Rectangle2D.Double(xToPixel(x), yToPixel(y), 5, 5);
 			g.fill(rectangle);
 		}
-		 this.DisplayCoord();
+		this.DisplayCoord();
 
 		///// System.out.println("size : " + graphPoints.size());
 	}
-	
-	
+
 	public void DrawLines(Graphics2D g) {///// ALGO DE PRIM
 		for (int i = 0; i < graphPoints.size(); i++) {
 			for (int j = i + 1; j < graphPoints.size(); j++) {
@@ -255,7 +225,7 @@ public class Display extends JComponent {
 			}
 		}
 	}
-	
+
 	public void DisplayCoord() {
 		for (Point2D.Double p : this.graphPoints) {
 			System.out.println(p);
@@ -265,14 +235,13 @@ public class Display extends JComponent {
 	public int HowManyNotInTheCircle() {
 		int PointInTheGraph = 0;
 
-		if(this.isACircle()) {
+		if (this.isACircle()) {
 			for (Point2D.Double p : graphPoints) {
 				if (!this.isInTheCircle(p.x, p.y)) {
 					PointInTheGraph = PointInTheGraph + 1;
 				}
 			}
-		}
-		else {
+		} else {
 			for (Point2D.Double p : graphPoints) {
 				if (!this.isInTheEllipse(p.x, p.y)) {
 					PointInTheGraph = PointInTheGraph + 1;
@@ -282,7 +251,7 @@ public class Display extends JComponent {
 
 		return PointInTheGraph;
 	}
-	
+
 	public int cleanAndDraw(Graphics2D gr2d, int MaxStation) {
 		int comptor = 0;///// PAS DE FOR EACH SI C POUR MODIFIER UN ELEMENT
 
@@ -311,7 +280,7 @@ public class Display extends JComponent {
 		this.DrawPoints(gr2d);
 		return comptor;
 	}
-	
+
 	public void PlacementOfTwoPerLine(int TotalLineToPack, int StationsToPackEachLine, int maxStation2) {
 		double stepX1 = -(0.10 * widthKM);
 		double stepX2 = -(0.30 * (widthKM));///// LORSQUE 2 A PLACER
@@ -368,7 +337,8 @@ public class Display extends JComponent {
 						}
 					}
 
-					else if ((i % 2 == 0) && (this.isInTheCircle(stepX3, yp)) ||(i % 2 == 0) && (this.isInTheEllipse(stepX3, yp)) ) {
+					else if ((i % 2 == 0) && (this.isInTheCircle(stepX3, yp))
+							|| (i % 2 == 0) && (this.isInTheEllipse(stepX3, yp))) {
 						xp = stepX3;
 						yp = yp - stepY;
 					} else {
@@ -395,8 +365,7 @@ public class Display extends JComponent {
 		}
 
 	}
-	
-	
+
 	public void PlaceTheRestOrTheDebt() {
 		if (this.rest == 1) { ///// WHEN U HAVE AN IMPAIR MAXSTATION TO PLACE THE LAST ONE IS PLACED
 			Point2D.Double p = new Point2D.Double(0, 0);
@@ -421,7 +390,7 @@ public class Display extends JComponent {
 			this.debt = this.debt - 1;
 		}
 	}
-	
+
 	public void PlaceTheFiveFirstCase(Graphics2D gr2d) {
 		if (this.MaxStation == 1) {
 			graphPoints = new ArrayList<Point2D.Double>(MaxStation);
@@ -468,8 +437,7 @@ public class Display extends JComponent {
 			this.DrawPoints(gr2d);
 		}
 	}
-	
-	
+
 	public void ReplacePointOutTheGraph(int PointOuTheGraph) {
 		if (PointOuTheGraph == 2) {
 			double y = this.heightKM * 0.5;
@@ -521,23 +489,46 @@ public class Display extends JComponent {
 			}
 		}
 	}
-	
-	
 
-	
-	
 ////////////////////////////////////////////////////////////////////////////
-	/* Main algorithm which places the points on the map*/
-	
-	public void StationAlgo(Graphics g) {
+	/* Main algorithm which places the points on the map */
+
+	public void StationAlgo(Graphics g, double widthKM,double heightKM, int CityBudget, int aStationCost) {
+		this.MaxStation = CityBudget / aStationCost;
+		System.out.println(MaxStation);
+		this.widthKM = widthKM;
+		this.heightKM = heightKM;
+		this.setCityBudget(CityBudget);
+		this.setaStationCost(aStationCost);
+		 this.widthPX = widthKM * 100.5;
+		this.heightPX = heightKM * 100.5;
+
+		g.setColor(Color.BLACK);
+		Ellipse2D.Double oval = new Ellipse2D.Double(0.0, 0.0, widthPX, heightPX);
 		Graphics2D gr2d = (Graphics2D) g;
-		/////Establish points position and add them to the list______ heart of the algorithm <3
+
+		gr2d.fill(oval);
+
+		g.setColor(Color.WHITE);
+		gr2d.draw(new Line2D.Double(0, heightPX / 2, widthPX, heightPX / 2));
+		gr2d.draw(new Line2D.Double(widthPX / 2, 0, widthPX / 2, heightPX));
+
+		gr2d.drawString("0", (float) (widthPX * 0.51), (float) (heightPX * 0.57));
+		gr2d.drawString("-" + widthKM, (float) (widthPX * 0.03), (float) (heightPX * 0.57));
+		gr2d.drawString("" + widthKM, (float) (widthPX * 0.95), (float) (heightPX * 0.57));
+		gr2d.drawString("-" + heightKM, (float) (widthPX * 0.51), (float) (heightPX * 0.97));
+		gr2d.drawString(heightKM + "", (float) (widthPX * 0.51), (float) (heightPX * 0.07));
 		
-		if(this.MaxStation <= 5) {
+		g.setColor(Color.RED);
+
+
+		///// Establish points position and add them to the list______ heart of the
+		///// algorithm <3
+
+		if (this.MaxStation <= 5) {
 			this.PlaceTheFiveFirstCase(gr2d);
 		}
-		
-		
+
 		else {
 			int TotalLineToPack;
 			int StationsToPackEachLine;
@@ -579,83 +570,62 @@ public class Display extends JComponent {
 				this.ReplacePointOutTheGraph(PointOuTheGraph);
 				this.PlaceTheRestOrTheDebt();
 
-
-				/*System.out.println("");
-				System.out.println("");
-				System.out.println("");
-
-				this.DisplayCoord();
-				System.out.println("");
-				System.out.println("");
-				System.out.println("");
+				/*
+				 * System.out.println(""); System.out.println(""); System.out.println("");
+				 * 
+				 * this.DisplayCoord(); System.out.println(""); System.out.println("");
+				 * System.out.println("");
 				 */
 				this.cleanAndDraw(gr2d, MaxStation);
 				System.out.println("size : " + this.graphPoints.size());
 
-				/*System.out.println("");
-				System.out.println("");
-				System.out.println("");
-
-				this.DisplayCoord();
-				System.out.println("");
-				System.out.println("");
-				System.out.println("");
-				*/
-				/*PointOuTheGraph = this.HowManyNotInTheCircle();
-				System.out.println("Not in the circle : " + PointOuTheGraph);
-				System.out.println("In the circle : " + (this.graphPoints.size() - PointOuTheGraph));
-				System.out.println("Station to pack each line : " + StationsToPackEachLine);
-				System.out.println("Number of line : " + TotalLineToPack);
-				System.out.println("Lack : " + (MaxStation - graphPoints.size()));
-				System.out.println("");
-				System.out.println("size : " + this.graphPoints.size());
-				System.out.println("Not in the circle : " + this.HowManyNotInTheCircle());
-				System.out.println("In the circle : " + (this.graphPoints.size() - this.HowManyNotInTheCircle()));
-				System.out.println("Station to pack each line : " + StationsToPackEachLine);
-				System.out.println("Number of line : " + TotalLineToPack);
-				System.out.println("Lack : " + (MaxStation - graphPoints.size()));
-				System.out.println("MaxStation : " + MaxStation);
-				if (this.cleanAndDraw(gr2d, MaxStation) == this.HowManyNotInTheCircle()) {
-					System.out.println("tout est ok");
-				} else {
-					System.out.println("refaire");
-					System.out.println("clean : " + this.cleanAndDraw(gr2d, MaxStation));
-					System.out.println("out : " + this.HowManyNotInTheCircle());
-				}*/
-
-			}
-
-			///////////////////////////////////////////////////////////////////////////////////////////////////////
-			///////////////////////////////////////////////////////////////////////////////////////////////////////
-			///////////////////////////////////////////////////////////////////////////////////////////////////////
-			///////////////////////////////////////////////////////////////////////////////////////////////////////
-			///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-			///// Establish points position and add them to the list______ heart of the
-			///// algorithm <3
-			else if (this.widthKM != this.heightKM) {///// Ellipse case
+				/*
+				 * System.out.println(""); System.out.println(""); System.out.println("");
+				 * 
+				 * this.DisplayCoord(); System.out.println(""); System.out.println("");
+				 * System.out.println("");
+				 */
+				/*
+				 * PointOuTheGraph = this.HowManyNotInTheCircle();
+				 * System.out.println("Not in the circle : " + PointOuTheGraph);
+				 * System.out.println("In the circle : " + (this.graphPoints.size() -
+				 * PointOuTheGraph)); System.out.println("Station to pack each line : " +
+				 * StationsToPackEachLine); System.out.println("Number of line : " +
+				 * TotalLineToPack); System.out.println("Lack : " + (MaxStation -
+				 * graphPoints.size())); System.out.println(""); System.out.println("size : " +
+				 * this.graphPoints.size()); System.out.println("Not in the circle : " +
+				 * this.HowManyNotInTheCircle()); System.out.println("In the circle : " +
+				 * (this.graphPoints.size() - this.HowManyNotInTheCircle()));
+				 * System.out.println("Station to pack each line : " + StationsToPackEachLine);
+				 * System.out.println("Number of line : " + TotalLineToPack);
+				 * System.out.println("Lack : " + (MaxStation - graphPoints.size()));
+				 * System.out.println("MaxStation : " + MaxStation); if (this.cleanAndDraw(gr2d,
+				 * MaxStation) == this.HowManyNotInTheCircle()) {
+				 * System.out.println("tout est ok"); } else { System.out.println("refaire");
+				 * System.out.println("clean : " + this.cleanAndDraw(gr2d, MaxStation));
+				 * System.out.println("out : " + this.HowManyNotInTheCircle()); }
+				 */
 
 			}
 
 		}
 	}
 
-	
-////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	
-
-	/////Logical values into physical values
+	///// Logical values into physical values
 	public double xToPixel(double x) {
-		return  ((this.widthKM*50) + (x*50));
+		return ((this.widthKM * 50) + (x * 50));
 	}
-	
-	
+
 	public double yToPixel(double y) {
-		return  ((this.heightKM*50) + (-y*50));
+		return ((this.heightKM * 50) + (-y * 50));
 	}
-	 
-	
+
 	public boolean isACircle() {
 		boolean b = false;
 		if (this.widthKM == this.heightKM) {
@@ -663,8 +633,7 @@ public class Display extends JComponent {
 		}
 		return b;
 	}
-	
-	
+
 	public boolean isAnEllipse() {
 		boolean b = false;
 		if (this.widthKM != this.heightKM) {
@@ -689,7 +658,6 @@ public class Display extends JComponent {
 		this.heightPX = heightPX;
 	}
 
-
 	public ArrayList<Point2D.Double> getGraphPoints() {
 		return graphPoints;
 	}
@@ -699,21 +667,17 @@ public class Display extends JComponent {
 		this.repaint();
 	}
 
-
 	public int getMaxStation() {
 		return MaxStation;
 	}
-
 
 	public void setMaxStation(int maxStation) {
 		MaxStation = maxStation;
 	}
 
-
 	public int getaLinkPrice() {
 		return aLinkPrice;
 	}
-
 
 	public void setaLinkPrice(int aLinkPrice) {
 		this.aLinkPrice = aLinkPrice;
@@ -725,6 +689,70 @@ public class Display extends JComponent {
 
 	public void setRest(int rest) {
 		this.rest = rest;
+	}
+
+	public int getCityBudget() {
+		return CityBudget;
+	}
+
+	public void setCityBudget(int cityBudget) {
+		CityBudget = cityBudget;
+	}
+
+	public int getaStationCost() {
+		return aStationCost;
+	}
+
+	public void setaStationCost(int aStationCost) {
+		this.aStationCost = aStationCost;
+	}
+
+	public double getWidthKM() {
+		return widthKM;
+	}
+
+	public void setWidthKM(double widthKM) {
+		this.widthKM = widthKM;
+	}
+
+	public double getHeightKM() {
+		return heightKM;
+	}
+
+	public void setHeightKM(double heightKM) {
+		this.heightKM = heightKM;
+	}
+
+	public int getMaxDiviser() {
+		return maxDiviser;
+	}
+
+	public void setMaxDiviser(int maxDiviser) {
+		this.maxDiviser = maxDiviser;
+	}
+
+	public int getDebt() {
+		return debt;
+	}
+
+	public void setDebt(int debt) {
+		this.debt = debt;
+	}
+
+	public boolean isShouldRun() {
+		return shouldRun;
+	}
+
+	public void setShouldRun(boolean shouldRun) {
+		this.shouldRun = shouldRun;
+	}
+	
+	public void repaint(){
+		// repaint le component courant
+		super.repaint();
+		// repaint tous les components qu'il possède
+		for(int i = 0; i < this.countComponents(); i++)
+		this.getComponent(i).repaint();
 	}
 	
 }
