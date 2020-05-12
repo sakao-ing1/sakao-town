@@ -66,8 +66,7 @@ public class Listener implements ActionListener {
 			}
 
 		}
-		else if (e.getSource().equals(this.t.getReload())) {
-			System.out.println("ah ok ");
+		 if (e.getSource().equals(this.t.getReload())) {
 			double w = Double.parseDouble(this.t.getWidthB().getText());
 			double h = Double.parseDouble(this.t.getHeightB().getText());
 			int b = Integer.parseInt(this.t.getBudget().getText());

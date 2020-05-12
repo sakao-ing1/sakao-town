@@ -1,4 +1,4 @@
-package sakao_server;
+package sakao_client;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -26,27 +26,65 @@ public class Display extends JComponent {
 	private int rest;
 	private int maxDiviser;
 	private int debt;
-	private boolean shouldRun = false;
+	private boolean shouldRunAlgo = false;
+	private boolean shouldRunDisplay = false;
+	ArrayList<Point2D.Double> graphNorthToSouth;
+	ArrayList<Point2D.Double> graphWestToEast;
+	ArrayList<Point2D.Double> graphNorthWestToSouthEast;
+	ArrayList<Point2D.Double> graphNorthEastToSouthWest;
 
 	@Override
 	protected void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 
 		Graphics2D g2d = (Graphics2D) graphics;
-		
+		if(shouldRunAlgo) {/////CALCULATION OF THE VALUES THANKS TO THE ALGORITH AND DISPLAY OF THESE VALUES ***** BUTTON SIMULATE CITY
 			this.StationAlgo(graphics, widthKM, heightKM, CityBudget, aStationCost);
-		
+			this.StationDrawerAlgo(graphics);
+		}
+		 if (shouldRunDisplay) {/////READING OF THE DB AND DISPLAY OF ITS ELEMENTS THAT WE NEED TO DRAW ***** BUTTON GENERATE CITY
+			this.DrawCity(graphics, this.widthKM, this.heightKM);
+			this.DrawPoints(g2d);
+			this.DrawTramLine(g2d,this.graphNorthToSouth,this.graphWestToEast,this.graphNorthEastToSouthWest,this.graphNorthWestToSouthEast);
 
-
-
-		/*
-		 * Rectangle2D.Double rectangle = new Rectangle2D.Double(xToPixel(-(widthKM-2)),
-		 * yToPixel((heightKM - 3)),5, 5); g2d.fill(rectangle);
-		 */
+		}
 
 	}
+	
+	
+/////////////////////////DRAWING METHODE WHEN THEN CLIENT JUST WANT TO CHARGE AN EXISTING CITY/ THERE IS NO ALGORITHM/////////////////////////
+	
+	public void DrawCity(Graphics g, double w, double h) {
+		this.widthPX = this.widthKM * 100;
+		this.heightPX = this.heightKM * 100;
+		g.setColor(Color.BLACK);
+		Ellipse2D.Double oval = new Ellipse2D.Double(0.0, 0.0, widthPX, heightPX);
+		Graphics2D gr2d = (Graphics2D) g;
 
-////////////////////////////////////////////////////////////////////////////
+		gr2d.fill(oval);
+
+		g.setColor(Color.WHITE);
+
+		gr2d.drawString("0", (float) (widthPX * 0.51), (float) (heightPX * 0.57));
+		gr2d.drawString("-" + widthKM / 2, (float) (widthPX * 0.03), (float) (heightPX * 0.57));
+		gr2d.drawString("" + widthKM / 2, (float) (widthPX * 0.95), (float) (heightPX * 0.57));
+		gr2d.drawString("-" + heightKM / 2, (float) (widthPX * 0.51), (float) (heightPX * 0.97));
+		gr2d.drawString(heightKM / 2 + "", (float) (widthPX * 0.51), (float) (heightPX * 0.07));
+
+	}
+	
+	
+	public void DrawStationForCRUD(Graphics g, double x, double y) {
+		Graphics2D g2d = (Graphics2D) g;
+			Rectangle2D.Double rectangle = new Rectangle2D.Double(xToPixel(x), yToPixel(y), 10, 10);
+			g2d.fill(rectangle);
+		}
+	
+	
+	
+	
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
 	 * Test if the point is in the circle Here in the circle also means on the
 	 * circle
@@ -201,30 +239,46 @@ public class Display extends JComponent {
 		return b;
 
 	}
+	///// Logical values into physical values
+	public double xToPixel(double x) {
+		return ((this.widthKM * 50) + (x * 50));
+	}
+
+	public double yToPixel(double y) {
+		return ((this.heightKM * 50) + (-y * 50));
+	}
+
+	public boolean isACircle() {
+		boolean b = false;
+		if (this.widthKM == this.heightKM) {
+			b = true;
+		}
+		return b;
+	}
+
+	public boolean isAnEllipse() {
+		boolean b = false;
+		if (this.widthKM != this.heightKM) {
+			b = true;
+		}
+		return b;
+	}
 
 	public void DrawPoints(Graphics2D g) {
+		g.setColor(Color.WHITE);
 		for (int i = 0; i < graphPoints.size(); i++) {
 			double x = graphPoints.get(i).x;
 			double y = graphPoints.get(i).y;
+
 			Rectangle2D.Double rectangle = new Rectangle2D.Double(xToPixel(x), yToPixel(y), 5, 5);
 			g.fill(rectangle);
 		}
-		this.DisplayCoord();
+		///this.DisplayCoord();
 
 		///// System.out.println("size : " + graphPoints.size());
 	}
 
-	public void DrawLines(Graphics2D g) {///// ALGO DE PRIM
-		for (int i = 0; i < graphPoints.size(); i++) {
-			for (int j = i + 1; j < graphPoints.size(); j++) {
-				double x1 = graphPoints.get(i).x;
-				double y1 = graphPoints.get(i).y;
-				double x2 = graphPoints.get(j).x;
-				double y2 = graphPoints.get(j).y;
-				g.draw(new Line2D.Double(xToPixel(x1), yToPixel(y1), xToPixel(x2), yToPixel(y2)));
-			}
-		}
-	}
+
 
 	public void DisplayCoord() {
 		for (Point2D.Double p : this.graphPoints) {
@@ -310,18 +364,28 @@ public class Display extends JComponent {
 
 		for (int i = 1; i <= TotalLineToPack; i++) {
 			for (int j = 1; j <= StationsToPackEachLine - 1; j++) {
-				///// QD ON PLACE DEUX PAR LIGNE A FAIRE CELUI DE TROIS PAR LIGNE EXEMPLE POUR 9
-
+				
 				if (maxStation2 >= 20) {
 					if (i % 2 == 1) {
 						if (comportO % 2 == 1) {
-							xp = stepX2;
+							if(maxStation2 >= 40) {
+								xp =-(0.40 * (widthKM));
+							}
+							else {
+								xp = stepX2;
+
+							}
 							yp = yp - stepY;
 							comportO = comportO + 1;
 						} else {
-							stepX1 = -(0.15 * widthKM);
+							if(maxStation2 >= 40) {
+								xp = -(0.20 * widthKM);
+							}
+							else {
+								xp = -(0.15 * widthKM);
 
-							xp = stepX1;
+							}
+
 							yp = yp - stepY;
 							comportO = comportO + 1;
 
@@ -454,6 +518,7 @@ public class Display extends JComponent {
 	}
 
 	public void ReplacePointOutTheGraph(int PointOuTheGraph) {
+		int comptor = 0;
 		if (PointOuTheGraph == 2) {
 			double y = this.heightKM * 0.5;
 			double x = 0.0;
@@ -469,6 +534,8 @@ public class Display extends JComponent {
 
 				} else if (P1.x > 0) {
 					P1.x = P1.x - (widthKM / 10.0);
+
+
 				}
 			}
 			this.graphPoints.add(P1);
@@ -488,16 +555,40 @@ public class Display extends JComponent {
 						y = y - stepYPointOut;
 					}
 					Point2D.Double P1 = new Point2D.Double(x, y);
-					while (this.pontExist(P1)) {
-						if (P1.x <= 0) {
-							P1.x = P1.x - (widthKM / 10.0);
-
-						} else if (P1.x > 0) {
-							P1.x = P1.x - (widthKM / 10.0);
-						}
+					if(!this.isInTheCircle(P1.x,P1.y) || !this.isInTheEllipse(P1.x,P1.y)) {
+						comptor = comptor + 1;
 					}
-					this.graphPoints.add(P1);
+					else {
+						while (this.pontExist(P1)) {
+							if (P1.x <= 0) {
+								P1.x = P1.x - (widthKM / 10.0);
+	
+							} else if (P1.x > 0) {
+								P1.x = P1.x + (widthKM / 10.0);
+							}
+						}
+	
+						this.graphPoints.add(P1);
+						System.out.println(k);
+						/////System.out.println(P1);
+					}
+				}
+				double stepYComptor= ((this.heightKM) * 2) / comptor;
 
+				for(int a = 0; a < comptor; a++) {
+					Point2D.Double P1 = new Point2D.Double(x, y);
+					if(a == 1) {
+						P1.x = 0.0;
+						P1.y = this.heightKM;
+					}
+					else {
+						P1.x = 0.0;
+						P1.y = this.heightKM - stepYComptor;
+					}
+
+
+					this.graphPoints.add(P1);
+					/////System.out.println(P1);
 				}
 
 			} else if (PointOuTheGraph % 2 == 1 && PointOuTheGraph >= 3) { ///// CAR IMPAIRE SUP OU EGAL A 3 A PLACER
@@ -534,6 +625,8 @@ public class Display extends JComponent {
 	/* Main algorithm which places the points on the map */
 
 	public void StationAlgo(Graphics g, double widthKM,double heightKM, int CityBudget, int aStationCost) {
+		Graphics2D gr2d = (Graphics2D) g;
+
 		this.MaxStation = CityBudget / aStationCost;
 		System.out.println(MaxStation);
 		this.widthKM = widthKM;
@@ -546,21 +639,9 @@ public class Display extends JComponent {
 		this.maxDiviser = 1;
 		this.debt = 0;
 
-		g.setColor(Color.BLACK);
-		Ellipse2D.Double oval = new Ellipse2D.Double(0.0, 0.0, widthPX, heightPX);
-		Graphics2D gr2d = (Graphics2D) g;
 
-		gr2d.fill(oval);
-
-		g.setColor(Color.WHITE);
-		gr2d.draw(new Line2D.Double(0, heightPX / 2, widthPX, heightPX / 2));
-		gr2d.draw(new Line2D.Double(widthPX / 2, 0, widthPX / 2, heightPX));
-
-		gr2d.drawString("0", (float) (widthPX * 0.51), (float) (heightPX * 0.57));
-		gr2d.drawString("-" + widthKM, (float) (widthPX * 0.03), (float) (heightPX * 0.57));
-		gr2d.drawString("" + widthKM, (float) (widthPX * 0.95), (float) (heightPX * 0.57));
-		gr2d.drawString("-" + heightKM, (float) (widthPX * 0.51), (float) (heightPX * 0.97));
-		gr2d.drawString(heightKM + "", (float) (widthPX * 0.51), (float) (heightPX * 0.07));
+		
+		this.DrawCity(g,this.widthKM, this.heightKM);
 		
 		g.setColor(Color.RED);
 
@@ -570,6 +651,8 @@ public class Display extends JComponent {
 
 		if (this.MaxStation <= 5) {
 			this.PlaceTheFiveFirstCase(gr2d);
+			this.DrawLines(gr2d);
+
 		}
 
 		else {
@@ -633,6 +716,7 @@ public class Display extends JComponent {
 
 				}
 
+				/////this.DrawLines(gr2d);
 //////////////////////////////////////////////////////////////////////////////:
 
 				///// TOUS LES POINTS SONT PLACES
@@ -679,36 +763,184 @@ public class Display extends JComponent {
 
 		}
 	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	///// Logical values into physical values
-	public double xToPixel(double x) {
-		return ((this.widthKM * 50) + (x * 50));
-	}
-
-	public double yToPixel(double y) {
-		return ((this.heightKM * 50) + (-y * 50));
-	}
-
-	public boolean isACircle() {
-		boolean b = false;
-		if (this.widthKM == this.heightKM) {
-			b = true;
+	
+	public void DisplayGraph(ArrayList<Point2D.Double> graph) {
+		Iterator<Point2D.Double> it = graph.iterator();
+		while(it.hasNext()) {
+			Point2D.Double p = it.next();
+			System.out.println(p);
 		}
-		return b;
 	}
+	
+	
+	public void fillGraphs() {
+		/////ON PEUT ICI SI JAMAIS ON METS LES GRAPH EN INSTANCE DE CLASSE
+		ArrayList<Point2D.Double> graphNorthToSouth = new ArrayList<Point2D.Double>();
+		ArrayList<Point2D.Double> graphWestToEast = new ArrayList<Point2D.Double>();
+		ArrayList<Point2D.Double> graphNorthWestToSouthEast = new ArrayList<Point2D.Double>();
+		ArrayList<Point2D.Double> graphNorthEastToSouthWest= new ArrayList<Point2D.Double>();
+		double North = this.getHeightKM() * 0.60;
+		double South = -(this.getHeightKM() * 0.60);
+		double West = -(this.getWidthKM()*0.60);
+		double East = (this.getWidthKM()*0.60);
 
-	public boolean isAnEllipse() {
-		boolean b = false;
-		if (this.widthKM != this.heightKM) {
-			b = true;
+		Iterator<Point2D.Double> it = graphPoints.iterator();
+			while(it.hasNext()) {
+				Point2D.Double p = it.next();
+				if(p.y < South ) {
+					graphNorthToSouth.add(p);
+				}
+				
+				else if(p.y> North) {
+					graphNorthToSouth.add(p);
+				}
+				
+				else if(p.x < West) {
+					graphWestToEast.add(p);
+				}
+				else if (p.x > East) {
+					graphWestToEast.add(p);
+				}
+				else if (p.x == 0.0) {
+					graphNorthToSouth.add(p);
+				}
+				
+				else if(p.y == 0.0) {
+					graphWestToEast.add(p);
+				}
+				
+				else if(p.x >= West && (p.y <= North || p.y >= South)) {
+					graphNorthWestToSouthEast.add(p);
+				}
+				else if (p.x <= East && (p.y <= North || p.y >= South)){
+					graphNorthEastToSouthWest.add(p);
+				}			
+			}
+			
+			System.out.println("North TO South");
+			this.DisplayGraph(graphNorthToSouth);
+			System.out.println("");
+			System.out.println("West to East");
+			this.DisplayGraph(graphWestToEast);
+			System.out.println("");
+			System.out.println("NorthEast to SouthWEST");
+			this.DisplayGraph(graphNorthEastToSouthWest);
+			System.out.println("");
+			System.out.println("NorthWEST to SouthEast");
+			this.DisplayGraph(graphNorthWestToSouthEast);
+			System.out.println("");
+			
+			
+
+	}
+	
+	
+	public void DrawLines(ArrayList<Point2D.Double> graph,Graphics2D g,Color c) {
+		for (int i = 0; i < graph.size(); i++) {
+			g.setColor(c);
+
+			for (int j = i + 1; j < graph.size(); j++) {
+				double x1 = graph.get(i).x;
+				double y1 = graph.get(i).y;
+				double x2 = graph.get(i+1).x;
+				double y2 = graph.get(i+1).y;
+				g.draw(new Line2D.Double(xToPixel(x1), yToPixel(y1), xToPixel(x2), yToPixel(y2)));
+			}
 		}
-		return b;
+	}
+	
+	
+	public void StationDrawerAlgo(Graphics g) {
+		Graphics2D gr2d = (Graphics2D) g;
+		this.graphNorthToSouth = new ArrayList<Point2D.Double>();
+		this.graphWestToEast = new ArrayList<Point2D.Double>();
+		this.graphNorthWestToSouthEast = new ArrayList<Point2D.Double>();
+		this.graphNorthEastToSouthWest= new ArrayList<Point2D.Double>();
+		double North = this.getHeightKM() * 0.60;
+		double South = -(this.getHeightKM() * 0.60);
+		double West = -(this.getWidthKM()*0.60);
+		double East = (this.getWidthKM()*0.60);
+
+		Iterator<Point2D.Double> it = graphPoints.iterator();
+			while(it.hasNext()) {
+				Point2D.Double p = it.next();
+				if(p.y < South || p.y > North || p.x == 0.0) {
+					graphNorthToSouth.add(p);
+				}
+				
+				if(p.x < West || p.x >East || p.y == 0.0 || (p.y <= this.getHeightKM() * 0.2 &&p.y >= -(this.getHeightKM() * 0.2))) {
+					graphWestToEast.add(p);
+				}
+	
+				if ((p.x >= West && p.x < 0.0) &&(p.y <= North && p.y> 0.0)){
+					graphNorthWestToSouthEast.add(p);
+				}
+				if ((p.x > 0.0 && p.x <= East) && (p.y >= South && p.y < 0.0)) {
+					graphNorthWestToSouthEast.add(p);
+				}
+				if ((p.x <= East && p.x > 0.0) &&(p.y <= North && p.y> 0.0)){
+					graphNorthEastToSouthWest.add(p);
+				}
+				if ((p.x < 0.0 && p.x >= West) && (p.y >= South && p.y < 0.0)) {
+					graphNorthEastToSouthWest.add(p);
+				}
+			
+			}
+			
+			System.out.println("North TO South");
+			this.DisplayGraph(graphNorthToSouth);
+			System.out.println("");
+			System.out.println("West to East");
+			this.DisplayGraph(graphWestToEast);
+			System.out.println("");
+			System.out.println("NorthEast to SouthWEST");
+			this.DisplayGraph(graphNorthEastToSouthWest);
+			System.out.println("");
+			System.out.println("NorthWEST to SouthEast");
+			this.DisplayGraph(graphNorthWestToSouthEast);
+			System.out.println("");
+			this.DrawTramLine(gr2d,this.graphNorthToSouth,this.graphWestToEast,this.graphNorthEastToSouthWest,this.graphNorthWestToSouthEast);
+
+	}
+	
+	
+	public void DrawTramLine(Graphics g,ArrayList<Point2D.Double> graphNorthToSouth,ArrayList<Point2D.Double> graphWestToEast
+			,ArrayList<Point2D.Double> graphNorthEastToSouthWest,ArrayList<Point2D.Double> graphNorthWestToSouthEast) {
+		Graphics2D gr2d = (Graphics2D) g;
+		this.DrawLines(graphNorthToSouth,gr2d,Color.RED);
+		this.DrawLines(graphWestToEast,gr2d,Color.CYAN);
+		this.DrawLines(graphNorthEastToSouthWest,gr2d,Color.ORANGE);
+		this.DrawLines(graphNorthWestToSouthEast,gr2d,Color.GREEN);
+	}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public void DrawLines(Graphics2D g) {///// ALGO DE PRIM
+		for (int i = 0; i < graphPoints.size(); i++) {
+			g.setColor(Color.GREEN);
+
+			for (int j = i + 1; j < graphPoints.size(); j++) {
+				double x1 = graphPoints.get(i).x;
+				double y1 = graphPoints.get(i).y;
+				double x2 = graphPoints.get(i+1).x;
+				double y2 = graphPoints.get(i+1).y;
+				g.draw(new Line2D.Double(xToPixel(x1), yToPixel(y1), xToPixel(x2), yToPixel(y2)));
+			}
+		}
+		/*for (int i = 0; i < graphPoints.size(); i++) {
+			g.setColor(Color.YELLOW);
+
+			for (int j = 0; j < graphPoints.size(); j++) {
+				double x1 = graphPoints.get(i).x;
+				double y1 = graphPoints.get(i).y;
+				double x2 = graphPoints.get(j).x;
+				double y2 = graphPoints.get(j).y;
+				g.draw(new Line2D.Double(xToPixel(x1), yToPixel(y1), xToPixel(x2), yToPixel(y2)));
+			}
+		}*/
 	}
 
 	public double getWidthPX() {
@@ -733,7 +965,6 @@ public class Display extends JComponent {
 
 	public void setGraphPoints(ArrayList<Point2D.Double> graphPoints) {
 		this.graphPoints = graphPoints;
-		this.repaint();
 	}
 
 	public int getMaxStation() {
@@ -808,13 +1039,6 @@ public class Display extends JComponent {
 		this.debt = debt;
 	}
 
-	public boolean isShouldRun() {
-		return shouldRun;
-	}
-
-	public void setShouldRun(boolean shouldRun) {
-		this.shouldRun = shouldRun;
-	}
 	
 	public void repaint(){
 		// repaint le component courant
@@ -822,6 +1046,71 @@ public class Display extends JComponent {
 		// repaint tous les components qu'il possède
 		for(int i = 0; i < this.getComponentCount(); i++)
 		this.getComponent(i).repaint();
+	}
+
+
+	public boolean isShouldRunAlgo() {
+		return shouldRunAlgo;
+	}
+
+
+	public void setShouldRunAlgo(boolean shouldRunAlgo) {
+		this.shouldRunAlgo = shouldRunAlgo;
+	}
+
+
+	public boolean isShouldRunDisplay() {
+		return shouldRunDisplay;
+	}
+
+
+	public void setShouldRunDisplay(boolean shouldRunDisplay) {
+		this.shouldRunDisplay = shouldRunDisplay;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+	public ArrayList<Point2D.Double> getGraphNorthToSouth() {
+		return graphNorthToSouth;
+	}
+
+
+	public void setGraphNorthToSouth(ArrayList<Point2D.Double> graphNorthToSouth) {
+		this.graphNorthToSouth = graphNorthToSouth;
+	}
+
+
+	public ArrayList<Point2D.Double> getGraphWestToEast() {
+		return graphWestToEast;
+	}
+
+
+	public void setGraphWestToEast(ArrayList<Point2D.Double> graphWestToEast) {
+		this.graphWestToEast = graphWestToEast;
+	}
+
+
+	public ArrayList<Point2D.Double> getGraphNorthWestToSouthEast() {
+		return graphNorthWestToSouthEast;
+	}
+
+
+	public void setGraphNorthWestToSouthEast(ArrayList<Point2D.Double> graphNorthWestToSouthEast) {
+		this.graphNorthWestToSouthEast = graphNorthWestToSouthEast;
+	}
+
+
+	public ArrayList<Point2D.Double> getGraphNorthEastToSouthWest() {
+		return graphNorthEastToSouthWest;
+	}
+
+
+	public void setGraphNorthEastToSouthWest(ArrayList<Point2D.Double> graphNorthEastToSouthWest) {
+		this.graphNorthEastToSouthWest = graphNorthEastToSouthWest;
 	}
 	
 }
