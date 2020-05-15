@@ -52,7 +52,7 @@ public class TracerT extends JFrame implements ActionListener {
 	private JTextField 	StationCost = new JTextField("StationCost");
 	private JPanel contentPaneCenter;
 	private JPanel contentPaneTop;
-	
+	 
 	
 	private Socket clientSocket;
 	private OutputStreamWriter out;
