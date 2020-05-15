@@ -25,6 +25,7 @@ public class Display extends JComponent {
 	private int aLinkPrice = 15000;
 	private int rest;
 	private int maxDiviser;
+
 	private int debt;
 	private boolean shouldRunAlgo = false;
 	private boolean shouldRunDisplay = false;
