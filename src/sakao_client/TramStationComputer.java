@@ -1,92 +1,29 @@
 package sakao_client;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.JComponent;
+public class TramStationComputer{//////////////////////////////////////// CONTAINS THE TWO ALGORITHMS
 
-public class Display extends JComponent {
-	private static final long serialVersionUID = -1416435289803099003L;
-	private double widthKM;/// user
-	private double heightKM ;/// user
+	private static final long serialVersionUID = 8137695111058290034L;
+
+	private double widthKM;/// Information from user
+	private double heightKM ;/// Information from user
 	private double widthPX;
 	private double heightPX;
 	private ArrayList<Point2D.Double> graphPoints;
-	private int CityBudget;/// user MODIFIER A PARTIR DE MAXS  = 30 le x2
-	private int aStationCost;/// user
+	private int CityBudget;/// Information from user
+	private int aStationCost;/// Information from user
 	private int MaxStation;
-	private int aLinkPrice = 15000;
 	private int rest;
 	private int maxDiviser;
-
 	private int debt;
-	private boolean shouldRunAlgo= false;;
-	private boolean shouldRunDisplay= false;;
-	ArrayList<Point2D.Double> graphNorthToSouth;
-	ArrayList<Point2D.Double> graphWestToEast;
-	ArrayList<Point2D.Double> graphNorthWestToSouthEast;
-	ArrayList<Point2D.Double> graphNorthEastToSouthWest;
 
-	@Override
-	protected void paintComponent(Graphics graphics) {
-		super.paintComponent(graphics);
-
-		Graphics2D g2d = (Graphics2D) graphics;
-		if(shouldRunAlgo) {/////CALCULATION OF THE VALUES THANKS TO THE ALGORITH AND DISPLAY OF THESE VALUES***** ALGO LAUNCHED ***** BUTTON SIMULATE CITY
-
-			this.StationAlgo(graphics);
-			this.StationDrawerAlgo(graphics);
-			System.out.println("je suis au algo");
-
-		}
-		else if (shouldRunDisplay) {/////READING OF THE DB AND DISPLAY OF ITS ELEMENTS THAT WE NEED TO DRAW***** ANY ALGO LAUNCHED ***** BUTTON GENERATE CITY
-			this.DrawCity(graphics, this.widthKM, this.heightKM);
-			this.DrawPoints(g2d);
-			this.DrawTramLine(g2d,this.graphNorthToSouth,this.graphWestToEast,this.graphNorthEastToSouthWest,this.graphNorthWestToSouthEast);
-			 System.out.println("je suis au drawer");
-		}
-
-	}
-	
-	
-/////////////////////////DRAWING METHODE WHEN THEN CLIENT JUST WANT TO CHARGE AN EXISTING CITY/ THERE IS NO ALGORITHM/////////////////////////
-	
-	public void DrawCity(Graphics g, double w, double h) {
-		this.heightKM = h;
-		this.widthKM = w;
-		this.widthPX = w * 100;
-		this.heightPX = h * 100;
-		g.setColor(Color.BLACK);
-		Ellipse2D.Double oval = new Ellipse2D.Double(0.0, 0.0, widthPX, heightPX);
-		Graphics2D gr2d = (Graphics2D) g;
-
-		gr2d.fill(oval);
-
-		g.setColor(Color.WHITE);
-
-		gr2d.drawString("0", (float) (widthPX * 0.51), (float) (heightPX * 0.57));
-		gr2d.drawString("-" + w, (float) (widthPX * 0.03), (float) (heightPX * 0.57));
-		gr2d.drawString("" + w , (float) (widthPX * 0.95), (float) (heightPX * 0.57));
-		gr2d.drawString("-" + h , (float) (widthPX * 0.51), (float) (heightPX * 0.97));
-		gr2d.drawString(h + "", (float) (widthPX * 0.51), (float) (heightPX * 0.07));
-
-	}
-	
-	
-	public void DrawStationForCRUD(Graphics g, double x, double y) {
-		Graphics2D g2d = (Graphics2D) g;
-			Rectangle2D.Double rectangle = new Rectangle2D.Double(xToPixel(x), yToPixel(y), 10, 10);
-			g2d.fill(rectangle);
-		}
-	
-	
+	private ArrayList<Point2D.Double> graphNorthToSouth;
+	private ArrayList<Point2D.Double> graphWestToEast;
+	private ArrayList<Point2D.Double> graphNorthWestToSouthEast;
+	private ArrayList<Point2D.Double> graphNorthEastToSouthWest;
 	
 	
 
@@ -98,11 +35,10 @@ public class Display extends JComponent {
 
 	public boolean isInTheCircle(double x, double y) {
 		boolean b;
-		Point2D.Double p = new Point2D.Double(xToPixel(x), yToPixel(y));
-		Point2D.Double center = new Point2D.Double(xToPixel(0.0), yToPixel(0.0));
-		double distance = p.distance(center);
+		double distance = (x*x) + (y*y);
+		double r = this.widthKM;
 		///// System.out.println("distance : " + distance);
-		if (distance <= this.widthPX / 2) {
+		if (distance <= (r*r)) {
 			b = true;
 		} else {
 			b = false;
@@ -153,15 +89,7 @@ public class Display extends JComponent {
 				}
 
 			} 
-			/*if (maxDiviser == 1) {
-				rest = 1; ///// TO USE DURING THE ALGORITHM DON'T FORGET THIS LAST STATION
-				for (int i = 1; i < MaxStation - rest; i++) {
 
-					if ((MaxStation - rest) % i == 0 && maxDiviser <= i && maxDiviser < (MaxStation - rest)) {
-						maxDiviser = i;
-					}
-				}
-			}*/
 		}
 		System.out.println("_____");
 		System.out.println("MaxStation : " + MaxStation);
@@ -243,15 +171,6 @@ public class Display extends JComponent {
 		}
 
 		return b;
-
-	}
-	///// Logical values into physical values
-	public double xToPixel(double x) {
-		return ((this.widthKM * 50) + (x * 50));
-	}
-
-	public double yToPixel(double y) {
-		return ((this.heightKM * 50) + (-y * 50));
 	}
 
 	public boolean isACircle() {
@@ -269,21 +188,6 @@ public class Display extends JComponent {
 		}
 		return b;
 	}
-
-	public void DrawPoints(Graphics2D g) {
-		g.setColor(Color.WHITE);
-		for (int i = 0; i < graphPoints.size(); i++) {
-			double x = graphPoints.get(i).x;
-			double y = graphPoints.get(i).y;
-
-			Rectangle2D.Double rectangle = new Rectangle2D.Double(xToPixel(x), yToPixel(y), 5, 5);
-			g.fill(rectangle);
-		}
-		///this.DisplayCoord();
-
-		///// System.out.println("size : " + graphPoints.size());
-	}
-
 
 
 	public void DisplayCoord() {
@@ -333,7 +237,7 @@ public class Display extends JComponent {
 		return PointInTheGraph;
 	}
 
-	public void cleanAndDraw(Graphics2D gr2d, int MaxStation) {
+	public void clean() {
 		Iterator<Point2D.Double> it = graphPoints.iterator();
 		if (this.isACircle()) {
 			while(it.hasNext()) {
@@ -352,17 +256,17 @@ public class Display extends JComponent {
 			}
 		}
 
-		this.DrawPoints(gr2d);
+		///this.DrawPoints(gr2d);
 	}
 
-	public void PlacementOfTwoPerLine(int TotalLineToPack, int StationsToPackEachLine, int maxStation2) {
+	public void PlacementOfTwoPerLine(int TotalLineToPack, int StationsToPackEachLine) {
 		///double stepX1 = -(0.10 * widthKM);
 		double stepX2 = -(0.30 * (widthKM));///// LORSQUE 2 A PLACER
 		double stepX3 = -(0.60 * widthKM);///// LORSQUE 2 OU 3 A PLACER
 		double stepX4 = -(0.80 * widthKM);///// LORSQUE 2 A PLACER
 		int comptorP = 1;
 		int comportO = 1;
-		this.graphPoints = new ArrayList<Point2D.Double>(maxStation2);
+	
 		double stepY = (this.heightKM * 2) / TotalLineToPack;///// LORSQUE 2 OU 3 A PLACER
 
 		double xp = 0.0;
@@ -371,10 +275,10 @@ public class Display extends JComponent {
 		for (int i = 1; i <= TotalLineToPack; i++) {
 			for (int j = 1; j <= StationsToPackEachLine - 1; j++) {
 				
-				if (maxStation2 >= 20) {
+				if (this.MaxStation >= 20) {
 					if (i % 2 == 1) {
 						if (comportO % 2 == 1) {
-							if(maxStation2 >= 40) {
+							if(this.MaxStation  >= 40) {
 								xp =-(0.40 * (widthKM));
 							}
 							else {
@@ -384,7 +288,7 @@ public class Display extends JComponent {
 							yp = yp - stepY;
 							comportO = comportO + 1;
 						} else {
-							if(maxStation2 >= 40) {
+							if(this.MaxStation  >= 40) {
 								xp = -(0.20 * widthKM);
 							}
 							else {
@@ -445,8 +349,16 @@ public class Display extends JComponent {
 
 				this.graphPoints.add(P);
 				this.graphPoints.add(this.ySymetric(P));
+				
 			}
 		}
+		/*System.out.println("///////////////////////////////////////////////////////////////");
+		System.out.println("A la sortie de place twoperline");
+		System.out.println(graphPoints);
+		System.out.println("SIZE GRAPHPOINTS : " + graphPoints.size());
+		System.out.println("///////////////////////////////////////////////////////////////");
+	*/
+
 
 	}
 
@@ -470,17 +382,16 @@ public class Display extends JComponent {
 			this.graphPoints.add(p);
 			System.out.println("Jai ajoute la dette soit un point : " + p);
 
-			MaxStation = MaxStation + 1;
+			this.MaxStation = this.MaxStation + 1;
 
 			this.debt = this.debt - 1;
 		}
 	}
 
-	public void PlaceTheFiveFirstCase(Graphics2D gr2d) {
+	public void PlaceTheFiveFirstCase() {
 		if (this.MaxStation == 1) {
 			graphPoints = new ArrayList<Point2D.Double>(MaxStation);
 			this.graphPoints.add(new Point2D.Double(0.0, 0.0));
-			this.DrawPoints(gr2d);
 		}
 
 		else if (this.MaxStation == 2) {
@@ -488,7 +399,6 @@ public class Display extends JComponent {
 			Point2D.Double p = new Point2D.Double((-this.widthKM) * 0.60, this.heightKM * 0.60);
 			this.graphPoints.add(p);
 			this.graphPoints.add(OSymetric(p));
-			this.DrawPoints(gr2d);
 
 		}
 
@@ -497,7 +407,6 @@ public class Display extends JComponent {
 			this.graphPoints.add(new Point2D.Double(0.0, this.heightKM * 0.60));
 			this.graphPoints.add(new Point2D.Double((-this.widthKM) * 0.60, (-this.heightKM) * 0.40));
 			this.graphPoints.add(new Point2D.Double(this.widthKM * 0.60, (-this.heightKM) * 0.40));
-			this.DrawPoints(gr2d);
 		}
 
 		else if (this.MaxStation == 4) {
@@ -507,7 +416,6 @@ public class Display extends JComponent {
 			this.graphPoints.add(xSymetric(p));
 			this.graphPoints.add(ySymetric(p));
 			this.graphPoints.add(OSymetric(p));
-			this.DrawPoints(gr2d);
 
 		}
 
@@ -519,7 +427,6 @@ public class Display extends JComponent {
 			this.graphPoints.add(ySymetric(p));
 			this.graphPoints.add(OSymetric(p));
 			this.graphPoints.add(new Point2D.Double(0.0, 0.0));
-			this.DrawPoints(gr2d);
 		}
 	}
 
@@ -548,7 +455,7 @@ public class Display extends JComponent {
 
 		} else {
 
-			if (PointOuTheGraph % 2 == 0) {///// CAS PAIR A PLACER
+			if (PointOuTheGraph % 2 == 0) {///// MULTIPLE OF 2 TO PLACE
 				double y = this.heightKM * 0.80;
 				double x = 0.0;
 				double stepYPointOut = ((this.heightKM) * 2) / PointOuTheGraph;
@@ -627,32 +534,37 @@ public class Display extends JComponent {
 		}
 	}
 
-////////////////////////////////////////////////////////////////////////////
-	/* Main algorithm which places the points on the map */
+	//////////////////////////////////   ALGO OF REPARTITION OF STATIONS ///////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////
 
-	public void StationAlgo(Graphics g) {
-		Graphics2D gr2d = (Graphics2D) g;
-		this.MaxStation = CityBudget / aStationCost;
-		System.out.println(MaxStation);
-		this.setCityBudget(CityBudget);
-		this.setaStationCost(aStationCost);
+
+
+	public void StationRepartitorAlgo(double wid, double hei, int budget, int cost) {
+		this.widthKM = wid;
+		this.heightKM = hei;
+		this.CityBudget = budget;
+		this.aStationCost = cost;
 		this.rest = 0;
 		this.maxDiviser = 1;
 		this.debt = 0;
-
-		this.DrawCity(g,widthKM, heightKM);
-		g.setColor(Color.RED);
+		this.MaxStation = budget / cost;
+		this.graphPoints = new ArrayList<Point2D.Double>();
 		
-
+		System.out.println("City's width in km : " + this.widthKM);
+		System.out.println("City's height in km  : " + this.heightKM);
+		System.out.println("City's budget : " + this.CityBudget);
+		System.out.println("A station cost : " + this.aStationCost);
+		System.out.println("Max station initialized to : " + MaxStation);
 
 
 		///// Establish points position and add them to the list______ heart of the
 		///// algorithm <3
 
 		if (this.MaxStation <= 5) {
-			this.PlaceTheFiveFirstCase(gr2d);
-			this.DrawLines(gr2d);
-
+			this.PlaceTheFiveFirstCase();
 		}
 
 		else {
@@ -668,11 +580,11 @@ public class Display extends JComponent {
 				 * else if(StationsToPackEachLine == 3) { } else {
 				 * this.PlacementOfTwoPerLine(TotalLineToPack, StationsToPackEachLine); }
 				 */
-				if (this.MaxStation % 2 == 0) /* || this.MaxStation/this.StationDiviser() == 3) */ {
-					System.out.println("jsuis dans le if et maxstation vaut : " + this.MaxStation);
+				if (this.MaxStation % 2 == 0) {
+					System.out.println("jsuis dans le if paire et maxstation vaut : " + this.MaxStation);
 					TotalLineToPack = this.StationDiviser(this.MaxStation);
 					StationsToPackEachLine = MaxStation / TotalLineToPack;
-					this.PlacementOfTwoPerLine(TotalLineToPack, StationsToPackEachLine, MaxStation);
+					this.PlacementOfTwoPerLine(TotalLineToPack, StationsToPackEachLine);
 					this.PlaceTheRestOrTheDebt();
 					PointOuTheGraph = this.HowManyNotInTheCircle();
 					PointInTheGraph = this.HowManyInTheCircle();
@@ -680,7 +592,7 @@ public class Display extends JComponent {
 					System.out.println("Point in the graph : " + PointInTheGraph);
 
 					this.ReplacePointOutTheGraph(PointOuTheGraph);
-					this.cleanAndDraw(gr2d, MaxStation);
+					this.clean();
 					
 					PointOuTheGraph = this.HowManyNotInTheCircle();
 					PointInTheGraph = this.HowManyInTheCircle();
@@ -693,12 +605,13 @@ public class Display extends JComponent {
 
 				else if(this.MaxStation % 2 == 1){
 					int max = MaxStation - 1;
+					this.MaxStation = max;
 					System.out.println("je suis dans le else et maxstation vaut " + this.MaxStation);
 					this.debt = this.debt + 1;
 					System.out.println(debt);
 					TotalLineToPack = this.StationDiviser(max);
 					StationsToPackEachLine = MaxStation / TotalLineToPack;
-					this.PlacementOfTwoPerLine(TotalLineToPack, StationsToPackEachLine, max);
+					this.PlacementOfTwoPerLine(TotalLineToPack, StationsToPackEachLine);
 					this.PlaceTheRestOrTheDebt();
 					PointOuTheGraph = this.HowManyNotInTheCircle();
 					PointInTheGraph = this.HowManyInTheCircle();
@@ -707,7 +620,7 @@ public class Display extends JComponent {
 					System.out.println("Point in the graph : " + PointInTheGraph);
 
 					this.ReplacePointOutTheGraph(PointOuTheGraph);
-					this.cleanAndDraw(gr2d, MaxStation);
+					this.clean();
 					PointOuTheGraph = this.HowManyNotInTheCircle();
 					PointInTheGraph = this.HowManyInTheCircle();
 					System.out.println("Point out the graph : " + PointOuTheGraph);
@@ -728,25 +641,15 @@ public class Display extends JComponent {
 	}
 	
 
-	
-	
-	public void DrawLines(ArrayList<Point2D.Double> graph,Graphics2D g,Color c) {
-		for (int i = 0; i < graph.size(); i++) {
-			g.setColor(c);
+	////////////////////////////////////       ALGO OF LINK BETWEEN STATIONS /////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////
 
-			for (int j = i + 1; j < graph.size(); j++) {
-				double x1 = graph.get(i).x;
-				double y1 = graph.get(i).y;
-				double x2 = graph.get(i+1).x;
-				double y2 = graph.get(i+1).y;
-				g.draw(new Line2D.Double(xToPixel(x1), yToPixel(y1), xToPixel(x2), yToPixel(y2)));
-			}
-		}
-	}
 	
+	public void StationLinkAlgo() {
 	
-	public void StationDrawerAlgo(Graphics g) {
-		Graphics2D gr2d = (Graphics2D) g;
 		this.graphNorthToSouth = new ArrayList<Point2D.Double>();
 		this.graphWestToEast = new ArrayList<Point2D.Double>();
 		this.graphNorthWestToSouthEast = new ArrayList<Point2D.Double>();
@@ -759,26 +662,39 @@ public class Display extends JComponent {
 		Iterator<Point2D.Double> it = graphPoints.iterator();
 			while(it.hasNext()) {
 				Point2D.Double p = it.next();
-				if(p.y < South || p.y > North || p.x == 0.0) {
-					graphNorthToSouth.add(p);
-				}
 				
-				if(p.x < West || p.x >East || p.y == 0.0 || (p.y <= this.getHeightKM() * 0.2 &&p.y >= -(this.getHeightKM() * 0.2))) {
-					graphWestToEast.add(p);
+				
+				 if (this.graphPoints.size() == 3) {
+						graphNorthToSouth.add(p);
+					}
+					
+				 else {
+					
+					if(p.y < South || p.y > North || p.x == 0.0) {
+						graphNorthToSouth.add(p);
+					}
+					
+					if(p.x < West || p.x >East || p.y == 0.0 || (p.y <= this.getHeightKM() * 0.2 &&p.y >= -(this.getHeightKM() * 0.2))) {
+						graphWestToEast.add(p);
+					}
+		
+					if ((p.x >= West && p.x < 0.0) &&(p.y <= North && p.y> 0.0)){
+						graphNorthWestToSouthEast.add(p);
+					}
+					if ((p.x > 0.0 && p.x <= East) && (p.y >= South && p.y < 0.0)) {
+						graphNorthWestToSouthEast.add(p);
+					}
+					if ((p.x <= East && p.x > 0.0) &&(p.y <= North && p.y> 0.0)){
+						graphNorthEastToSouthWest.add(p);
+					}
+					if ((p.x < 0.0 && p.x >= West) && (p.y >= South && p.y < 0.0)) {
+						graphNorthEastToSouthWest.add(p);
+					}
 				}
-	
-				if ((p.x >= West && p.x < 0.0) &&(p.y <= North && p.y> 0.0)){
-					graphNorthWestToSouthEast.add(p);
-				}
-				if ((p.x > 0.0 && p.x <= East) && (p.y >= South && p.y < 0.0)) {
-					graphNorthWestToSouthEast.add(p);
-				}
-				if ((p.x <= East && p.x > 0.0) &&(p.y <= North && p.y> 0.0)){
-					graphNorthEastToSouthWest.add(p);
-				}
-				if ((p.x < 0.0 && p.x >= West) && (p.y >= South && p.y < 0.0)) {
-					graphNorthEastToSouthWest.add(p);
-				}
+
+					
+
+				
 			
 			}
 			
@@ -794,49 +710,15 @@ public class Display extends JComponent {
 			System.out.println("NorthWEST to SouthEast");
 			this.DisplayGraph(graphNorthWestToSouthEast);
 			System.out.println("");
-			this.DrawTramLine(gr2d,this.graphNorthToSouth,this.graphWestToEast,this.graphNorthEastToSouthWest,this.graphNorthWestToSouthEast);
 
 	}
-	
-	
-	public void DrawTramLine(Graphics g,ArrayList<Point2D.Double> graphNorthToSouth,ArrayList<Point2D.Double> graphWestToEast
-			,ArrayList<Point2D.Double> graphNorthEastToSouthWest,ArrayList<Point2D.Double> graphNorthWestToSouthEast) {
-		Graphics2D gr2d = (Graphics2D) g;
-		this.DrawLines(graphNorthToSouth,gr2d,Color.RED);
-		this.DrawLines(graphWestToEast,gr2d,Color.CYAN);
-		this.DrawLines(graphNorthEastToSouthWest,gr2d,Color.ORANGE);
-		this.DrawLines(graphNorthWestToSouthEast,gr2d,Color.GREEN);
-	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public void DrawLines(Graphics2D g) {///// ALGO DE PRIM
-		for (int i = 0; i < graphPoints.size(); i++) {
-			g.setColor(Color.GREEN);
-
-			for (int j = i + 1; j < graphPoints.size(); j++) {
-				double x1 = graphPoints.get(i).x;
-				double y1 = graphPoints.get(i).y;
-				double x2 = graphPoints.get(i+1).x;
-				double y2 = graphPoints.get(i+1).y;
-				g.draw(new Line2D.Double(xToPixel(x1), yToPixel(y1), xToPixel(x2), yToPixel(y2)));
-			}
-		}
-		/*for (int i = 0; i < graphPoints.size(); i++) {
-			g.setColor(Color.YELLOW);
-
-			for (int j = 0; j < graphPoints.size(); j++) {
-				double x1 = graphPoints.get(i).x;
-				double y1 = graphPoints.get(i).y;
-				double x2 = graphPoints.get(j).x;
-				double y2 = graphPoints.get(j).y;
-				g.draw(new Line2D.Double(xToPixel(x1), yToPixel(y1), xToPixel(x2), yToPixel(y2)));
-			}
-		}*/
-	}
 
 	public double getWidthPX() {
 		return widthPX;
@@ -868,14 +750,6 @@ public class Display extends JComponent {
 
 	public void setMaxStation(int maxStation) {
 		MaxStation = maxStation;
-	}
-
-	public int getaLinkPrice() {
-		return aLinkPrice;
-	}
-
-	public void setaLinkPrice(int aLinkPrice) {
-		this.aLinkPrice = aLinkPrice;
 	}
 
 	public int getRest() {
@@ -932,35 +806,6 @@ public class Display extends JComponent {
 
 	public void setDebt(int debt) {
 		this.debt = debt;
-	}
-
-	
-	public void repaint(){
-		// repaint le component courant
-		super.repaint();
-		// repaint tous les components qu'il possède
-		for(int i = 0; i < this.getComponentCount(); i++)
-		this.getComponent(i).repaint();
-	}
-
-
-	public boolean isShouldRunAlgo() {
-		return shouldRunAlgo;
-	}
-
-
-	public void setShouldRunAlgo(boolean shouldRunAlgo) {
-		this.shouldRunAlgo = shouldRunAlgo;
-	}
-
-
-	public boolean isShouldRunDisplay() {
-		return shouldRunDisplay;
-	}
-
-
-	public void setShouldRunDisplay(boolean shouldRunDisplay) {
-		this.shouldRunDisplay = shouldRunDisplay;
 	}
 
 

@@ -8,6 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,6 +38,10 @@ import sakao_common.Request;
 import sakao_common.Response;
 import sakao_common.SmartCity;
 import sakao_common.Station;
+import sakao_common.TramLineA;
+import sakao_common.TramLineB;
+import sakao_common.TramLineC;
+import sakao_common.TramLineD;
 
 public class TracerT extends JFrame implements ActionListener {
 
@@ -62,7 +70,7 @@ public class TracerT extends JFrame implements ActionListener {
 	private ObjectMapper mapper;
 	String string;
 	
-	TracerT() throws IOException {
+	TracerT() throws IOException, JSONException {
 		this.setTitle("Sakao City Tracer");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		
@@ -89,31 +97,53 @@ public class TracerT extends JFrame implements ActionListener {
 		contentPaneTop.add(Budget);
 		contentPaneTop.add(StationCost);
 		contentPaneTop.add(SimulateCity);
-		
-		/*Request request = new Request("IS_CITY","smartcity");
-		if(this.sendMessageToServer(request)) {
-			RemoveCity.setEnabled(true);
-			GenerateCity.setEnabled(true);
-			SimulateCity.setEnabled(false);
 
-		}*/
-		/////else {
+		GenerateCity.setBackground(Color.GREEN);
+		RemoveCity.setBackground(Color.RED);
+		
+		
+		Save.setBackground(Color.GREEN);
+		Reload.setBackground(Color.RED);
+		
+		
+		SimulateCity.setBackground(Color.GREEN);
+
+		
+		this.startConnection("localhost", 3030);
+		System.out.println("jsuis dans le cosntructeur");
+		ArrayList<String> array = new ArrayList<String>();
+		Request requouest = new Request("SELECT_ALL","smartcity");
+		array = this.sendMessageToServer(requouest);
+		
+		if(array.size() == 0) {
 			RemoveCity.setEnabled(false);
 			GenerateCity.setEnabled(false);
 			Reload.setEnabled(false);
 			Save.setEnabled(false);
 			SimulateCity.setEnabled(true);
-		/////}
+		}
+		else {
+			RemoveCity.setEnabled(true);
+			GenerateCity.setEnabled(true);
+			SimulateCity.setEnabled(false);
+			Reload.setEnabled(false);
+			Save.setEnabled(false);
+		}
 
-		
 		contentPaneTop.setVisible(true);
 
 		contentPaneCenter.add(display, BorderLayout.CENTER);
 		contentPaneCenter.setVisible(false);
 
-		this.setSize(500, 500);
+		this.setSize(755, 500);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
+		
+
+
+		
+		System.out.println("Array " + array);
+		
 		
 	}
 	public void startConnection(String ip, int port) throws IOException, JSONException {
@@ -138,39 +168,9 @@ public class TracerT extends JFrame implements ActionListener {
 		String injsonString = in.readLine();
 		System.out.println(injsonString);
 		System.out.println("");
-		/*(int i = 0; i < this.getDisplay().getGraphPoints().size(); i++) {
-			Station station = new Station();
-			station = mapper.readValue(injsonString,Station.class);
-			System.out.println(station.toString());
-		}*/
 		response = mapper.readValue(injsonString, Response.class);
 		return response.getList();
 	}
-	
-	public void isCity() {
-		try {
-			Request request = new Request("SELECT_ALL","smartcity");
-			this.sendMessageToServer(request);
-			if(this.response.getList().get(0).equals(null)) {
-				RemoveCity.setEnabled(false);
-				GenerateCity.setEnabled(false);
-				Reload.setEnabled(false);
-				Save.setEnabled(false);
-				SimulateCity.setEnabled(true);
-			}
-			else {
-				RemoveCity.setEnabled(true);
-				GenerateCity.setEnabled(true);
-				SimulateCity.setEnabled(false);
-			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		
-	}
-	
 	
 	public void CloseConnection() throws IOException {
 		System.out.println("waiting for disconnection");
@@ -184,8 +184,8 @@ public class TracerT extends JFrame implements ActionListener {
 	
 	public static void main (String[] args) throws UnsupportedLookAndFeelException, IOException, JSONException {
 		UIManager.setLookAndFeel(new NimbusLookAndFeel());
+		@SuppressWarnings("unused")
 		TracerT tracer = new TracerT();
-		tracer.startConnection("localhost", 3030);
 	}
 
 
@@ -201,17 +201,23 @@ public class TracerT extends JFrame implements ActionListener {
 				int b = Integer.parseInt(this.getBudget().getText());
 				int c = Integer.parseInt(this.getStationCost().getText());
 
-				if (w <= 0.0 || h <= 0.0 || b < 1 || c < 1 || c > b) {
+				if (w <= 0.0 || h <= 0.0 || b < 1 || c < 1 || c >= b) {
 					JOptionPane.showMessageDialog(null, "At least one of the field is not correct", "Error message",
 							JOptionPane.ERROR_MESSAGE);
 				}
 
 				else {
 					this.getDisplay().setShouldRunAlgo(true);
+					System.out.println("GRAPHPOINTS"+this.getDisplay().getGraphPoints() + "/////////////////////////////////////////////////////////////////////");
+
+					System.out.println("simulate should display : " + this.getDisplay().isShouldRunAlgo());
+
 					this.getDisplay().setWidthKM(w);
 					this.getDisplay().setHeightKM(h);
 					this.getDisplay().setCityBudget(b);
 					this.getDisplay().setaStationCost(c);
+					System.out.println("GRAPHPOINTS"+this.getDisplay().getGraphPoints() + "/////////////////////////////////////////////////////////////////////");
+
 					this.getContentPaneCenter().setVisible(true);
 					this.getReload().setEnabled(true);
 					this.getSave().setEnabled(true);
@@ -237,6 +243,7 @@ public class TracerT extends JFrame implements ActionListener {
 
 				} else {
 					this.getDisplay().setShouldRunAlgo(true);
+					System.out.println(" reload should display : " + this.getDisplay().isShouldRunDisplay());
 					this.getDisplay().setWidthKM(w);
 					this.getDisplay().setHeightKM(h);
 					this.getDisplay().setCityBudget(b);
@@ -255,11 +262,12 @@ public class TracerT extends JFrame implements ActionListener {
 			this.getSimulateCity().setEnabled(false);
 			this.getReload().setEnabled(false);
 			this.getGenerateCity().setEnabled(true);
-
 			this.getSave().setEnabled(false);
 			this.getRemoveCity().setEnabled(true);
 			this.getContentPaneCenter().setVisible(false);
-			this.getDisplay().setShouldRunAlgo(false);
+			System.out.println("save should display : " + this.getDisplay().isShouldRunDisplay());
+			System.out.println("should algo : " + this.getDisplay().isShouldRunAlgo());
+
 
 			
 			
@@ -270,7 +278,7 @@ public class TracerT extends JFrame implements ActionListener {
 				String s1="{";
 				String s3="}";
 			try {
-				ArrayList<String> SmartCityList = new ArrayList<String>();
+				ArrayList<String> SmartCityList = new ArrayList<String>();/////SAVE THE CITY
 				SmartCityList.add(s1);
 				SmartCityList.add("heightkm");
 				SmartCityList.add(h);
@@ -283,7 +291,6 @@ public class TracerT extends JFrame implements ActionListener {
 				SmartCityList.add(s3);
 
 				Request requestCity = new Request(INSERT, "smartcity", SmartCityList);
-
 				this.sendMessageToServer(requestCity);
 			} catch (IOException e1) {
 					e1.printStackTrace();
@@ -293,29 +300,120 @@ public class TracerT extends JFrame implements ActionListener {
 				
 
 			try {
-				for(int i = 0; i < this.getDisplay().getGraphPoints().size(); i ++) {
+				for(int i = 0; i < this.getDisplay().getGraphPoints().size(); i ++) {/////SAVE STATIONS
 					ArrayList<String> StationList = new ArrayList<String>();
 					Double doubleX = (this.getDisplay().getGraphPoints().get(i).getX());
 					String  stringX = doubleX.toString();
 					Double doubleY = (this.getDisplay().getGraphPoints().get(i).getY());
 					String  stringY = doubleY.toString();
-					StationList.add(s1);StationList.add("typestation");StationList.add("tramway");StationList.add("coordX");
-					StationList.add(stringX);StationList.add("coordY");StationList.add(stringY);StationList.add("isbuilt");StationList.add("true");
+					StationList.add(s1);StationList.add("typestation");StationList.add("tramway");StationList.add("coordx");
+					StationList.add(stringX);StationList.add("coordy");StationList.add(stringY);StationList.add("isbuilt");StationList.add("true");
 					StationList.add(s3);
-					Request requestStation = new Request(INSERT,"station",StationList);
-					
+					Request requestStation = new Request(INSERT,"station",StationList);			
 					this.sendMessageToServer(requestStation);
 					
 				}
-					/*StationList.add("tramway",true,this.getDisplay().getGraphPoints().get(i).x,this.getDisplay().getGraphPoints().get(i).y);
-					Request request = new Request("insert","station",station);*/
-					///this.sendMessagToServer(;
+
+
 
 				}
 			
 				catch (IOException e1) {
 					e1.printStackTrace();
 				}
+			
+			try {
+				for(int i = 0; i < this.getDisplay().getGraphNorthToSouth().size(); i ++) {///// SAVE TRAM LINE A
+					ArrayList<String> TramLineAList = new ArrayList<String>();
+					Double doubleX = (this.getDisplay().getGraphNorthToSouth().get(i).getX());
+					String  stringX = doubleX.toString();
+					Double doubleY = (this.getDisplay().getGraphNorthToSouth().get(i).getY());
+					String  stringY = doubleY.toString();
+					TramLineAList.add(s1);TramLineAList.add("coordx");TramLineAList.add(stringX);
+					TramLineAList.add("coordy");
+					TramLineAList.add(stringY);
+					TramLineAList.add(s3);
+					Request requestTramLineA = new Request(INSERT,"tramlinea",TramLineAList);
+					System.out.println(TramLineAList);
+					this.sendMessageToServer(requestTramLineA);
+				}
+
+
+			}
+			
+				catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			
+			
+			try {
+				for(int i = 0; i < this.getDisplay().getGraphWestToEast().size(); i ++) {///// SAVE TRAM LINE B
+					ArrayList<String> TramLineBList = new ArrayList<String>();
+					Double doubleX = (this.getDisplay().getGraphWestToEast().get(i).getX());
+					String  stringX = doubleX.toString();
+					Double doubleY = (this.getDisplay().getGraphWestToEast().get(i).getY());
+					String  stringY = doubleY.toString();
+					TramLineBList.add(s1);TramLineBList.add("coordx");TramLineBList.add(stringX);
+					TramLineBList.add("coordy");
+					TramLineBList.add(stringY);
+					TramLineBList.add(s3);
+					Request requestTramLineB = new Request(INSERT,"tramlineb",TramLineBList);
+					this.sendMessageToServer(requestTramLineB);
+				}
+				
+
+			}
+			
+				catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			
+			
+			try {
+				for(int i = 0; i < this.getDisplay().getGraphNorthEastToSouthWest().size(); i ++) {///// SAVE THE LINE C
+					ArrayList<String> TramLinecList = new ArrayList<String>();
+					Double doubleX = (this.getDisplay().getGraphNorthEastToSouthWest().get(i).getX());
+					String  stringX = doubleX.toString();
+					Double doubleY = (this.getDisplay().getGraphNorthEastToSouthWest().get(i).getY());
+					String  stringY = doubleY.toString();
+					TramLinecList.add(s1);TramLinecList.add("coordx");TramLinecList.add(stringX);
+					TramLinecList.add("coordy");
+					TramLinecList.add(stringY);
+					TramLinecList.add(s3);
+					Request requestTramLineC = new Request(INSERT,"tramlinec",TramLinecList);
+					this.sendMessageToServer(requestTramLineC);
+				}
+
+			}
+			
+				catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			
+			
+			try {
+				for(int i = 0; i < this.getDisplay().getGraphNorthWestToSouthEast().size(); i ++) {/////SAVE THE LINE D
+					ArrayList<String> TramLineDList = new ArrayList<String>();
+					Double doubleX = (this.getDisplay().getGraphNorthWestToSouthEast().get(i).getX());
+					String  stringX = doubleX.toString();
+					Double doubleY = (this.getDisplay().getGraphNorthWestToSouthEast().get(i).getY());
+					String  stringY = doubleY.toString();
+					TramLineDList.add(s1);TramLineDList.add("coordx");TramLineDList.add(stringX);
+					TramLineDList.add("coordy");
+					TramLineDList.add(stringY);
+					TramLineDList.add(s3);
+					Request requestTramLineD = new Request(INSERT,"tramlined",TramLineDList);
+					this.sendMessageToServer(requestTramLineD);
+				}
+
+			}
+			
+				catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			
+			
+			
 			JOptionPane.showMessageDialog(null, "You saved the city and stations", "City and stations saved !",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -325,6 +423,8 @@ public class TracerT extends JFrame implements ActionListener {
 		if(e.getSource().equals(this.getRemoveCity())) {
 			this.getRemoveCity().setEnabled(false);
 			this.getSave().setEnabled(false);
+			this.getReload().setEnabled(false);
+
 			this.getSimulateCity().setEnabled(true);
 			this.getGenerateCity().setEnabled(false);
 			
@@ -345,6 +445,44 @@ public class TracerT extends JFrame implements ActionListener {
 						catch(IOException e1) {
 				e1.printStackTrace();
 			}
+			
+			
+			try {
+				Request requestDeleteTramLineA = new Request("DELETE_ALL","tramlinea");
+				this.sendMessageToServer(requestDeleteTramLineA);
+			}
+			catch(IOException e1) {
+				e1.printStackTrace();
+			}
+			
+			try {
+				Request requestDeleteTramLineB = new Request("DELETE_ALL","tramlineb");
+				this.sendMessageToServer(requestDeleteTramLineB);
+			}
+			catch(IOException e1) {
+				e1.printStackTrace();
+			}
+			
+			
+			try {
+				Request requestDeleteTramLineC = new Request("DELETE_ALL","tramlinec");
+				this.sendMessageToServer(requestDeleteTramLineC);
+			}
+			catch(IOException e1) {
+				e1.printStackTrace();
+			}
+			
+			
+			try {
+				Request requestDeleteTramLineD = new Request("DELETE_ALL","tramlined");
+				this.sendMessageToServer(requestDeleteTramLineD);
+			}
+			catch(IOException e1) {
+				e1.printStackTrace();
+			}
+			
+			
+			
 			this.getContentPaneCenter().setVisible(false);
 
 			JOptionPane.showMessageDialog(null, "You remove the city and stations", "City and stations removed!",
@@ -353,10 +491,14 @@ public class TracerT extends JFrame implements ActionListener {
 		
 		
 		if (e.getSource().equals(this.getGenerateCity())) { ///// LIRE LA BDD ET AFFICHER
+			this.getDisplay().setShouldRunAlgo(false);
 			this.getRemoveCity().setEnabled(true);
 			this.getSave().setEnabled(false);
+			this.getReload().setEnabled(false);
 			this.getSimulateCity().setEnabled(false);
 			this.getGenerateCity().setEnabled(false);
+			this.getDisplay().setShouldRunDisplay(true);
+
 
 			try {///// SELECT DEJA LES DIMENSIONS DE LA VILLE
 				Request request = new Request("SELECT_DIMENSION", "smartcity");
@@ -366,18 +508,21 @@ public class TracerT extends JFrame implements ActionListener {
 	
 				
 					String s = list.get(0) + "\n";
-					 System.out.println("S: "+s);
+					 /////System.out.println("S: "+s);
 					SmartCity req = new ObjectMapper().readValue(s, SmartCity.class);
 					 double x = req.getHeightkm();
 					 double y = req.getWidthkm();
+					 System.out.println(" ///////////////" + x + " " + y);
 					listSmartCity.add(req);
 					listDimension.add(x);
 					listDimension.add(y);
 				this.getDisplay().setHeightKM(x);
 				this.getDisplay().setWidthKM(y);
-				
 			} catch (Exception e1) {
-				e1.printStackTrace();
+				System.out.println("SmartCity is empty !");
+				JOptionPane.showMessageDialog(null, "The smart city is empty", "Error message",
+						JOptionPane.ERROR_MESSAGE);
+
 			}
 
 			try {///// SELECT LES COORDONNEES DES STATIONS
@@ -399,17 +544,106 @@ public class TracerT extends JFrame implements ActionListener {
 
 				
 			} catch (IOException e2) {
-				e2.printStackTrace();
+				System.out.println("Station is empty");
+				JOptionPane.showMessageDialog(null, "Stations are empty", "Error message",
+						JOptionPane.ERROR_MESSAGE);
 			}
 
 			try {///// SELECT DEJA LES COORDONNES DE CHAQUE LIGNE DE TRAMWAY
-
+				Request request = new Request("SELECT_TRAMLINEA", "tramlinea");
+				ArrayList<String> list = this.sendMessageToServer(request);
+				ArrayList<TramLineA> listTramLineA = new ArrayList<TramLineA>();
+				ArrayList<Point2D.Double> listTramAStationCoord = new ArrayList<Point2D.Double>();
+				for (int i = 0; i < list.size(); i++) {
+					String s = list.get(i) + "\n";
+					/// System.out.println("S: "+s);
+					TramLineA req1 = new ObjectMapper().readValue(s, TramLineA.class);
+					double x = req1.getCoordx();
+					double y = req1.getCoordy();
+					Point2D.Double p = new Point2D.Double(x, y);
+					listTramLineA.add(req1);
+					listTramAStationCoord.add(p);
+				}
+				this.getDisplay().setGraphNorthToSouth(listTramAStationCoord);
 			} catch (Exception e1) {
 				e1.printStackTrace();
+				System.out.println("TramLineA is empty");
+				JOptionPane.showMessageDialog(null, "TramLineA empty", "Error message",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			
+			
+			try {///// SELECT DEJA LES COORDONNES DE CHAQUE LIGNE DE TRAMWAY
+				Request request = new Request("SELECT_TRAMLINEB", "tramlineb");
+				ArrayList<String> list = this.sendMessageToServer(request);
+				ArrayList<TramLineB> listTramLineB = new ArrayList<TramLineB>();
+				ArrayList<Point2D.Double> listTramBStationCoord = new ArrayList<Point2D.Double>();
+				for (int i = 0; i < list.size(); i++) {
+					String s = list.get(i) + "\n";
+					/// System.out.println("S: "+s);
+					TramLineB req1 = new ObjectMapper().readValue(s, TramLineB.class);
+					double x = req1.getCoordx();
+					double y = req1.getCoordy();
+					Point2D.Double p = new Point2D.Double(x, y);
+					listTramLineB.add(req1);
+					listTramBStationCoord.add(p);
+				}
+				this.getDisplay().setGraphWestToEast(listTramBStationCoord);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				System.out.println("TramLineA is empty");
+				JOptionPane.showMessageDialog(null, "TramLineA empty", "Error message",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			
+			
+			try {///// SELECT DEJA LES COORDONNES DE CHAQUE LIGNE DE TRAMWAY
+				Request request = new Request("SELECT_TRAMLINEC", "tramlinec");
+				ArrayList<String> list = this.sendMessageToServer(request);
+				ArrayList<TramLineC> listTramLineC = new ArrayList<TramLineC>();
+				ArrayList<Point2D.Double> listTramCStationCoord = new ArrayList<Point2D.Double>();
+				for (int i = 0; i < list.size(); i++) {
+					String s = list.get(i) + "\n";
+					/// System.out.println("S: "+s);
+					TramLineC req1 = new ObjectMapper().readValue(s, TramLineC.class);
+					double x = req1.getCoordx();
+					double y = req1.getCoordy();
+					Point2D.Double p = new Point2D.Double(x, y);
+					listTramLineC.add(req1);
+					listTramCStationCoord.add(p);
+				}
+				this.getDisplay().setGraphNorthEastToSouthWest(listTramCStationCoord);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				System.out.println("TramLineA is empty");
+				JOptionPane.showMessageDialog(null, "TramLineA empty", "Error message",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			
+			
+			try {///// SELECT DEJA LES COORDONNES DE CHAQUE LIGNE DE TRAMWAY
+				Request request = new Request("SELECT_TRAMLINED", "tramlined");
+				ArrayList<String> list = this.sendMessageToServer(request);
+				ArrayList<TramLineD> listTramLineD = new ArrayList<TramLineD>();
+				ArrayList<Point2D.Double> listTramDStationCoord = new ArrayList<Point2D.Double>();
+				for (int i = 0; i < list.size(); i++) {
+					String s = list.get(i) + "\n";
+					/// System.out.println("S: "+s);
+					TramLineD req1 = new ObjectMapper().readValue(s, TramLineD.class);
+					double x = req1.getCoordx();
+					double y = req1.getCoordy();
+					Point2D.Double p = new Point2D.Double(x, y);
+					listTramLineD.add(req1);
+					listTramDStationCoord.add(p);
+				}
+				this.getDisplay().setGraphNorthWestToSouthEast(listTramDStationCoord);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				System.out.println("TramLineA is empty");
+				JOptionPane.showMessageDialog(null, "TramLineA empty", "Error message",
+						JOptionPane.ERROR_MESSAGE);
 			}
 
-			this.getDisplay().setShouldRunDisplay(true);
-			this.getDisplay().setShouldRunAlgo(false);
 			this.getContentPaneCenter().setVisible(true);
 
 			JOptionPane.showMessageDialog(null, "You have generated the existing city", "Existing city generated !",
@@ -509,8 +743,31 @@ public class TracerT extends JFrame implements ActionListener {
 			    
 		 });
 
+		 
+			this.addWindowListener(new WindowAdapter() {
+
+				@Override
+				public void windowClosing(WindowEvent e) {
+					try {
+						CloseConnection();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			});
 
 }
+	
+	
+	public void mouseWheelMoved(MouseWheelEvent arg0){
+	if(arg0.getPreciseWheelRotation() < 0) {
+		this.getDisplay().setWidthKM(this.getDisplay().getWidthKM() - (this.getDisplay().getWidthKM() * 0.20));
+		this.getDisplay().setHeightKM(this.getDisplay().getHeightKM() - (this.getDisplay().getHeightKM() * 0.20));
+		this.contentPaneCenter.setSize(3, 3);
+
+	}
+	}
 
 
 

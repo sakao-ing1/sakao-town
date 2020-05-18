@@ -13,7 +13,7 @@ public class ServerSakao {
 
 	public void start(int port) throws IOException, JSONException, ClassNotFoundException {
 		serverSocket = new ServerSocket(port);
-		datasource = new DataSource();
+		setDatasource(new DataSource());
 		while (true) {
 
 			new ClientThread(serverSocket.accept()).start();
@@ -38,6 +38,14 @@ public class ServerSakao {
 		ServerSakao serveur1 = new ServerSakao();
 		serveur1.start(3030);
 		serveur1.CloseConnection();
+	}
+
+	public static DataSource getDatasource() {
+		return datasource;
+	}
+
+	public static void setDatasource(DataSource datasource) {
+		ServerSakao.datasource = datasource;
 	}
 
 }
