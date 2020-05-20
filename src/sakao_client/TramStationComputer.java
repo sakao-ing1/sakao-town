@@ -2,6 +2,8 @@ package sakao_client;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class TramStationComputer{//////////////////////////////////////// CONTAINS THE TWO ALGORITHMS
@@ -238,6 +240,9 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 	}
 
 	public void clean() {
+		System.out.println("");
+		System.out.println("_______________");
+		System.out.println("Cleaning process");
 		Iterator<Point2D.Double> it = graphPoints.iterator();
 		if (this.isACircle()) {
 			while(it.hasNext()) {
@@ -255,22 +260,44 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 				}
 			}
 		}
-
+		System.out.println("Current number of stations and position in the city : " + this.graphPoints.toString());
+		System.out.println("cleaning done");
+		System.out.println("________________");
+		System.out.println("");
 		///this.DrawPoints(gr2d);
 	}
 
 	public void PlacementOfTwoPerLine(int TotalLineToPack, int StationsToPackEachLine) {
-		///double stepX1 = -(0.10 * widthKM);
-		double stepX2 = -(0.30 * (widthKM));///// LORSQUE 2 A PLACER
-		double stepX3 = -(0.60 * widthKM);///// LORSQUE 2 OU 3 A PLACER
-		double stepX4 = -(0.80 * widthKM);///// LORSQUE 2 A PLACER
+		@SuppressWarnings("unused")
+		double stepX1 = -(0.10 * widthKM);
+		double stepX2 = -(0.30 * (widthKM));
+		double stepX3 = -(0.60 * widthKM);
+		double stepX4 = -(0.80 * widthKM);
 		int comptorP = 1;
 		int comportO = 1;
+		System.out.println("________________");
+		System.out.println("Plaement of two stations per line calculation");
+		System.out.println("");
+		System.out.println("Initialization of axis : ");
+		System.out.println("");
+		System.out.println("Step x1 = " + stepX1);
+		System.out.println("Step x2 = " + stepX2);
+		System.out.println("Step x3 = " + stepX3);
+		System.out.println("Step x4 = " + stepX4);
+		System.out.println("");
 	
-		double stepY = (this.heightKM * 2) / TotalLineToPack;///// LORSQUE 2 OU 3 A PLACER
-
+		double stepY = (this.heightKM * 2) / TotalLineToPack;
+		System.out.println("Step y = " + stepY);
+		System.out.println("");
+		System.out.println("Initialization of stations coordinates");
+		
 		double xp = 0.0;
 		double yp = (this.heightKM * 0.95);
+		
+		System.out.println("x :" + xp);
+		System.out.println("y : " + yp);
+		
+		
 
 		for (int i = 1; i <= TotalLineToPack; i++) {
 			for (int j = 1; j <= StationsToPackEachLine - 1; j++) {
@@ -280,23 +307,40 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 						if (comportO % 2 == 1) {
 							if(this.MaxStation  >= 40) {
 								xp =-(0.40 * (widthKM));
+								System.out.println("new coordinates calculation");
+								System.out.println("x : " +  xp);
+								System.out.println("");
 							}
 							else {
 								xp = stepX2;
-
+								System.out.println("new coordinates calculation");
+								System.out.println("x : " +  xp);
+								System.out.println("");
 							}
 							yp = yp - stepY;
+							System.out.println("new coordinates calculation");
+							System.out.println("y : " +  yp);
+							System.out.println("");
 							comportO = comportO + 1;
 						} else {
 							if(this.MaxStation  >= 40) {
 								xp = -(0.20 * widthKM);
+								System.out.println("new coordinates calculation");
+								System.out.println("x : " +  xp);
+								System.out.println("");
 							}
 							else {
 								xp = -(0.15 * widthKM);
+								System.out.println("new coordinates calculation");
+								System.out.println("x : " +  xp);
+								System.out.println("");
 
 							}
 
 							yp = yp - stepY;
+							System.out.println("new coordinates calculation");
+							System.out.println("y : " +  yp);
+							System.out.println("");
 							comportO = comportO + 1;
 
 						}
@@ -304,11 +348,19 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 						if (comptorP % 2 == 1) {
 							xp = stepX3;
 							yp = yp - stepY;
+							System.out.println("new coordinates calculation");
+							System.out.println("x : " +  xp);
+							System.out.println("y : " + yp);
+							System.out.println("");
 							comptorP = comptorP + 1;
 
 						} else {
 							xp = stepX4;
 							yp = yp - stepY;
+							System.out.println("new coordinates calculation");
+							System.out.println("x : " +  xp);
+							System.out.println("y : " + yp);
+							System.out.println("");
 							comptorP = comptorP + 1;
 
 						}
@@ -318,10 +370,19 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 				else {
 					if (i % 2 == 1) {
 						xp = stepX2;
+						System.out.println("new coordinates calculation");
+						System.out.println("x : " +  xp);
+						System.out.println("");
 						if (i == 1) {
 							yp = (this.heightKM) * 0.80;
+							System.out.println("new coordinates calculation");
+							System.out.println("y : " + yp);
+							System.out.println("");
 						} else {
 							yp = yp - stepY;
+							System.out.println("new coordinates calculation");
+							System.out.println("y : " + yp);
+							System.out.println("");
 						}
 					}
 
@@ -329,16 +390,29 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 							|| (i % 2 == 0) && (this.isInTheEllipse(stepX3, yp))) {
 						xp = stepX3;
 						yp = yp - stepY;
+						System.out.println("new coordinates calculation");
+						System.out.println("x : " +  xp);
+						System.out.println("y : " + yp);
+						System.out.println("");
 					} else {
 						xp = 0.0;
 						yp = yp - stepY;
+						System.out.println("new coordinates calculation");
+						System.out.println("x : " +  xp);
+						System.out.println("y : " + yp);
+						System.out.println("");
 
 					}
 				}
 
 				Point2D.Double P = new Point2D.Double(xp, yp);
+				System.out.println("Coordinates calculated : " + P.toString());
+				System.out.println("");
 
 				while (this.pontExist(P)) {
+					System.out.println("Coordinates already exists");
+					System.out.println("Calculation to fin new coordinates");
+					System.out.println("");
 					if (P.x < 0) {
 						P.x = P.x - (widthKM / 10.0);
 
@@ -348,9 +422,15 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 				}
 
 				this.graphPoints.add(P);
+				System.out.println("Final coordinates : " + P.toString());
 				this.graphPoints.add(this.ySymetric(P));
+				System.out.println("Add the symetric of this station : " + this.ySymetric(P).toString());
+				System.out.println("");
 				
 			}
+			System.out.println("Current number and position of each stations : " + this.graphPoints.toString());
+			System.out.println("_______________");
+			System.out.println("");
 		}
 		/*System.out.println("///////////////////////////////////////////////////////////////");
 		System.out.println("A la sortie de place twoperline");
@@ -363,42 +443,61 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 	}
 
 	public void PlaceTheRestOrTheDebt() {
+
 		if (this.rest == 1) { ///// WHEN U HAVE AN IMPAIR MAXSTATION TO PLACE THE LAST ONE IS PLACED
-			System.out.println(" jsuis au rest");
+			System.out.println("_______________");
+			System.out.println("Calculation of the rest ");
 			Point2D.Double p = new Point2D.Double(0, 0);
+			System.out.println(" There is a station to place : " + p.toString());
+			System.out.println("");
+			
 			while (this.pontExist(p)) {
+				System.out.println("This station is already in the city, calculation of new position : ");
 				p.x = p.x - (widthKM / 10.0);
 			}
 			this.graphPoints.add(p);
-			System.out.println("Jai ajoute le rest soit un point : " + p);
-
+			System.out.println("");
+			System.out.println("Rest added to the city at position : " + p);
+			System.out.println("Current number and position of station : " + this.graphPoints.toString());
+			System.out.println("_______________");
+			System.out.println("");
 		}
 
 		if (this.debt == 1) {
+			System.out.println("_______________");
+			System.out.println("Calculation of the debt");
+			System.out.println("");
 			Point2D.Double p = new Point2D.Double(0, 0);
+			System.out.println(" There is a station to place : " + p.toString());
 			while (this.pontExist(p)) {
+				System.out.println("This station is already in the city, calculation of new position : ");
 				p.x = p.x - (widthKM / 10.0);
 			}
 			this.graphPoints.add(p);
-			System.out.println("Jai ajoute la dette soit un point : " + p);
-
+			System.out.println("");
+			System.out.println("Debt added to the city at position : " + p);
+			System.out.println("Current number and position of station : " + this.graphPoints.toString());
+			System.out.println("_______________");
+			System.out.println("");
 			this.MaxStation = this.MaxStation + 1;
-
 			this.debt = this.debt - 1;
+			System.out.println("Number of max station update to : " + this.MaxStation);
 		}
 	}
 
 	public void PlaceTheFiveFirstCase() {
-		if (this.MaxStation == 1) {
-			graphPoints = new ArrayList<Point2D.Double>(MaxStation);
-			this.graphPoints.add(new Point2D.Double(0.0, 0.0));
-		}
 
-		else if (this.MaxStation == 2) {
+		if (this.MaxStation == 2) {
 			graphPoints = new ArrayList<Point2D.Double>(MaxStation);
 			Point2D.Double p = new Point2D.Double((-this.widthKM) * 0.60, this.heightKM * 0.60);
 			this.graphPoints.add(p);
 			this.graphPoints.add(OSymetric(p));
+			System.out.println("");
+			System.out.println("__________");
+			System.out.println("Current number of station calculated : " + this.graphPoints.size());
+			System.out.println("Stations location : " + graphPoints.toString());
+			System.out.println("__________");
+			System.out.println("");
 
 		}
 
@@ -407,6 +506,12 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 			this.graphPoints.add(new Point2D.Double(0.0, this.heightKM * 0.60));
 			this.graphPoints.add(new Point2D.Double((-this.widthKM) * 0.60, (-this.heightKM) * 0.40));
 			this.graphPoints.add(new Point2D.Double(this.widthKM * 0.60, (-this.heightKM) * 0.40));
+			System.out.println("");
+			System.out.println("__________");
+			System.out.println("Current number of station calculated : " + this.graphPoints.size());
+			System.out.println("Station's location : " + graphPoints.toString());
+			System.out.println("__________");
+			System.out.println("");
 		}
 
 		else if (this.MaxStation == 4) {
@@ -416,6 +521,12 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 			this.graphPoints.add(xSymetric(p));
 			this.graphPoints.add(ySymetric(p));
 			this.graphPoints.add(OSymetric(p));
+			System.out.println("");
+			System.out.println("__________");
+			System.out.println("Current number of station calculated : " + this.graphPoints.size());
+			System.out.println("Stations location : " + graphPoints.toString());
+			System.out.println("__________");
+			System.out.println("");
 
 		}
 
@@ -427,63 +538,116 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 			this.graphPoints.add(ySymetric(p));
 			this.graphPoints.add(OSymetric(p));
 			this.graphPoints.add(new Point2D.Double(0.0, 0.0));
+			System.out.println("");
+			System.out.println("__________");
+			System.out.println("Current number of station calculated : " + this.graphPoints.size());
+			System.out.println("Station's location : " + graphPoints.toString());
+			System.out.println("__________");
+			System.out.println("");
 		}
+		System.out.println("end of default position");
+		System.out.println("_______________");
+		System.out.println("");
 	}
 
 	public void ReplacePointOutTheGraph(int PointOuTheGraph) {
+		System.out.println("");
+		System.out.println("________________");
+		System.out.println("Replacement process of stations out the city");
+		System.out.println("");
 		int comptor = 0;
 		if (PointOuTheGraph == 2) {
+			System.out.println(PointOuTheGraph + " stations to replace");
+			System.out.println("");
 			double y = this.heightKM * 0.5;
 			double x = 0.0;
+			System.out.println("new coordinates x : " + x);
+			System.out.println("new coordinates y : " + y);
+			System.out.println("");
 			Point2D.Double P1 = new Point2D.Double(x, y);
 			this.graphPoints.add(P1);
 			this.graphPoints.add(xSymetric(P1));
+			System.out.println("Stations replaced in the city : " + P1.toString() + " and " + xSymetric(P1).toString());
+			System.out.println("");
+			System.out.println("end of replacement process");
+			System.out.println("_______________");
+			System.out.println("");
 
 		} else if (PointOuTheGraph == 1) {
+			System.out.println(PointOuTheGraph + " station to replace");
+			System.out.println("");
 			Point2D.Double P1 = new Point2D.Double(0.0, 0.0);
+			System.out.println("new coordinates x : " + P1.x);
+			System.out.println("new coordinates y : " + P1.y);
+			System.out.println("");
 			while (this.pontExist(P1)) {
+				System.out.println("This station is already in the city, calculation of new position : " + P1.toString());
+
 				if (P1.x <= 0) {
 					P1.x = P1.x - (widthKM / 10.0);
+					System.out.println("new coordinates x : " + P1.x);
 
 				} else if (P1.x > 0) {
 					P1.x = P1.x - (widthKM / 10.0);
-
-
+					System.out.println("new coordinates x : " + P1.x);
+					System.out.println("");
 				}
 			}
 			this.graphPoints.add(P1);
+			System.out.println("Station added to the city at position : " + P1.toString());
+			System.out.println("end of the replacement process");
+			System.out.println("_______________");
+			System.out.println("");
 
 		} else {
+			System.out.println(PointOuTheGraph + " stations to replace");
+			System.out.println("");
 
-			if (PointOuTheGraph % 2 == 0) {///// MULTIPLE OF 2 TO PLACE
+			if (PointOuTheGraph % 2 == 0) {///// Number peer of station to replace in the city
 				double y = this.heightKM * 0.80;
 				double x = 0.0;
+				System.out.println("new coordinates x : x " + x);
+				System.out.println("new coordinates y : " + y);
+				System.out.println("");
 				double stepYPointOut = ((this.heightKM) * 2) / PointOuTheGraph;
 				for (int k = 0; k < PointOuTheGraph; k++) {
 					if (k == 0) {
 						y = this.heightKM * 0.80;
 						x = 0.0;
+						System.out.println("new coordinates x : " + x);
+						System.out.println("new coordinates y : " + y);
+						System.out.println("");
 					} else {
 						x = 0.0;
 						y = y - stepYPointOut;
+						System.out.println("new coordinates x : " + x);
+						System.out.println("new coordinates y : " + y);
+						System.out.println("");
 					}
 					Point2D.Double P1 = new Point2D.Double(x, y);
 					if(!this.isInTheCircle(P1.x,P1.y) || !this.isInTheEllipse(P1.x,P1.y)) {
+						System.out.println("Check if the station is in the city : false the station is out");
+						System.out.println("");
 						comptor = comptor + 1;
 					}
 					else {
 						while (this.pontExist(P1)) {
+							System.out.println("a station already exists");
+							System.out.println("calculation of a new position");
 							if (P1.x <= 0) {
 								P1.x = P1.x - (widthKM / 10.0);
+								System.out.println("new coordinates x :" + x);
+								System.out.println("");
 	
 							} else if (P1.x > 0) {
 								P1.x = P1.x + (widthKM / 10.0);
+								System.out.println("new coordinates x : " + x);
+								System.out.println("");
 							}
 						}
 	
 						this.graphPoints.add(P1);
-						System.out.println(k);
-						/////System.out.println(P1);
+						
 					}
 				}
 				double stepYComptor= ((this.heightKM) * 2) / comptor;
@@ -501,8 +665,9 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 
 
 					this.graphPoints.add(P1);
-					/////System.out.println(P1);
+			
 				}
+
 
 			} else if (PointOuTheGraph % 2 == 1 && PointOuTheGraph >= 3) { ///// CAR IMPAIRE SUP OU EGAL A 3 A PLACER
 				double stepYPointOut = (this.heightKM * 2) / PointOuTheGraph;
@@ -514,24 +679,39 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 					if (k == 0) {
 						y = this.heightKM * 0.80;
 						x = 0.0;
+						System.out.println("new coordinates x : " + x);
+						System.out.println("new coordinates y : " + y);
+						System.out.println("");
 					} else {
 						x = 0.0;
 						y = y - stepYPointOut;
+						System.out.println("new coordinates x : " + x);
+						System.out.println("new coordinates y : " + y);
+						System.out.println("");
 					}
 					Point2D.Double P1 = new Point2D.Double(x, y);
 					while (this.pontExist(P1)) {
+						System.out.println("a station already exists at this position");
 						if (P1.x <= 0) {
 							P1.x = P1.x - (widthKM / 10.0);
+							System.out.println("new coordinates : x " + P1.x);
+							System.out.println("");
 
 						} else if (P1.x > 0) {
 							P1.x = P1.x - (widthKM / 10.0);
+							System.out.println("new coordinates : x " + P1.x);
+							System.out.println("");
 						}
 					}
 					this.graphPoints.add(P1);
 				}
 
 			}
+
 		}
+		System.out.println("end of replacement process");
+		System.out.println("Station's location : " + graphPoints.toString());
+		System.out.println("__________");
 	}
 
 	//////////////////////////////////   ALGO OF REPARTITION OF STATIONS ///////////////////////////////////////////////////
@@ -552,84 +732,145 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 		this.debt = 0;
 		this.MaxStation = budget / cost;
 		this.graphPoints = new ArrayList<Point2D.Double>();
-		
+		System.out.println("");
+		System.out.println("//////////////////////////////////////////////////////////");
+		System.out.println("BEGINING OF THE ALGORITHM");
+		System.out.println("//////////////////////////////////////////////////////////");
+
+		System.out.println("_______________");
 		System.out.println("City's width in km : " + this.widthKM);
 		System.out.println("City's height in km  : " + this.heightKM);
 		System.out.println("City's budget : " + this.CityBudget);
 		System.out.println("A station cost : " + this.aStationCost);
 		System.out.println("Max station initialized to : " + MaxStation);
+		System.out.println("Current number of station initialized to : " + this.graphPoints.size());
+		System.out.println("_______________");
+		System.out.println("");
 
+		
 
 		///// Establish points position and add them to the list______ heart of the
 		///// algorithm <3
 
 		if (this.MaxStation <= 5) {
+			System.out.println("");
+			System.out.println("_______________");
+			System.out.println("MaxStation <= 5");
+			System.out.println("Number of max station not enough to launch calculations : ");
+			System.out.println("defaults values applicated for station's location in this case : efficient solution");
+			System.out.println("");
 			this.PlaceTheFiveFirstCase();
 		}
 
 		else {
+			System.out.println("");
+			System.out.println("MaxStation > 5");
+			System.out.println("Number of max station enough to launch calculations");
+			System.out.println("");
+
 			int TotalLineToPack;
 			int StationsToPackEachLine;
 
-			if (this.widthKM == this.heightKM || this.widthKM != this.heightKM) {///// Circle case
+			if (this.widthKM == this.heightKM || this.widthKM != this.heightKM) {
 				/// int step = (TotalStationsToPack - StationsToPackEachLine);
 				int PointOuTheGraph = 0;
 				int PointInTheGraph = 0;
+				System.out.println("Point out the city before calculation initialized to : " + PointOuTheGraph );
+				System.out.println("Point in the city before calculation initialized to : " + PointInTheGraph );
+				System.out.println("");
+
+
 
 				/*
 				 * else if(StationsToPackEachLine == 3) { } else {
 				 * this.PlacementOfTwoPerLine(TotalLineToPack, StationsToPackEachLine); }
 				 */
 				if (this.MaxStation % 2 == 0) {
-					System.out.println("jsuis dans le if paire et maxstation vaut : " + this.MaxStation);
+					System.out.println("________________");
+					System.out.println("The rest of the division " + this.MaxStation + "/" + "2  = "+ this.MaxStation % 2 + " the number of station to place is peer");
+					System.out.println("Launch of the calculation in case of max station peer");
+					System.out.println("");
+
+					System.out.println("Calculation max diviser of max station");
 					TotalLineToPack = this.StationDiviser(this.MaxStation);
 					StationsToPackEachLine = MaxStation / TotalLineToPack;
+					System.out.println("");
+					System.out.println("Total of line to place =  "  + TotalLineToPack);
+					System.out.println("Stations to pack each line = " + StationsToPackEachLine);
+					System.out.println("");
+
 					this.PlacementOfTwoPerLine(TotalLineToPack, StationsToPackEachLine);
 					this.PlaceTheRestOrTheDebt();
+					
 					PointOuTheGraph = this.HowManyNotInTheCircle();
 					PointInTheGraph = this.HowManyInTheCircle();
-					System.out.println("Point out the graph : " + PointOuTheGraph);
-					System.out.println("Point in the graph : " + PointInTheGraph);
-
+					System.out.println("Point out the city updated after first calculation to : " + PointOuTheGraph );
+					System.out.println("Point in the city updated after first calculation  to : " + PointInTheGraph );
+					System.out.println("");
+					
+					
 					this.ReplacePointOutTheGraph(PointOuTheGraph);
 					this.clean();
-					
 					PointOuTheGraph = this.HowManyNotInTheCircle();
 					PointInTheGraph = this.HowManyInTheCircle();
-					
-					System.out.println("Point out the graph : " + PointOuTheGraph);
-					System.out.println("Point in the graph : " + PointInTheGraph);
-					System.out.println("size : " + this.graphPoints.size());
+					System.out.println("Point out the city updated after the replacement of stations and cleaning in the city : " + PointOuTheGraph );
+					System.out.println("Point in the city updated after the replacement of stations and cleaning in the city   to : " + PointInTheGraph );
+					System.out.println("");
+					/////System.out.println("size : " + this.graphPoints.size());
 
 				}
 
 				else if(this.MaxStation % 2 == 1){
+					System.out.println("________________");
+					System.out.println(this.MaxStation + "/" + "2  = "+ this.MaxStation % 2 + " the number of station to place is not peer");
+					System.out.println("Launch of the calculation in case of max station not peer");
+					System.out.println("");
 					int max = MaxStation - 1;
 					this.MaxStation = max;
-					System.out.println("je suis dans le else et maxstation vaut " + this.MaxStation);
+					
+					System.out.println("new calculation with Maxstation - 1 : " + this.MaxStation);
 					this.debt = this.debt + 1;
-					System.out.println(debt);
+					System.out.println("debt initialized to : " + this.debt);
+					
 					TotalLineToPack = this.StationDiviser(max);
 					StationsToPackEachLine = MaxStation / TotalLineToPack;
+					System.out.println("");
+					System.out.println("Total of line to place =  "  + TotalLineToPack);
+					System.out.println("Stations to pack each line = " + StationsToPackEachLine);
+					System.out.println("");
+
 					this.PlacementOfTwoPerLine(TotalLineToPack, StationsToPackEachLine);
 					this.PlaceTheRestOrTheDebt();
+					
 					PointOuTheGraph = this.HowManyNotInTheCircle();
 					PointInTheGraph = this.HowManyInTheCircle();
-
-					System.out.println("Point out the graph : " + PointOuTheGraph);
-					System.out.println("Point in the graph : " + PointInTheGraph);
+					System.out.println("Point out the city updated after first calculation to : " + PointOuTheGraph );
+					System.out.println("Point in the city updated after first calculation  to : " + PointInTheGraph );
+					System.out.println("");
 
 					this.ReplacePointOutTheGraph(PointOuTheGraph);
 					this.clean();
+
+					
 					PointOuTheGraph = this.HowManyNotInTheCircle();
 					PointInTheGraph = this.HowManyInTheCircle();
-					System.out.println("Point out the graph : " + PointOuTheGraph);
-					System.out.println("Point in the graph : " + PointInTheGraph);
-					System.out.println("size : " + this.graphPoints.size());
+					
+					System.out.println("Point out the city updated after the replacement of stations and cleaning in the city : " + PointOuTheGraph );
+					System.out.println("Point in the city updated after the replacement of stations and cleaning in the city   to : " + PointInTheGraph );
+					System.out.println("");
+					
 
 				}
 			}
 		}
+		System.out.println("Final city's stations position : " + this.graphPoints.toString());
+		System.out.println("Number of current stations : " + this.MaxStation);
+		System.out.println("");
+		System.out.println("//////////////////////////////////////////////////////////");
+		System.out.println("END OF THE ALGORITHM ");
+		System.out.println("//////////////////////////////////////////////////////////");
+		System.out.println("");
+
 	}
 	
 	public void DisplayGraph(ArrayList<Point2D.Double> graph) {
@@ -648,7 +889,7 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	
-	public void StationLinkAlgo() {
+	public void StationLinkAlgo(ArrayList<Point2D.Double> graph) {
 	
 		this.graphNorthToSouth = new ArrayList<Point2D.Double>();
 		this.graphWestToEast = new ArrayList<Point2D.Double>();
@@ -659,12 +900,12 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 		double West = -(this.getWidthKM()*0.60);
 		double East = (this.getWidthKM()*0.60);
 
-		Iterator<Point2D.Double> it = graphPoints.iterator();
+		Iterator<Point2D.Double> it = graph.iterator();
 			while(it.hasNext()) {
 				Point2D.Double p = it.next();
 				
 				
-				 if (this.graphPoints.size() == 3) {
+				 if (graph.size() == 3) {
 						graphNorthToSouth.add(p);
 					}
 					
@@ -698,19 +939,92 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 			
 			}
 			
+			 Collections.sort(graphNorthToSouth, new Comparator<Point2D.Double>() {
+
+				@Override
+				public int compare(Point2D.Double o1, Point2D.Double o2) {
+					int result = 0;
+					if(o1.y > o2.y ) {
+						result = 1;
+					}
+					
+					if(o1.y < o2.y) {
+						result =  -1;
+					}
+					
+					if(o1.y == o2.y) {
+						result = 0;
+					}
+					return result;	
+				}
+				 
+			 });
+			 
+			 
+			 Collections.sort(graphWestToEast,new Comparator<Point2D.Double>() {
+				@Override
+				public int compare(Point2D.Double o1, Point2D.Double o2) {
+					int result = 0;
+					
+					if(o1.x > o2.x) {
+						result = 1;
+					}
+					
+					if(o1.x < o2.x) {
+						result = -1;
+					}
+					
+					if(o1.x == o2.x) {
+						result = 0;
+					}
+					
+					return result;
+				}
+				 
+			 });
+			 
+			
+				System.out.println("_______________");
 			System.out.println("North TO South");
 			this.DisplayGraph(graphNorthToSouth);
+			System.out.println("Distance of road : " + this.DistanceOfRoad(graphNorthToSouth) + "km");
+			System.out.println("_______________");
 			System.out.println("");
+			
+			System.out.println("_______________");
 			System.out.println("West to East");
 			this.DisplayGraph(graphWestToEast);
+			System.out.println("Distance of road : " + this.DistanceOfRoad(graphWestToEast) + "km");
+			System.out.println("_______________");
+			
 			System.out.println("");
+			System.out.println("_______________");
 			System.out.println("NorthEast to SouthWEST");
 			this.DisplayGraph(graphNorthEastToSouthWest);
+			System.out.println("Distance of road : " + this.DistanceOfRoad(graphNorthEastToSouthWest) + "km");
+			System.out.println("_______________");
 			System.out.println("");
+			
+			System.out.println("_______________");
 			System.out.println("NorthWEST to SouthEast");
 			this.DisplayGraph(graphNorthWestToSouthEast);
+			System.out.println("Distance of road : " + this.DistanceOfRoad(graphNorthWestToSouthEast) + "km");
+			System.out.println("_______________");
 			System.out.println("");
 
+	}
+	
+	
+	public double DistanceOfRoad(ArrayList<Point2D.Double> graph) {
+		double comptor = 0;
+		for(int i = 0; i < graph.size() - 1; i++) {
+			
+			Point2D.Double p = graph.get(i);
+			comptor = comptor + p.distance(graph.get(i+1));
+		
+		}
+		
+		return comptor;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////

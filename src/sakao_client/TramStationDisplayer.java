@@ -1,6 +1,7 @@
 package sakao_client;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
@@ -50,12 +51,13 @@ public class TramStationDisplayer extends JComponent {///////////////////////// 
 		gr2d.fill(oval);
 
 		g.setColor(Color.WHITE);
+		gr2d.setFont(new Font("default", Font.BOLD, 16));
 
-		gr2d.drawString("0", (float) (computer.getWidthPX() * 0.51), (float) (computer.getHeightPX() * 0.57));
-		gr2d.drawString("-" + w, (float) (computer.getWidthPX() * 0.03), (float) (computer.getHeightPX() * 0.57));
-		gr2d.drawString("" + w , (float) (computer.getWidthPX() * 0.95), (float) (computer.getHeightPX() * 0.57));
-		gr2d.drawString("-" + h , (float) (computer.getWidthPX() * 0.51), (float) (computer.getHeightPX() * 0.97));
-		gr2d.drawString(h + "", (float) (computer.getWidthPX() * 0.51), (float) (computer.getHeightPX() * 0.07));
+		gr2d.drawString("CENTER", (float) (computer.getWidthPX() * 0.45), (float) (computer.getHeightPX() * 0.57));
+		gr2d.drawString("WEST" , (float) (computer.getWidthPX() * 0.03), (float) (computer.getHeightPX() * 0.57));
+		gr2d.drawString("EAST" , (float) (computer.getWidthPX() * 0.90), (float) (computer.getHeightPX() * 0.57));
+		gr2d.drawString("SOUTH" , (float) (computer.getWidthPX() * 0.45), (float) (computer.getHeightPX() * 0.97));
+		gr2d.drawString( "NORTH", (float) (computer.getWidthPX() * 0.45), (float) (computer.getHeightPX() * 0.07));
 
 	}
 
@@ -71,16 +73,26 @@ public class TramStationDisplayer extends JComponent {///////////////////////// 
 
 	public void DrawPoints(Graphics2D g) {
 		g.setColor(Color.WHITE);
+		int xs = 7;
+		int ys = 7;
+		
+		if(this.getComputer().getMaxStation() > 0 && this.getComputer().getMaxStation() < 75) {
+			xs = 10;
+			ys = 10;
+		}
+		
+		
+		if(this.getComputer().getMaxStation() > 130) {
+			xs = 5;
+			ys = 5;
+		}
 		for (int i = 0; i < computer.getGraphPoints().size(); i++) {
 			double x = computer.getGraphPoints().get(i).x;
 			double y = computer.getGraphPoints().get(i).y;
 
-			Rectangle2D.Double rectangle = new Rectangle2D.Double(xToPixel(x), yToPixel(y), 5, 5);
+			Rectangle2D.Double rectangle = new Rectangle2D.Double(xToPixel(x), yToPixel(y), xs, ys);
 			g.fill(rectangle);
 		}
-		///this.DisplayCoord();
-
-		///// System.out.println("size : " + graphPoints.size());
 	}
 
 
@@ -119,7 +131,7 @@ public class TramStationDisplayer extends JComponent {///////////////////////// 
 			,ArrayList<Point2D.Double> graphNorthEastToSouthWest,ArrayList<Point2D.Double> graphNorthWestToSouthEast) {
 		Graphics2D gr2d = (Graphics2D) g;
 		this.DrawLines(graphNorthToSouth,gr2d,Color.RED);
-		this.DrawLines(graphWestToEast,gr2d,Color.CYAN);
+		this.DrawLines(graphWestToEast,gr2d,Color.MAGENTA);
 		this.DrawLines(graphNorthEastToSouthWest,gr2d,Color.ORANGE);
 		this.DrawLines(graphNorthWestToSouthEast,gr2d,Color.GREEN);
 	}

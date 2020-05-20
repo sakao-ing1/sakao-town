@@ -57,8 +57,8 @@ public class TablesToBeInserted {
 	}
 	
 	
-	public String readFileSmartCityDisplay() throws IOException {
-		InputStream fis = new FileInputStream("resources/table-to-be-inserted/smartCityComputeTramStationTest.json");
+	public String readFileSmartCityRepartitorAlgo() throws IOException {
+		InputStream fis = new FileInputStream("resources/table-to-be-inserted/smartCityComputeTramStationRepartitorAlgoTest.json");
 		InputStreamReader ipsr = new InputStreamReader(fis);
 		BufferedReader br = new BufferedReader(ipsr);
 		String outjsonString = "";
@@ -67,7 +67,22 @@ public class TablesToBeInserted {
 		while ((outjsonString = br.readLine()) != null) {
 			chaine = chaine + outjsonString;
 		}
-		System.out.println("Data read: " + chaine);
+		System.out.println("Data reading in the file : " + chaine);
+		return chaine;
+	}
+	
+	
+	public String readFileSmartCityLinkAlgo() throws IOException {
+		InputStream fis = new FileInputStream("resources/table-to-be-inserted/smartCityComputeLinkStationAlgoTest.json");
+		InputStreamReader ipsr = new InputStreamReader(fis);
+		BufferedReader br = new BufferedReader(ipsr);
+		String outjsonString = "";
+		String chaine = "";
+
+		while ((outjsonString = br.readLine()) != null) {
+			chaine = chaine + outjsonString;
+		}
+		System.out.println("Data reading in the file : " + chaine);
 		return chaine;
 	}
 

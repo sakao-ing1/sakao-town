@@ -207,19 +207,15 @@ import sakao_common.TramLineD;
 					}
 
 					else {
-						System.out.println("simulate should display : " + this.getDisplay().isShouldRunAlgo());
-
 						this.getComputer().setWidthKM(w);
 						this.getComputer().setHeightKM(h);
 						this.getComputer().setCityBudget(b);
 						this.getComputer().setaStationCost(c);
 						
 						this.getComputer().StationRepartitorAlgo(w, h, b, c);
-						this.getComputer().StationLinkAlgo();
+						this.getComputer().StationLinkAlgo(this.getComputer().getGraphPoints());
 						this.getDisplay().setComputer(this.getComputer());
 					
-
-						System.out.println("GRAPHPOINTS"+this.getDisplay().getComputer().getGraphPoints() + "/////////////////////////////////////////////////////////////////////");
 
 						this.getContentPaneCenter().setVisible(true);
 						this.getReload().setEnabled(true);
@@ -246,13 +242,12 @@ import sakao_common.TramLineD;
 
 					} else {
 						this.getDisplay().setShouldRunAlgo(true);
-						System.out.println(" reload should display : " + this.getDisplay().isShouldRunDisplay());
 						this.getComputer().setWidthKM(w);
 						this.getComputer().setHeightKM(h);
 						this.getComputer().setCityBudget(b);
 						this.getComputer().setaStationCost(c);
 						this.getComputer().StationRepartitorAlgo(w, h, b, c);
-						this.getComputer().StationLinkAlgo();
+						this.getComputer().StationLinkAlgo(this.getComputer().getGraphPoints());
 						this.getDisplay().setComputer(this.getComputer());
 						this.getDisplay().repaint();
 
@@ -271,10 +266,7 @@ import sakao_common.TramLineD;
 				this.getSave().setEnabled(false);
 				this.getRemoveCity().setEnabled(true);
 				this.getContentPaneCenter().setVisible(false);
-				System.out.println("save should display : " + this.getDisplay().isShouldRunDisplay());
-				System.out.println("should algo : " + this.getDisplay().isShouldRunAlgo());
-
-
+		
 				
 				
 					String w = this.getWidthB().getText();
@@ -514,7 +506,6 @@ import sakao_common.TramLineD;
 		
 					
 						String s = list.get(0) + "\n";
-						 /////System.out.println("S: "+s);
 						SmartCity req = new ObjectMapper().readValue(s, SmartCity.class);
 						 double x = req.getHeightkm();
 						 double y = req.getWidthkm();
@@ -525,9 +516,15 @@ import sakao_common.TramLineD;
 					this.getDisplay().getComputer().setHeightKM(x);
 					this.getDisplay().getComputer().setWidthKM(y);
 				} catch (Exception e1) {
-					System.out.println("SmartCity is empty !");
-					JOptionPane.showMessageDialog(null, "The smart city is empty", "Error message",
+					System.out.println("SmartCity is empty");
+					JOptionPane.showMessageDialog(null, "Empty Smartcity", "Error message",
 							JOptionPane.ERROR_MESSAGE);
+					 double x = 0.0;
+					 double y = 0.0;
+					 System.out.println(" ///////////////" + x + " " + y);
+
+				this.getDisplay().getComputer().setHeightKM(x);
+				this.getDisplay().getComputer().setWidthKM(y);
 
 				}
 
@@ -538,7 +535,6 @@ import sakao_common.TramLineD;
 					ArrayList<Point2D.Double> listCoord = new ArrayList<Point2D.Double>();
 					for (int i = 0; i < list.size(); i++) {
 						String s = list.get(i) + "\n";
-						/// System.out.println("S: "+s);
 						Station req1 = new ObjectMapper().readValue(s, Station.class);
 						double x = req1.getCoordx();
 						double y = req1.getCoordy();
@@ -562,7 +558,6 @@ import sakao_common.TramLineD;
 					ArrayList<Point2D.Double> listTramAStationCoord = new ArrayList<Point2D.Double>();
 					for (int i = 0; i < list.size(); i++) {
 						String s = list.get(i) + "\n";
-						/// System.out.println("S: "+s);
 						TramLineA req1 = new ObjectMapper().readValue(s, TramLineA.class);
 						double x = req1.getCoordx();
 						double y = req1.getCoordy();

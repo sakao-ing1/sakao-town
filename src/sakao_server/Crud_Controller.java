@@ -343,10 +343,9 @@ public class Crud_Controller {
 			while (i < list.size()) {
 				sqlreq += "(" + list.get(i) + "," + list.get(i + 2) + "," + list.get(i + 4) + "," + list.get(i + 6)
 						+ "," + "'" + s + "'" + "),";
-				i += 8;
+				i += list.size();
 			}
 			
-			System.out.println("je suis apres le addmartcity controller");
 			sqlreq = sqlreq.substring(0, sqlreq.length() - 1);
 			System.out.println(sqlreq);
 
@@ -363,13 +362,26 @@ public class Crud_Controller {
 	public void addStation(ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
-			String sqlreq = "insert into station(typestation,coordx,coordy,isbuilt) VALUES";
+			
+			String sqlReqFkCity = "select idcity from smartcity";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sqlReqFkCity);
+			Object idfk = null;
+			while (rs.next()) {
+			 idfk = rs.getInt(1);
+			}
+			
+			DataSource.returnConnection(con);
+			
+			
+			con = DataSource.getConnection();
+			String sqlreq = "insert into station(typestation,coordx,coordy,isbuilt,idcity,idtransportation) VALUES";
 			
 			System.out.println("list size : " + list.size());
 
 			int i = 2;
 			while (i < list.size()) {
-				sqlreq += "(" + "'" + list.get(i) + "'" + "," + list.get(i + 2) + "," + list.get(i + 4) + "," + list.get(i + 6)
+				sqlreq += "(" + "'" + list.get(i) + "'" + "," + list.get(i + 2) + "," + list.get(i + 4) + "," + list.get(i + 6) +"," + idfk + ","+ 1
 						 + "),";
 				i += 8;
 			}
@@ -391,7 +403,6 @@ public class Crud_Controller {
 	public void addTramLineAStation(ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
-			int idfk = 15;
 
 			String sqlReqFkCoord = 
 					"select station.idstation from station "
@@ -402,17 +413,18 @@ public class Crud_Controller {
 			
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sqlReqFkCoord);
+			Object idfk = null;
 			while (rs.next()) {
 			 idfk = rs.getInt(1);
 			}
-			int idcoord = idfk;
+			
 			DataSource.returnConnection(con);
 
 			System.out.println("list size : " + list.size());
 
 			int i = 2;
 			while (i < list.size()) {
-				sqlreq += "(" + idcoord+ "," + list.get(i) + "," + list.get(i + 2) 
+				sqlreq += "(" + idfk+ "," + list.get(i) + "," + list.get(i + 2) 
 						 + "),";
 				i += 6;
 			}
@@ -435,28 +447,28 @@ public class Crud_Controller {
 	public void addTramLineBStation(ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
-			int idfk = 15;
 
 			String sqlReqFkCoord = 
 					"select station.idstation from station "
 					+ "inner join tramlineb on "
 					+ "station.coordx =  + " + list.get(2) 
 					+ "and station.coordy = " + list.get(4);
-			String sqlreq = "insert into tramlineb(coordx,coordy) VALUES";
+			String sqlreq = "insert into tramlineb(idstation,coordx,coordy) VALUES";
 			
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sqlReqFkCoord);
+			Object idfk = null;
 			while (rs.next()) {
 			 idfk = rs.getInt(1);
 			}
-			int idcoord = idfk;
+			
 			DataSource.returnConnection(con);
 
 			System.out.println("list size : " + list.size());
 
 			int i = 2;
 			while (i < list.size()) {
-				sqlreq += "(" + list.get(i) + "," + list.get(i + 2) 
+				sqlreq += "(" + idfk+ "," + list.get(i) + "," + list.get(i + 2) 
 						 + "),";
 				i += 6;
 			}
