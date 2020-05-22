@@ -1,4 +1,4 @@
-package sakao_server;
+/*package sakao_server;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,8 +18,8 @@ public class CrudConfiguration {
 
 	}
 
-	public ArrayList<Object> showAllConfiguration() throws ClassNotFoundException {
-		ArrayList<Object> retour = new ArrayList<Object>();
+	public ArrayList<T> showAllConfiguration() throws ClassNotFoundException {
+		ArrayList<T> retour = new ArrayList<T>();
 		try {
 			Connection con = DataSource.getConnection();
 			PreparedStatement pt = con.prepareStatement("select * from configuration");
@@ -37,13 +37,13 @@ public class CrudConfiguration {
 
 	}
 	
-	public void addOnConfiguration(String target, ArrayList<String> list) throws ClassNotFoundException {
+	public void addOnConfiguration( ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
 			String req = "insert into configuration(frequency, dateofconfiguration) VALUES ";
 			int i = 2;
 			while(i<list.size()) {
-				req+="("+list.get(i)+","+"'"+list.get(i+2)+"'"+"),";
+				req+="("+list.get(i)+","+"'"+list.get(i+2)+"'"+",";
 			i+=6;
 			}
 			 req= req.substring(0,req.length()-1);
@@ -59,5 +59,9 @@ public class CrudConfiguration {
 	}
 	
 	
+	
+	
+	
 
 }
+*/

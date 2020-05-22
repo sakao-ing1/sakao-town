@@ -7,7 +7,19 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 public class TramStationComputer{//////////////////////////////////////// CONTAINS THE TWO ALGORITHMS
-
+/*
+ * 
+ * Alain SARKISIAN 
+ 
+ * The goal of this class is to place stations of tramway on a city taking account of four parameters which are the width, the height, the bidget of the city and also
+ * the price of a station
+ * 
+ * This class is mainly composed of two algorithms :
+ * 					The repartitor algorithm is the heart of this functionnality because the conduct line is to place as good as possible stations in order to join them
+ * 					as easier as possible with the second algorithm which estimates the link between stations.
+ * 
+ *
+ */
 	private static final long serialVersionUID = 8137695111058290034L;
 
 	private double widthKM;/// Information from user
@@ -22,10 +34,10 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 	private int maxDiviser;
 	private int debt;
 
-	private ArrayList<Point2D.Double> graphNorthToSouth;
-	private ArrayList<Point2D.Double> graphWestToEast;
-	private ArrayList<Point2D.Double> graphNorthWestToSouthEast;
-	private ArrayList<Point2D.Double> graphNorthEastToSouthWest;
+	private ArrayList<Point2D.Double> graphNorthToSouth; /////LINE A
+	private ArrayList<Point2D.Double> graphWestToEast;///// LINE B
+	private ArrayList<Point2D.Double> graphNorthWestToSouthEast; /////LINE D
+	private ArrayList<Point2D.Double> graphNorthEastToSouthWest;/////LINE C
 	
 	
 
@@ -39,12 +51,10 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 		boolean b;
 		double distance = (x*x) + (y*y);
 		double r = this.widthKM;
-		///// System.out.println("distance : " + distance);
 		if (distance <= (r*r)) {
 			b = true;
 		} else {
 			b = false;
-			///// Point2D.Double p1 = new Point2D.Double(x,y);
 
 		}
 
@@ -75,7 +85,7 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 ////////////////////////////////////////////////////////////////////////////
 	/*
 	 * Gives the biggest multiple of MaxStation in order to know how to organize
-	 * stations on the map
+	 * stations on the map. It refers to the number of line
 	 */
 
 	public int StationDiviser(int MaxStation) {
@@ -268,8 +278,7 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 	}
 
 	public void PlacementOfTwoPerLine(int TotalLineToPack, int StationsToPackEachLine) {
-		@SuppressWarnings("unused")
-		double stepX1 = -(0.10 * widthKM);
+		double stepX1 = -(0.7 * widthKM);
 		double stepX2 = -(0.30 * (widthKM));
 		double stepX3 = -(0.60 * widthKM);
 		double stepX4 = -(0.80 * widthKM);
@@ -369,7 +378,12 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 
 				else {
 					if (i % 2 == 1) {
-						xp = stepX2;
+						if(this.MaxStation >= 10 && this.MaxStation < 20) {
+							xp = stepX4;
+						}
+						else {
+							xp = stepX2;
+						}
 						System.out.println("new coordinates calculation");
 						System.out.println("x : " +  xp);
 						System.out.println("");
@@ -388,8 +402,14 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 
 					else if ((i % 2 == 0) && (this.isInTheCircle(stepX3, yp))
 							|| (i % 2 == 0) && (this.isInTheEllipse(stepX3, yp))) {
+						if(this.MaxStation <= 7) {
+							xp = stepX1;
+							yp = yp -stepY - 0.5;
+						}
+						else {
 						xp = stepX3;
 						yp = yp - stepY;
+						}
 						System.out.println("new coordinates calculation");
 						System.out.println("x : " +  xp);
 						System.out.println("y : " + yp);
@@ -901,31 +921,47 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 		double East = (this.getWidthKM()*0.60);
 
 		Iterator<Point2D.Double> it = graph.iterator();
-			while(it.hasNext()) {
-				Point2D.Double p = it.next();
-				
-				
-				 if (graph.size() == 3) {
+		while (it.hasNext()) {
+			Point2D.Double p = it.next();
+
+			if (graph.size() == 3) {
+				graphNorthToSouth.add(p);
+				System.out.println("");
+			}
+
+			else {
+
+				if (p.x == 0.0 && p.y == 0.0) {
+					if(graph.size() >= 3) {
+						graphNorthToSouth.add((graphNorthToSouth.size())/2,p);
+						graphWestToEast.add((graphWestToEast.size())/2,p);
+						graphNorthWestToSouthEast.add((graphNorthWestToSouthEast.size())/2,p);
+						graphNorthEastToSouthWest.add((graphNorthEastToSouthWest.size())/2,p);
+					}
+					else {
+					graphNorthToSouth.add(p);
+					graphWestToEast.add(p);
+					graphNorthWestToSouthEast.add(p);
+					graphNorthEastToSouthWest.add(p);
+					}
+				} else {
+
+					if (p.y < South || p.y > North || p.x == 0.0) {
 						graphNorthToSouth.add(p);
 					}
-					
-				 else {
-					
-					if(p.y < South || p.y > North || p.x == 0.0) {
-						graphNorthToSouth.add(p);
-					}
-					
-					if(p.x < West || p.x >East || p.y == 0.0 || (p.y <= this.getHeightKM() * 0.2 &&p.y >= -(this.getHeightKM() * 0.2))) {
+
+					if (p.x < West || p.x > East || p.y == 0.0
+							|| (p.y <= this.getHeightKM() * 0.2 && p.y >= -(this.getHeightKM() * 0.2))) {
 						graphWestToEast.add(p);
 					}
-		
-					if ((p.x >= West && p.x < 0.0) &&(p.y <= North && p.y> 0.0)){
+
+					if ((p.x >= West && p.x < 0.0) && (p.y <= North && p.y > 0.0)) {
 						graphNorthWestToSouthEast.add(p);
 					}
 					if ((p.x > 0.0 && p.x <= East) && (p.y >= South && p.y < 0.0)) {
 						graphNorthWestToSouthEast.add(p);
 					}
-					if ((p.x <= East && p.x > 0.0) &&(p.y <= North && p.y> 0.0)){
+					if ((p.x <= East && p.x > 0.0) && (p.y <= North && p.y > 0.0)) {
 						graphNorthEastToSouthWest.add(p);
 					}
 					if ((p.x < 0.0 && p.x >= West) && (p.y >= South && p.y < 0.0)) {
@@ -933,12 +969,12 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 					}
 				}
 
-					
-
-				
-			
 			}
-			
+
+		}
+		
+	
+	/////SORT THE GRAPH BECAUSE ALL STATIONS ARE NOT IN THE GOOD ORDER
 			 Collections.sort(graphNorthToSouth, new Comparator<Point2D.Double>() {
 
 				@Override
@@ -960,6 +996,7 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 				 
 			 });
 			 
+			/////SORT THE GRAPH BECAUSE ALL STATIONS ARE NOT IN THE GOOD ORDER
 			 
 			 Collections.sort(graphWestToEast,new Comparator<Point2D.Double>() {
 				@Override
@@ -983,8 +1020,10 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 				 
 			 });
 			 
-			
-				System.out.println("_______________");
+
+
+
+			System.out.println("_______________");
 			System.out.println("North TO South");
 			this.DisplayGraph(graphNorthToSouth);
 			System.out.println("Distance of road : " + this.DistanceOfRoad(graphNorthToSouth) + "km");
@@ -1013,6 +1052,7 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 			System.out.println("");
 
 	}
+	
 	
 	
 	public double DistanceOfRoad(ArrayList<Point2D.Double> graph) {

@@ -26,7 +26,6 @@ public class TramStationDisplayer extends JComponent {///////////////////////// 
 	@Override
 	protected void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
-
 		Graphics2D g2d = (Graphics2D) graphics;
 			this.DrawCity(graphics, computer.getWidthKM(), computer.getHeightKM());
 			this.DrawPoints(g2d);

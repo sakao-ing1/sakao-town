@@ -44,7 +44,9 @@ import sakao_common.TramLineC;
 import sakao_common.TramLineD;
 
 	public class TramStationTracer extends JFrame implements ActionListener {////////////////////////////CONTAINS THE FRAME
-
+		/*
+		 * Alain SARKISIAN 
+		 */
 		private static final long serialVersionUID = 786392524822582941L;
 		private TramStationDisplayer display = new TramStationDisplayer();
 		private JButton SimulateCity = new JButton("Simulate city");
@@ -110,7 +112,6 @@ import sakao_common.TramLineD;
 
 			
 			this.startConnection("localhost", 3030);
-			System.out.println("jsuis dans le cosntructeur");
 			ArrayList<String> array = new ArrayList<String>();
 			Request requouest = new Request("SELECT_ALL","smartcity");
 			array = this.sendMessageToServer(requouest);
@@ -236,7 +237,7 @@ import sakao_common.TramLineD;
 					int b = Integer.parseInt(this.getBudget().getText());
 					int c = Integer.parseInt(this.getStationCost().getText());
 
-					if (w <= 0.0 || h <= 0.0 || b < 1 || c < 1 || c > b) {
+					if (w <= 0.0 || h <= 0.0 || b < 1 || c < 1 || c >= b) {
 						JOptionPane.showMessageDialog(null, "At least one of the field is not correct", "Error message",
 								JOptionPane.ERROR_MESSAGE);
 

@@ -490,30 +490,31 @@ public class Crud_Controller {
 	public void addTramLineCStation(ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
-			int idfk = 0;
+	
 
 			String sqlReqFkCoord = 
 					"select station.idstation from station "
 					+ "inner join tramlinec on "
 					+ "station.coordx =  + " + list.get(2) 
 					+ "and station.coordy = " + list.get(4);
-			String sqlreq = "insert into tramlinec(coordx,coordy) VALUES";
+			String sqlreq = "insert into tramlinec(idstation,coordx,coordy) VALUES";
 			
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sqlReqFkCoord);
+			Object idfk = null;
 			while (rs.next()) {
 			 idfk = rs.getInt(1);
 			}
-			int idcoord = idfk;
+		
 			DataSource.returnConnection(con);
 
 			System.out.println("list size : " + list.size());
 
 			int i = 2;
 			while (i < list.size()) {
-				sqlreq += "(" + list.get(i) + "," + list.get(i + 2) 
+				sqlreq += "(" + idfk + "," + list.get(i) + "," + list.get(i + 2) 
 						 + "),";
-				i += 4;
+				i += 6;
 			}
 			 con = DataSource.getConnection();
 			sqlreq = sqlreq.substring(0, sqlreq.length() - 1);
@@ -532,30 +533,29 @@ public class Crud_Controller {
 	public void addTramLineDStation(ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
-			int idfk = 0;
-
 			String sqlReqFkCoord = 
 					"select station.idstation from station "
 					+ "inner join tramlined on "
 					+ "station.coordx =  + " + list.get(2) 
 					+ "and station.coordy = " + list.get(4);
-			String sqlreq = "insert into tramlined(coordx,coordy) VALUES";
+			String sqlreq = "insert into tramlined(idstation,coordx,coordy) VALUES";
 			
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sqlReqFkCoord);
+			Object idfk=null;
 			while (rs.next()) {
 			 idfk = rs.getInt(1);
 			}
-			int idcoord = idfk;
+		
 			DataSource.returnConnection(con);
 
 			System.out.println("list size : " + list.size());
 
 			int i = 2;
 			while (i < list.size()) {
-				sqlreq += "(" + list.get(i) + "," + list.get(i + 2) 
+				sqlreq += "(" + idfk + "," + list.get(i) + "," + list.get(i + 2) 
 						 + "),";
-				i += 4;
+				i += 6;
 			}
 			 con = DataSource.getConnection();
 			sqlreq = sqlreq.substring(0, sqlreq.length() - 1);
