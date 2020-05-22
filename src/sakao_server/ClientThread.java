@@ -469,6 +469,15 @@ public class ClientThread extends Thread {
 			System.out.println("Update sensor done for " + this.getName());
 			System.out.println("********************");
 			break;
+			
+		case "INSERT":
+			zoneService.addOnZone(target, list);
+			String outjsonStringDeleteAll = mapper.writeValueAsString(response);
+			out.write(outjsonStringDeleteAll + "\n");
+			out.flush();
+			System.out.println("Insert done for " + this.getName());
+			System.out.println("********************");
+			break;
 		}
 
 	}
