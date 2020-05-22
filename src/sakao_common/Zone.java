@@ -2,67 +2,75 @@ package sakao_common;
 
 public class Zone {
 	private int idZone;
-	private String meteoZone;
-	private String proximiteDeLaZone;
-	private String localisation;
-	private int seuilBeta;
-	private int seuilVehicule;
-	private boolean etatAlerte; // a revoir
-	
+	private String nextToTheZone;
+	private String location;
+	private int thresholdBeta;
+	private boolean alerteState; // a revoir
+	private int idCity;
+
 	public Zone() {
 	}
-	
+
+	public Zone(int idZone, String nextToTheZone, String location, int thresholdBeta) {
+		this.idZone = idZone;
+		this.nextToTheZone = nextToTheZone;
+		this.location = location;
+		this.thresholdBeta = thresholdBeta;
+	}
+
 	public int getIdZone() {
 		return idZone;
 	}
+
 	public void setIdZone(int idZone) {
 		this.idZone = idZone;
 	}
-	public String getMeteoZone() {
-		return meteoZone;
+
+	public String getNextToTheZone() {
+		return nextToTheZone;
 	}
-	public void setMeteoZone(String meteoZone) {
-		this.meteoZone = meteoZone;
+
+	public void setNextToTheZone(String nextToTheZone) {
+		this.nextToTheZone = nextToTheZone;
 	}
-	public String getProximiteDeLaZone() {
-		return proximiteDeLaZone;
+
+	public String getLocation() {
+		return location;
 	}
-	public void setProximiteDeLaZone(String proximiteDeLaZone) {
-		this.proximiteDeLaZone = proximiteDeLaZone;
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
-	public String getLocalisation() {
-		return localisation;
+
+	public int getThresholdBeta() {
+		return thresholdBeta;
 	}
-	public void setLocalisation(String localisation) {
-		this.localisation = localisation;
+
+	public void setThresholdBeta(int thresholdBeta) {
+		this.thresholdBeta = thresholdBeta;
 	}
-	public int getSeuilBeta() {
-		return seuilBeta;
+
+	public boolean isAlerteState() {
+		return alerteState;
 	}
-	public void setSeuilBeta(int seuilBeta) {
-		this.seuilBeta = seuilBeta;
+
+	public void setAlerteState(boolean alerteState) {
+		this.alerteState = alerteState;
 	}
-	public int getSeuilVehicule() {
-		return seuilVehicule;
+
+	public int getIdCity() {
+		return idCity;
 	}
-	public void setSeuilVehicule(int seuilVehicule) {
-		this.seuilVehicule = seuilVehicule;
-	}
-	public boolean isEtatAlerte() {
-		return etatAlerte;
-	}
-	public void setEtatAlerte(boolean etatAlerte) {
-		this.etatAlerte = etatAlerte;
+
+	public void setIdCity(int idCity) {
+		this.idCity = idCity;
 	}
 
 	@Override
 	public String toString() {
-		return "Zone [idZone=" + idZone + ", meteoZone=" + meteoZone + ", proximiteDeLaZone=" + proximiteDeLaZone
-				+ ", localisation=" + localisation + ", seuilBeta=" + seuilBeta + ", seuilVehicule=" + seuilVehicule
-				+ ", etatAlerte=" + etatAlerte + "]";
+		return "{\"idZone\":\"" + this.idZone + "\"," + "\"nextToTheZone\":\"" + this.nextToTheZone + "\","
+				+ "\"location\":\"" + this.location + "\"," + "\"thresholdBeta\":\"" + this.thresholdBeta + "\","
+				+ "\"alerteState\":\"" + this.alerteState + "\"," + "\"idCity\":\"" + this.idCity + "\"}";
 	}
-	
-	
-	
-	
+
 }

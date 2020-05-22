@@ -15,9 +15,7 @@ public class ServerSakao {
 		serverSocket = new ServerSocket(port);
 		datasource = new DataSource();
 		while (true) {
-
 			new ClientThread(serverSocket.accept()).start();
-
 		}
 	}
 

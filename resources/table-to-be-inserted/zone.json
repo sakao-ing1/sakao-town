@@ -1,0 +1,29 @@
+{
+	"operation_type": "INSERT",
+	"target": "zone",
+	"list": [
+		{
+			"nexttothezone": "School",
+			"location": "xxxxx",
+			"thresholdbeta": 164,
+			"alertstate": false,
+			"idcity": 1
+		},
+		{
+			"nexttothezone": "School",
+			"location": "xxxxx",
+			"thresholdbeta": 185,
+			"alertstate": false,
+			"idcity": 1
+		},
+		{
+			"nexttothezone": "School",
+			"location": "xxxxx",
+			"thresholdbeta": 190,
+			"alertstate": false,
+			"idcity": 1
+		}
+	]
+}
+
+
