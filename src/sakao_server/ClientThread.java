@@ -26,6 +26,7 @@ import sakao_common.Request;
 import sakao_common.Response;
 import sakao_common.SmartCity;
 import sakao_common.VehicleSensor;
+import sakao_common.smartcity2;
 
 public class ClientThread extends Thread {
 	private Socket clientSocket;
@@ -46,7 +47,7 @@ public class ClientThread extends Thread {
 
 	private ArrayList<VehicleSensor> vehicleSensorObject;
 	private ArrayList<Bollard> bollardObject;
-	private SmartCity smartCityObject;
+	private smartcity2 smartCityObject;
 
 	private ObjectMapper mapper;
 	private static int position = 1;
@@ -76,11 +77,11 @@ public class ClientThread extends Thread {
 			bollardObject = bollardService.GenerateAllBollards();
 			smartCityObject = smartCityServices.GenerateCity();
 			/*
-			 * System.out.println("Objets generés :"); System.out.println("");
+			 * System.out.println("Objets generï¿½s :"); System.out.println("");
 			 * System.out.println(vehicleSensorObject); System.out.println("");
 			 * System.out.println(bollardObject); System.out.println("");
 			 * System.out.println(smartCityObject); System.out.println("");
-			 * System.out.println("Fin objets generés");
+			 * System.out.println("Fin objets generï¿½s");
 			 */
 		} catch (Exception e) {
 
@@ -234,7 +235,7 @@ public class ClientThread extends Thread {
 		//
 
 		case "Update":
-
+			// Don't work if generateobject is commented
 			vehiclesSensorService.UpdateSensorVehicles(target, list, vehicleSensorObject);
 			vehicleSensorObject = vehiclesSensorService.GenerateAllVehicleSensors();
 			System.out.println("");
@@ -581,6 +582,35 @@ public class ClientThread extends Thread {
 			break;
 
 		}
+	}
+	
+	
+	private void CrudSmartcity2(String operation_type, String target, ArrayList<String> list)
+			throws ClassNotFoundException, JsonGenerationException, JsonMappingException, IOException {
+
+		switch (operation_type) {
+
+		case "Update":
+
+			smartCityServices.UpdateSmartCityVehicles(target, list, smartCityObject);
+			smartCityObject = smartCityServices.GenerateCity();
+
+			String outjsonStringUpdateSmart = mapper.writeValueAsString(response);
+			out.write(outjsonStringUpdateSmart + "\n");
+			out.flush();
+			// System.out.println("");
+			System.out.println("SmartCity object Updated :");
+			System.out.println("");
+			System.out.println(smartCityObject);
+			System.out.println("");
+			System.out.println("Fin object updated");
+			System.out.println("");
+			System.out.println("Update smartcity done for " + this.getName());
+
+			System.out.println("********************");
+			break;
+		}
+
 	}
 
 	public void CrudStation(String operation_type, String t, ArrayList<String> list) throws IOException {
@@ -1061,6 +1091,14 @@ public class ClientThread extends Thread {
 			}
 
 			break;
+			
+		case "smartcity2":
+			try {
+				this.CrudSmartcity2(this.request.getOperation_type(), this.request.getTarget(), this.request.getList());
+			} catch (Exception e) {
+			}
+
+			break;
 		case "vehiclesSensor":
 			try {
 				this.CrudVehiclesSensor(this.request.getOperation_type(), this.request.getTarget(),
@@ -1087,8 +1125,8 @@ public class ClientThread extends Thread {
 			System.out.println(this.getName() + " connected");
 			System.out.println("********************");
 			System.out.println("");
-		//	this.GenerateObject();
-			//this.CheckVehiclesThreshold();
+			this.GenerateObject();      // IHM DON'T WORK
+			this.CheckVehiclesThreshold();
 			while (shouldRun) {
 				this.StartCrud();
 			}

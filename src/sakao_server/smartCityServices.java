@@ -2,8 +2,7 @@ package sakao_server;
 
 import java.util.ArrayList;
 
-import sakao_common.Bollard;
-import sakao_common.SmartCity;
+import sakao_common.smartcity2;
 
 public class smartCityServices {
 
@@ -13,12 +12,12 @@ public class smartCityServices {
 		this.controller = new Crud_Controller();
 	}
 
-	public SmartCity GenerateCity() throws ClassNotFoundException {
+	public smartcity2 GenerateCity() throws ClassNotFoundException {
 		return controller.GenerateCity();
 	}
 	
 	
-	public boolean UpdateSmartCityVehicles(String target, ArrayList<String> list, SmartCity smartCityObject) {
+	public boolean UpdateSmartCityVehicles(String target, ArrayList<String> list, smartcity2 smartCityObject) {
 		boolean b = false;
 		try {
 			/// Student p = new Student(name, age);

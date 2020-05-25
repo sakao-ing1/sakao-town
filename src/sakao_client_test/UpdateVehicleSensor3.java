@@ -96,9 +96,9 @@ public class UpdateVehicleSensor3 {
 	
 		//System.out.println(req1);
 		
-
-		client1.sendMessageToServer(req1);	
 		client1.sendMessageToServer(req2);
+		client1.sendMessageToServer(req1);	
+		
 		client1.sendMessageToServer(req3);
 		System.out.println("Update done");
 		System.out.println("********************");

@@ -1,6 +1,6 @@
 {
 	"operation_type": "Update",
-	"target": "smartcity",
+	"target": "smartcity2",
 	"list": [
 		{	
 			"maxnumbervehicles": 500,

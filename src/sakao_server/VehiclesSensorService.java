@@ -30,6 +30,7 @@ public class VehiclesSensorService {
 		boolean b = false;
 		try {
 			/// Student p = new Student(name, age);
+			// Don't work if generateobject is commented
 			controller.UpdateSensorVehicles(target,list,listVehicleSensorObj);
 			b = true;
 		} catch (Exception e) {

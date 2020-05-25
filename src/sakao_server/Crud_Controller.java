@@ -24,6 +24,7 @@ import sakao_common.TramLineA;
 import sakao_common.TramLineB;
 import sakao_common.TramLineC;
 import sakao_common.TramLineD;
+import sakao_common.smartcity2;
 
 
 public class Crud_Controller {
@@ -298,7 +299,7 @@ public class Crud_Controller {
 			ex.printStackTrace();
 		}
 	}
-	
+	///////////////////////////////////////////////////
 	public void addOnZone(String target, ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
@@ -322,7 +323,7 @@ public class Crud_Controller {
 		}
 	}
 	
-	
+	///////////////////////////////////////////////////
 	public void addOnWeatherSensor(String target, ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
@@ -1293,15 +1294,15 @@ public class Crud_Controller {
 		return retour;
 	}
 
-	public SmartCity GenerateCity() throws ClassNotFoundException {
-		SmartCity smartcity = null;
+	public smartcity2 GenerateCity() throws ClassNotFoundException {
+		smartcity2 smartcity = null;
 		// ArrayList<smartcity> retour = new ArrayList<smartcity>();
 		try {
 			Connection con = DataSource.getConnection();
 			PreparedStatement pt = con.prepareStatement("select * from smartcity");
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
-				smartcity = new SmartCity(rs.getInt(1), rs.getDouble(3), rs.getDouble(4), rs.getInt(5), rs.getInt(6),
+				smartcity = new smartcity2(rs.getInt(1), rs.getDouble(3), rs.getDouble(4), rs.getInt(5), rs.getInt(6),
 						rs.getInt(8), rs.getInt(7), rs.getInt(9), rs.getString(2));
 				DataSource.returnConnection(con);
 			}
@@ -1328,7 +1329,8 @@ public class Crud_Controller {
 				pstm.setString(3, list.get(i + 2)); // Sensortypeio
 				pstm.setInt(1, Integer.parseInt(list.get(i + 4)));// NUMBERVEHICULE
 				pstm.executeUpdate();
-
+				
+				// Don't work if generateobject is commented in clientThread
 				for (VehicleSensor sensor : listVehicleSensorObj) {
 					if ((sensor.getIdSensor() == Integer.parseInt((list.get(i))))) {
 
@@ -1466,7 +1468,7 @@ public class Crud_Controller {
 		}
 	}
 
-	public void UpdateSmartCityVehicles(String target, ArrayList<String> list, SmartCity smartCityObject)
+	public void UpdateSmartCityVehicles(String target, ArrayList<String> list, smartcity2 smartCityObject)
 			throws ClassNotFoundException {
 
 		try {
