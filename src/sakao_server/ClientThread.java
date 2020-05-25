@@ -1125,8 +1125,8 @@ public class ClientThread extends Thread {
 			System.out.println(this.getName() + " connected");
 			System.out.println("********************");
 			System.out.println("");
-			this.GenerateObject();      // IHM DON'T WORK
-			this.CheckVehiclesThreshold();
+			//this.GenerateObject();      // IHM DON'T WORK
+			//this.CheckVehiclesThreshold();
 			while (shouldRun) {
 				this.StartCrud();
 			}
