@@ -2,17 +2,18 @@ package sakao_common;
 
 import java.util.ArrayList;
 
-public class Request{
+public class Request {
 	private String operation_type;
 	private String target;
-	private ArrayList<String> list = new ArrayList<String>();/////VALUE
-	
+	private ArrayList<String> list = new ArrayList<String>();///// VALUE
 
-	public Request() {;}
-	
+	public Request() {
+	}
+
 	public Request(String o, String t) {
 		this.operation_type = o;
 		this.target = t;
+
 	}
 	
 	public Request(String o, String t, ArrayList<String> l) {
@@ -21,14 +22,14 @@ public class Request{
 		this.list = l;
 	}
 	
-
+	
 	
 	public String toString() {
 
 		return "{\"operation_type\":\"" + this.operation_type + "\"," + "\"target\":\"" + this.target + "\","
 				+ "\"list\":\"" + list + "\"}";
 	}
-	
+
 	public String getOperation_type() {
 		return operation_type;
 	}
@@ -52,7 +53,5 @@ public class Request{
 	public void setList(ArrayList<String> list) {
 		this.list = list;
 	}
-
-
 
 }

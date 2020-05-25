@@ -3,14 +3,9 @@ package sakao_common;
 import java.util.ArrayList;
 
 public class Response {
- ArrayList<String> list;
+	ArrayList<String> list;
 
 	public Response() {
-	}
-
-
-	public String toString() {
-		return 	"{\"list\":\"" + this.list +"\"}";
 	}
 	
 	public ArrayList<String> getList() {
@@ -21,8 +16,11 @@ public class Response {
 		this.list = list;
 	}
 
-
-	public void add(String resp) {
-		this.list.add(resp);
+	@Override
+	public String toString() {
+		return "Response " + list + "";
 	}
+	
+	
+	
 }

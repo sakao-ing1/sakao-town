@@ -910,6 +910,12 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 
 	
 	public void StationLinkAlgo(ArrayList<Point2D.Double> graph) {
+		System.out.println("");
+		System.out.println("//////////////////////////////////////////////////////////");
+		System.out.println("BEGINING OF THE ALGORITHM");
+		System.out.println("//////////////////////////////////////////////////////////");
+		System.out.println("");
+		
 	
 		this.graphNorthToSouth = new ArrayList<Point2D.Double>();
 		this.graphWestToEast = new ArrayList<Point2D.Double>();
@@ -919,6 +925,12 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 		double South = -(this.getHeightKM() * 0.60);
 		double West = -(this.getWidthKM()*0.60);
 		double East = (this.getWidthKM()*0.60);
+		
+		System.out.println("Noth to south line initialized to " + graphNorthToSouth);
+		System.out.println("West to East line initialized to ; " +graphWestToEast );
+		System.out.println("NothEast to SouthWest line initialized to : " +graphNorthEastToSouthWest );
+		System.out.println("NorthWest to SouthEast line initialized to : " +  graphNorthWestToSouthEast);
+		System.out.println("");
 
 		Iterator<Point2D.Double> it = graph.iterator();
 		while (it.hasNext()) {
@@ -927,16 +939,36 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 			if (graph.size() == 3) {
 				graphNorthToSouth.add(p);
 				System.out.println("");
+				System.out.println("_______________");
+				System.out.println("The number of stations is too low to applicate the algortihm");
+				System.out.println("Placement to : " + p);
+				System.out.println("_______________");
+				System.out.println("");
 			}
+			
+
 
 			else {
+				System.out.println("");
+				System.out.println("_______________");
+				System.out.println("The number of stations is enoughto applicate the algortihm");
+				System.out.println("");
 
 				if (p.x == 0.0 && p.y == 0.0) {
 					if(graph.size() >= 3) {
+						System.out.println("The station is placed to the center "  + p);
+						System.out.println("Placement of this station to all line of tramway");
+						System.out.println("");
 						graphNorthToSouth.add((graphNorthToSouth.size())/2,p);
 						graphWestToEast.add((graphWestToEast.size())/2,p);
 						graphNorthWestToSouthEast.add((graphNorthWestToSouthEast.size())/2,p);
 						graphNorthEastToSouthWest.add((graphNorthEastToSouthWest.size())/2,p);
+						System.out.println("Added to the NorthToSouth line : " + graphNorthToSouth);
+						System.out.println("Added to the WestToEast line : " + graphWestToEast);
+						System.out.println("Added to the NorthWestToSouthEast line : " + graphNorthWestToSouthEast);
+						System.out.println("Added to the NorthEastToSouthWest line : " + graphNorthEastToSouthWest);
+						System.out.println("_______________");
+						System.out.println("");
 					}
 					else {
 					graphNorthToSouth.add(p);
@@ -945,43 +977,86 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 					graphNorthEastToSouthWest.add(p);
 					}
 				} else {
-
+					System.out.println("");
+					System.out.println("_______________");
 					if (p.y < South || p.y > North || p.x == 0.0) {
+						System.out.println("Calculation of coordinates");
+						System.out.println(" x : " + p.x);
+						System.out.println(" y : " + p.y);
+						System.out.println("CHECK ///// y < " + South + " or " +" y > " + North + " or "+ " x = " + "0" );
+						System.out.println("Calculation : station added to line North to South");
 						graphNorthToSouth.add(p);
+						System.out.println("");
 					}
 
 					if (p.x < West || p.x > East || p.y == 0.0
 							|| (p.y <= this.getHeightKM() * 0.2 && p.y >= -(this.getHeightKM() * 0.2))) {
+						System.out.println("Calculation of coordinates");
+						System.out.println(" x : " + p.x);
+						System.out.println(" y : " + p.y);
+						System.out.println(" CHECK ///// x < " + West + " or " +  " x > " + East + " or "+  "y = " + "0" );
+						System.out.println("Calculation : station added to line West to East");
 						graphWestToEast.add(p);
+						System.out.println("");
 					}
 
 					if ((p.x >= West && p.x < 0.0) && (p.y <= North && p.y > 0.0)) {
+						System.out.println("Calculation of coordinates");
+						System.out.println(" x : " + p.x);
+						System.out.println(" y : " + p.y);
+						System.out.println(" CHECK ///// x >= " + West +" and "+ " x < " + "0" + " and " +  " y < " +  North + " and " + " y > 0"  );
+						System.out.println("Calculation : station added to line NorthWest to SouthEast");
 						graphNorthWestToSouthEast.add(p);
 					}
 					if ((p.x > 0.0 && p.x <= East) && (p.y >= South && p.y < 0.0)) {
+						System.out.println("Calculation of coordinates");
+						System.out.println(" x : " + p.x);
+						System.out.println(" y : " + p.y);
+						System.out.println(" CHECK ///// x >= 0 and "  + " x <= " + East + " and " +  " y >= " +  South + " and " + " y < 0"  );
+						System.out.println("Calculation : station added to line NorthWest to SouthEast");
 						graphNorthWestToSouthEast.add(p);
+						System.out.println("");
 					}
 					if ((p.x <= East && p.x > 0.0) && (p.y <= North && p.y > 0.0)) {
+						System.out.println("Calculation of coordinates");
+						System.out.println(" x : " + p.x);
+						System.out.println(" y : " + p.y);
+						System.out.println(" CHECK ///// x <= " + East +" and "+ " x > " + "0" + " and " +  " y <= " +  North + " and " + " y > 0"  );
+						System.out.println("Calculation : station added to line NorthEast to SouthWest");
 						graphNorthEastToSouthWest.add(p);
+						System.out.println("");
 					}
 					if ((p.x < 0.0 && p.x >= West) && (p.y >= South && p.y < 0.0)) {
+						System.out.println("Calculation of coordinates");
+						System.out.println(" x : " + p.x);
+						System.out.println(" y : " + p.y);
+						System.out.println(" CHECK ///// x <  0" +" and "+ " x > " + West + " and " +  " y >= " +  South + " and " + " y < 0"  );
+						System.out.println("Calculation : station added to line NortEast to SouthWest");
 						graphNorthEastToSouthWest.add(p);
+						System.out.println("");
 					}
 				}
+				System.out.println("_______________");
+				System.out.println("");
 
 			}
+			
 
 		}
+		System.out.println("First Step finished");
 		
 	
 	/////SORT THE GRAPH BECAUSE ALL STATIONS ARE NOT IN THE GOOD ORDER
+		System.out.println("");
+		System.out.println("_______________");
+		System.out.println("Step that re order line North to South");
 			 Collections.sort(graphNorthToSouth, new Comparator<Point2D.Double>() {
-
 				@Override
 				public int compare(Point2D.Double o1, Point2D.Double o2) {
 					int result = 0;
 					if(o1.y > o2.y ) {
 						result = 1;
+						
 					}
 					
 					if(o1.y < o2.y) {
@@ -991,13 +1066,16 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 					if(o1.y == o2.y) {
 						result = 0;
 					}
-					return result;	
+				return result;	
 				}
-				 
+				
 			 });
+			 System.out.println("End of the sort");
+			 System.out.println("_______________");
+			 System.out.println("");
 			 
 			/////SORT THE GRAPH BECAUSE ALL STATIONS ARE NOT IN THE GOOD ORDER
-			 
+			 System.out.println("Step that re order line West to East");
 			 Collections.sort(graphWestToEast,new Comparator<Point2D.Double>() {
 				@Override
 				public int compare(Point2D.Double o1, Point2D.Double o2) {
@@ -1019,13 +1097,15 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 				}
 				 
 			 });
-			 
-
+			 System.out.println("End of the sort");
+			 System.out.println("_______________");
+			 System.out.println("");
 
 
 			System.out.println("_______________");
 			System.out.println("North TO South");
 			this.DisplayGraph(graphNorthToSouth);
+			System.out.println("number of station : " + graphNorthToSouth.size());
 			System.out.println("Distance of road : " + this.DistanceOfRoad(graphNorthToSouth) + "km");
 			System.out.println("_______________");
 			System.out.println("");
@@ -1033,6 +1113,7 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 			System.out.println("_______________");
 			System.out.println("West to East");
 			this.DisplayGraph(graphWestToEast);
+			System.out.println("number of station : " + graphWestToEast.size());
 			System.out.println("Distance of road : " + this.DistanceOfRoad(graphWestToEast) + "km");
 			System.out.println("_______________");
 			
@@ -1040,6 +1121,8 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 			System.out.println("_______________");
 			System.out.println("NorthEast to SouthWEST");
 			this.DisplayGraph(graphNorthEastToSouthWest);
+			System.out.println("number of station : " + graphNorthEastToSouthWest.size());
+
 			System.out.println("Distance of road : " + this.DistanceOfRoad(graphNorthEastToSouthWest) + "km");
 			System.out.println("_______________");
 			System.out.println("");
@@ -1047,9 +1130,26 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 			System.out.println("_______________");
 			System.out.println("NorthWEST to SouthEast");
 			this.DisplayGraph(graphNorthWestToSouthEast);
+			System.out.println("number of station : " + graphNorthWestToSouthEast.size());
 			System.out.println("Distance of road : " + this.DistanceOfRoad(graphNorthWestToSouthEast) + "km");
 			System.out.println("_______________");
 			System.out.println("");
+			
+			
+			System.out.println("");
+			System.out.println("//////////////////////////////////////////////////////////");
+			System.out.println("END OF THE ALGORITHM ");
+			System.out.println("//////////////////////////////////////////////////////////");
+			System.out.println("");
+
+			
+			
+			
+			
+			
+			
+			
+			
 
 	}
 	
@@ -1057,13 +1157,19 @@ public class TramStationComputer{//////////////////////////////////////// CONTAI
 	
 	public double DistanceOfRoad(ArrayList<Point2D.Double> graph) {
 		double comptor = 0;
+		System.out.println("");
+		System.out.println("_______________");
+		System.out.println("Begining of distance road calculation");
+		System.out.println("Distance initialized to : " + comptor);
+
 		for(int i = 0; i < graph.size() - 1; i++) {
-			
 			Point2D.Double p = graph.get(i);
+			System.out.println("Distance : " + comptor + " + " + p.distance(graph.get(i+1)));
 			comptor = comptor + p.distance(graph.get(i+1));
-		
 		}
-		
+		System.out.println("end of distance road calculation");
+		System.out.println("_______________");
+		System.out.println("");
 		return comptor;
 	}
 

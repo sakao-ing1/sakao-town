@@ -3,6 +3,8 @@ package sakao_server;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
+
 public class Crud_Service {
 
 	private Crud_Controller controller;
@@ -15,7 +17,7 @@ public class Crud_Service {
 		return controller.showStudent();
 	}*/
 
-	/*public boolean addOnTable(String target,ArrayList<String> list) {
+/*	public boolean addOnTable(String target,ArrayList<String> list) {
 		boolean b = false;
 		try {
 			///Student p = new Student(name, age);
@@ -37,21 +39,8 @@ public class Crud_Service {
 	 * } return b; }
 	 */
 
-	/*public boolean deleteStudentById(int ID) {
-		boolean b = false;
-		try {
-			if (controller.existStudent(ID) == null)
-				System.out.println("Id inexistant");
-			controller.deleteStudentById(ID);
 
-			b = true;
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		}
-		return b;
-	}
-
+/*
 	public boolean updateStudentAge(int id, int age) {
 		boolean b = false;
 		try {
@@ -95,33 +84,12 @@ public class Crud_Service {
 
 		}
 		return b;
-	}
-	*/
+	}*/
 	
 	
 	
-	/////////////////////////////// EXISTS ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
-///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
-///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
-///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
-///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
 	
-	
-	public boolean cityExists() {
-		boolean b = false;
-		try {
-			if(controller.cityExists()) {
-				b = true;
-			}
 
-		} catch (Exception e) {
-		}
-		
-		return b;
-	}
-	
-	
-	
 	
 	/////////////////////////////// SELECT ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
 ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
@@ -349,7 +317,12 @@ public class Crud_Service {
 	}
 	
 	
-
+	
+	
+	
+	
+	
+	
 
 	public Crud_Controller getController() {
 		return controller;
@@ -358,7 +331,5 @@ public class Crud_Service {
 	public void setController(Crud_Controller controller) {
 		this.controller = controller;
 	}
-	
-	
 
 }

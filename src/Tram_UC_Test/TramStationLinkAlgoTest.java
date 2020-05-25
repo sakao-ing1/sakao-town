@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import sakao_client.TramStationComputer;
+import sakao_client_insert.TablesToBeInserted;
 import sakao_common.Request;
-import sakao_insert_client.TablesToBeInserted;
 
 public class TramStationLinkAlgoTest {
 		TramStationComputer computer = new TramStationComputer();
@@ -32,27 +32,70 @@ public class TramStationLinkAlgoTest {
 				Point2D.Double p = new Point2D.Double(Double.parseDouble(s1),Double.parseDouble(s2));
 				listCoord.add(p);
 			}
+			
+			System.out.println("///////////////////////////////////////////////:////////////////////// "+ listCoord.toString());
+			System.out.println(listCoord.size());
+			
+			
+			Point2D.Double p1 = new Point2D.Double(-3.0, 2.571428571428571);///
+			Point2D.Double p2 = new Point2D.Double(3.0, 2.571428571428571);///
+			Point2D.Double p3 = new Point2D.Double(-4.0, 1.1428571428571426);///
+			Point2D.Double p4 = new Point2D.Double(4.0, 1.1428571428571426);///
+			Point2D.Double p5 = new Point2D.Double(-3.0, -0.28571428571428603);///
+			Point2D.Double p6 = new Point2D.Double(3.0, -0.28571428571428603);///
+			Point2D.Double p7 = new Point2D.Double(-4.0, -1.7142857142857146);///
+			Point2D.Double p8 = new Point2D.Double(4.0, -1.7142857142857146);///
+			Point2D.Double p9 = new Point2D.Double(-3.0, -3.1428571428571432);///
+			Point2D.Double p10 = new Point2D.Double(3.0, -3.1428571428571432);///
+			Point2D.Double p11 = new Point2D.Double(0.0, 0.0);//
+			Point2D.Double p12 = new Point2D.Double(0.0, 4.0);///
+			Point2D.Double p13 = new Point2D.Double(0.0, 1.5);///
+			Point2D.Double p14 = new Point2D.Double(0.0, -1.0);/////
+			Point2D.Double p15 = new Point2D.Double(0.0, -3.5);///
 			///////////////////////////////////////////////////////////////////// EXPECTED
 			///////////////////////////////////////////////////////////////////// VALUES
 			/////LINEA OF THE CITY RESULTS PREPARED
 			ArrayList<Point2D.Double> TramLineAResultPREPARED = new ArrayList<Point2D.Double>();
 			
-			
+			TramLineAResultPREPARED.add(p15);
+			TramLineAResultPREPARED.add(p9);
+			TramLineAResultPREPARED.add(p10);
+			TramLineAResultPREPARED.add(p14);
+			TramLineAResultPREPARED.add(p11);
+			TramLineAResultPREPARED.add(p13);
+			TramLineAResultPREPARED.add(p12);
 			/////LINEB OF THE CITY RESULTS PREPARED
 			ArrayList<Point2D.Double> TramLineBResultPREPARED = new ArrayList<Point2D.Double>();
-			
+			TramLineBResultPREPARED.add(p3);
+			TramLineBResultPREPARED.add(p7);
+			TramLineBResultPREPARED.add(p5);
+			TramLineBResultPREPARED.add(p11);
+			TramLineBResultPREPARED.add(p14);
+			TramLineBResultPREPARED.add(p6);
+			TramLineBResultPREPARED.add(p4);
+			TramLineBResultPREPARED.add(p8);
 			
 			/////LINEC OF THE CITY RESULTS PREPARED
 			ArrayList<Point2D.Double> TramLineCResultPREPARED = new ArrayList<Point2D.Double>();
-			
-			
+			TramLineCResultPREPARED.add(p2);
+			TramLineCResultPREPARED.add(p11);
+			TramLineCResultPREPARED.add(p5);
+
+
 			/////LINED OF THE CITY RESULTS PREPARED
 			ArrayList<Point2D.Double> TramLineDResultPREPARED = new ArrayList<Point2D.Double>();
-			
+			TramLineDResultPREPARED.add(p1);
+			TramLineDResultPREPARED.add(p11);
+			TramLineDResultPREPARED.add(p6);
+
+
+
 			
 ///////////////
 			
 			/////LAUNCH THE MESH ALGORITHM
+			computer.setWidthKM(5);
+			computer.setHeightKM(5);
 			computer.StationLinkAlgo(listCoord);
 
 			///// STACK THE RESULTS OF THE ALGORITHM IN THESE LISTS IN ORDER TO COMPARE
@@ -111,7 +154,7 @@ public class TramStationLinkAlgoTest {
 				System.out.println("_______________");
 				System.out.println("First step : The number of points expected is correct !");
 				System.out.println("Each one have " + TramLineAResult.size() + " points !");
-				System.out.println("Expected results : 15");
+				System.out.println("Expected results : " + TramLineAResultPREPARED.size());
 				System.out.println("_______________");
 				System.out.println("");
 				
@@ -140,13 +183,13 @@ public class TramStationLinkAlgoTest {
 				System.out.println("_______________");
 				System.out.println("First step : The number of points expected is correct !");
 				System.out.println("Each one have " + TramLineBResult.size() + " points !");
-				System.out.println("Expected results : 15");
+				System.out.println("Expected results : " + TramLineBResultPREPARED.size());
 				System.out.println("_______________");
 				System.out.println("");
 				
 				
 				for (int i = 0; i < TramLineBResult.size(); i++) {
-					if (TramLineAResultPREPARED.get(i).equals(TramLineBResult.get(i))) {
+					if (TramLineBResultPREPARED.get(i).equals(TramLineBResult.get(i))) {
 						System.out.println("_______________");
 						System.out.println("The algorithm generates expected points : n° " + (i + 1));
 						System.out.println("Prepared list expected results : " + TramLineBResultPREPARED.get(i));
@@ -173,7 +216,7 @@ public class TramStationLinkAlgoTest {
 				System.out.println("_______________");
 				System.out.println("First step : The number of points expected is correct for line C !");
 				System.out.println("Each one have " + TramLineCResult.size() + " points !");
-				System.out.println("Expected results : 15");
+				System.out.println("Expected results : " + TramLineCResultPREPARED.size());
 				System.out.println("_______________");
 				System.out.println("");
 				
@@ -203,7 +246,7 @@ public class TramStationLinkAlgoTest {
 				System.out.println("_______________");
 				System.out.println("First step : The number of points expected is correct !");
 				System.out.println("Each one have " + TramLineDResult.size() + " points !");
-				System.out.println("Expected results : 15");
+				System.out.println("Expected results : " + TramLineDResultPREPARED.size());
 				System.out.println("_______________");
 				System.out.println("");
 				
@@ -225,7 +268,7 @@ public class TramStationLinkAlgoTest {
 			
 			
 			else {
-				System.out.println("Fail : The number of points expected is not correct !");
+				System.out.println("Fail : The number of points expected for line D is not correct !");
 			}
 			
 			

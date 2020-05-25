@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="resources/jackson-all-1.9.9.jar"/>
 	<classpathentry kind="lib" path="resources/jackson-databind-2.9.5.jar"/>
 	<classpathentry kind="lib" path="resources/jackson-annotations-2.9.0.jar"/>
+	<classpathentry kind="lib" path="resources/jcalendar-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

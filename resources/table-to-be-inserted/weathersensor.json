@@ -1,0 +1,26 @@
+{
+	"operation_type": "INSERT",
+	"target": "weathersensor",
+	"list": [
+		{
+			"temperature": 20,
+			"stateofthesky": "cloudy",
+			"idsensor": 3,
+			"idconfiguration": 1
+		},
+		{
+			"temperature": 30,
+			"stateofthesky": "nice",
+			"idsensor": 3,
+			"idconfiguration": 2
+		},
+		{
+			"temperature": 40,
+			"stateofthesky": "nice",
+			"idsensor": 3,
+			"idconfiguration": 3
+		}
+	]
+}
+
+

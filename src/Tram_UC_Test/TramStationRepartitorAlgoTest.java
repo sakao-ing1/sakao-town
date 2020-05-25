@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import sakao_client.TramStationComputer;
+import sakao_client_insert.TablesToBeInserted;
 import sakao_common.Request;
-import sakao_insert_client.TablesToBeInserted;
 
 public class TramStationRepartitorAlgoTest {
 	
