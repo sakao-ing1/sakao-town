@@ -48,6 +48,103 @@ import javax.swing.DefaultCellEditor;
 import java.awt.SystemColor;
 import javax.swing.JComboBox;
 
+///////////////////////////
+
+class ButtonRenderer2 extends JButton implements TableCellRenderer {
+
+	public ButtonRenderer2() {
+		setOpaque(true);
+	}
+
+	@Override
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+			int row, int column) {
+		if (isSelected) {
+			setForeground(table.getSelectionForeground());
+			setBackground(table.getSelectionBackground());
+		} else {
+			setForeground(table.getForeground());
+			setBackground(UIManager.getColor("Button.background"));
+		}
+		setText((value == null) ? "" : value.toString());
+		return this;
+	}
+}
+
+class ButtonEditor2 extends DefaultCellEditor {
+
+	protected JButton button;
+	private String label;
+	private boolean isPushed;
+	private int id;
+	private AppStructureHandler app;
+
+	public ButtonEditor2(JCheckBox checkBox, AppStructureHandler app) {
+		super(checkBox);
+		button = new JButton();
+		button.setOpaque(true);
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fireEditingStopped();
+			}
+		});
+		this.app = app;
+	}
+
+	@Override
+	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+		if (isSelected) {
+			button.setForeground(table.getSelectionForeground());
+			button.setBackground(table.getSelectionBackground());
+
+		} else {
+			button.setForeground(table.getForeground());
+			button.setBackground(table.getBackground());
+		}
+		int modelRow = table.convertRowIndexToModel(row);
+		id = (int) table.getValueAt(modelRow, 0);
+		label = (value == null) ? "" : value.toString();
+		button.setText(label);
+		isPushed = true;
+		return button;
+	}
+
+	@Override
+	public Object getCellEditorValue() {
+		
+		if (isPushed && label.equals("false")) {
+			int dialogUpdate = JOptionPane.showConfirmDialog(null, "Are you sure you want to install this Bollard?",
+					"INSTALL SENSOR", JOptionPane.YES_NO_OPTION);
+			if (dialogUpdate == JOptionPane.YES_OPTION) {
+				ArrayList<String> a = new ArrayList<String>();
+				a.add(String.valueOf(id));
+				a.add("true");
+				Request request = new Request("UPDATEinstall", "bollard", a);
+				try {
+					ArrayList<String> al = app.sendMessageToServer(request);
+					
+					
+				
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+		isPushed = false;
+		return label;
+	}
+
+	//@Override
+	public boolean stopCellEditing() {
+		isPushed = false;
+		return super.stopCellEditing();
+	}
+}
+
+
+//////////////////////
 public class ManageBollard extends JPanel {
 
 	private JTextField textFieldBollard_1;
@@ -128,6 +225,7 @@ public class ManageBollard extends JPanel {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		JButton btnNewBollard_1 = new JButton("Submit");
+		JButton btLoadConfig2 = new JButton("Load");
 		btnNewBollard_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -163,7 +261,7 @@ public class ManageBollard extends JPanel {
 						b.add(s2);
 						Request request = new Request("INSERT", "bollard", b);
 						app.sendMessageToServer(request);
-
+						btLoadConfig2.doClick();
 						JOptionPane.showMessageDialog(null, "A new bollard is successfully added");
 					} else {
 						JOptionPane.showMessageDialog(null, "Please enter the ip address and Mac address", "",
@@ -249,7 +347,7 @@ public class ManageBollard extends JPanel {
 				"isInstalled"};
 
 		scrollBollard.setViewportView(table2);
-		JButton btLoadConfig2 = new JButton("Load");
+		
 		btLoadConfig2.setBackground(new Color(0, 153, 0));
 		btLoadConfig2.setForeground(SystemColor.window);
 
@@ -285,10 +383,11 @@ public class ManageBollard extends JPanel {
 						
 						
 
-						table2.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer());
+						table2.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer2());
 
 						// SET CUSTOM EDITOR TO TEAMS COLUMN
-						table2.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(new JCheckBox(), app));
+						table2.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor2(new JCheckBox(), app));
+						//btLoadConfig2.doClick();
 
 			
 					} catch (IOException e1) {
@@ -315,15 +414,19 @@ public class ManageBollard extends JPanel {
 						ArrayList<String> a = new ArrayList<String>();
 						a.add(String.valueOf(i));
 						Request request = new Request("DELETE", "bollard", a);
+						
 						try {
 							ArrayList<String> al = app.sendMessageToServer(request);
+							//////////////////////////////////////////////////////////////////////////////////////DO CLICK
+							
+							btLoadConfig2.doClick();
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					}
 				} catch (IndexOutOfBoundsException e1) {
-					JOptionPane.showMessageDialog(null, "Please choose the sensor to delete", "Choose sensor",
+					JOptionPane.showMessageDialog(null, "Please choose the bollard to delete", "Choose bollard",
 							JOptionPane.WARNING_MESSAGE);
 
 				}
