@@ -78,8 +78,8 @@ class ButtonEditor2 extends DefaultCellEditor {
 	private boolean isPushed;
 	private int id;
 	private AppStructureHandler app;
-
-	public ButtonEditor2(JCheckBox checkBox, AppStructureHandler app) {
+	private JButton btn = null;
+	public ButtonEditor2(JCheckBox checkBox, AppStructureHandler app,JButton btn) {
 		super(checkBox);
 		button = new JButton();
 		button.setOpaque(true);
@@ -90,6 +90,7 @@ class ButtonEditor2 extends DefaultCellEditor {
 			}
 		});
 		this.app = app;
+		this.btn = btn;
 	}
 
 	@Override
@@ -115,7 +116,7 @@ class ButtonEditor2 extends DefaultCellEditor {
 		
 		if (isPushed && label.equals("false")) {
 			int dialogUpdate = JOptionPane.showConfirmDialog(null, "Are you sure you want to install this Bollard?",
-					"INSTALL SENSOR", JOptionPane.YES_NO_OPTION);
+					"INSTALL BOLLARD", JOptionPane.YES_NO_OPTION);
 			if (dialogUpdate == JOptionPane.YES_OPTION) {
 				ArrayList<String> a = new ArrayList<String>();
 				a.add(String.valueOf(id));
@@ -124,6 +125,7 @@ class ButtonEditor2 extends DefaultCellEditor {
 				try {
 					ArrayList<String> al = app.sendMessageToServer(request);
 					
+					btn.doClick();
 					
 				
 				} catch (IOException e1) {
@@ -135,8 +137,10 @@ class ButtonEditor2 extends DefaultCellEditor {
 		isPushed = false;
 		return label;
 	}
+	
 
-	//@Override
+
+	@Override
 	public boolean stopCellEditing() {
 		isPushed = false;
 		return super.stopCellEditing();
@@ -386,7 +390,7 @@ public class ManageBollard extends JPanel {
 						table2.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer2());
 
 						// SET CUSTOM EDITOR TO TEAMS COLUMN
-						table2.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor2(new JCheckBox(), app));
+						table2.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor2(new JCheckBox(), app,btLoadConfig2));
 						//btLoadConfig2.doClick();
 
 			
