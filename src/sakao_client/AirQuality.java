@@ -403,8 +403,6 @@ public class AirQuality extends JPanel {
 		JButton btnNewButton_2 = new JButton("Load");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
 
 				String headerZone[] = new String[] { "ID", "Type", "ID Zone", "Zone", "Beta" };
 				DefaultTableModel dtm1 = new DefaultTableModel(headerZone, 0);
@@ -436,9 +434,6 @@ public class AirQuality extends JPanel {
 
 				table.setModel(dtm1);
 				scrollPane.setViewportView(table);
-				
-				
-				
 				
 				
 				String header[] = new String[] { "ID", "Type", "Zone" };

@@ -17,6 +17,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -199,23 +201,23 @@ public class ConfigureSensors<E> extends JPanel {
 		lblNewLabel_3.setBounds(44, 217, 99, 21);
 		panelAddSensor.add(lblNewLabel_3);
 
-		String state[] = { "Work", "Suspended" };
+		String state[] = { "Work" };
 		JComboBox comboBox = new JComboBox(state);
-		comboBox.setBounds(177, 96, 107, 22);
+		comboBox.setBounds(177, 96, 131, 22);
 		panelAddSensor.add(comboBox);
 
 		String type[] = { "Pollution", "Weather", "Vehicle" };
 		JComboBox comboBox_1 = new JComboBox(type);
-		comboBox_1.setBounds(177, 134, 107, 22);
+		comboBox_1.setBounds(177, 134, 131, 22);
 		panelAddSensor.add(comboBox_1);
 
 		textField = new JTextField();
-		textField.setBounds(177, 172, 107, 30);
+		textField.setBounds(177, 172, 131, 30);
 		panelAddSensor.add(textField);
 		textField.setColumns(10);
 
 		textField_1 = new JTextField();
-		textField_1.setBounds(177, 213, 107, 31);
+		textField_1.setBounds(177, 213, 131, 31);
 		panelAddSensor.add(textField_1);
 		textField_1.setColumns(10);
 
@@ -224,6 +226,8 @@ public class ConfigureSensors<E> extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
+					textField.setForeground(Color.BLACK);
+					textField_1.setForeground(Color.BLACK);
 					int row = table_1.getSelectedRow();
 					int modelRow = table_1.convertRowIndexToModel(row);
 					int idZone = (int) table_1.getValueAt(modelRow, 0);
@@ -231,9 +235,40 @@ public class ConfigureSensors<E> extends JPanel {
 					String s2 = "}";
 					String state = (String) comboBox.getItemAt(comboBox.getSelectedIndex());
 					String type = (String) comboBox_1.getItemAt(comboBox_1.getSelectedIndex());
-					String ipaddress = textField.getText().toString();
-					String macaddress = textField_1.getText().toString();
-					if ((ipaddress.length() != 0) && (macaddress.length() != 0)) {
+					String ipaddress = "";
+					String macaddress = "";
+
+					final String IP_ADDRESS_PATTERN = "\\d{1,3}.\\d{1,3}.\\d{1,3}.\\d{1,3}";
+					final String MAC_ADDRESS_PATTERN = "\\w\\w:\\w\\w:\\w\\w:\\w\\w:\\w\\w:\\w\\w";
+
+					Matcher matcherip = Pattern.compile(IP_ADDRESS_PATTERN).matcher(textField.getText());
+					Matcher matchermac = Pattern.compile(MAC_ADDRESS_PATTERN).matcher(textField_1.getText());
+
+					if (!matcherip.find() && !matchermac.find()) {
+						textField.setForeground(Color.RED);
+						textField.setText("Incorrect IP address");
+						textField_1.setForeground(Color.RED);
+						textField_1.setText("Incorrect MAC address");
+					}
+					Matcher matcherip2 = Pattern.compile(IP_ADDRESS_PATTERN).matcher(textField.getText());
+					Matcher matchermac2 = Pattern.compile(MAC_ADDRESS_PATTERN).matcher(textField_1.getText());
+					if (matcherip2.find() && !matchermac2.find()) {
+						textField_1.setForeground(Color.RED);
+						textField_1.setText("Incorrect MAC address");
+
+					}
+					Matcher matcherip3 = Pattern.compile(IP_ADDRESS_PATTERN).matcher(textField.getText());
+					Matcher matchermac3 = Pattern.compile(MAC_ADDRESS_PATTERN).matcher(textField_1.getText());
+					if (matchermac3.find() && !matcherip3.find()) {
+						textField.setForeground(Color.RED);
+						textField.setText("Incorrect IP address");
+
+					}
+					Matcher matcherip4 = Pattern.compile(IP_ADDRESS_PATTERN).matcher(textField.getText());
+					Matcher matchermac4 = Pattern.compile(MAC_ADDRESS_PATTERN).matcher(textField_1.getText());
+					if (matcherip4.find() && matchermac4.find()) {
+						macaddress = textField_1.getText();
+						ipaddress = textField.getText();
 						ArrayList<String> a = new ArrayList<String>();
 						a.add(s1);
 						a.add("sensorstate");
@@ -253,15 +288,10 @@ public class ConfigureSensors<E> extends JPanel {
 						app.sendMessageToServer(request);
 
 						JOptionPane.showMessageDialog(null, "A new sensor is successfully added");
-					} else {
-						JOptionPane.showMessageDialog(null, "Please enter the ip address and Mac address", "",
-								JOptionPane.WARNING_MESSAGE);
-
 					}
 				} catch (IOException | IndexOutOfBoundsException e1) {
 					JOptionPane.showMessageDialog(null, "Please choose the area", "Choose area",
 							JOptionPane.WARNING_MESSAGE);
-
 				}
 
 			}
@@ -401,7 +431,7 @@ public class ConfigureSensors<E> extends JPanel {
 						}
 					}
 				} catch (IndexOutOfBoundsException e1) {
-					JOptionPane.showMessageDialog(null, "Please choose the sensor to delete", "Choose sensor",
+					JOptionPane.showMessageDialog(null, "Please select the sensor to delete", "Choose sensor",
 							JOptionPane.WARNING_MESSAGE);
 
 				}
@@ -412,6 +442,7 @@ public class ConfigureSensors<E> extends JPanel {
 		btnNewButton.setForeground(SystemColor.window);
 		btnNewButton.setBounds(552, 42, 89, 23);
 		panelSensors.add(btnNewButton);
+
 
 	}
 }
