@@ -460,13 +460,20 @@ public class ClientThread extends Thread {
 			System.out.println("Display done to " + this.getName());
 			System.out.println("********************");
 			break;
-
+		case "UPDATE_BETA":
+			System.out.println(this.zoneService.updateZoneBeta(Integer.parseInt(list.get(0)), Integer.parseInt(list.get(1))));
+			String outjsonStringUpdateZoneBeta = mapper.writeValueAsString(response);
+			out.write(outjsonStringUpdateZoneBeta + "\n");
+			out.flush();
+			System.out.println("Update zone done for " + this.getName());
+			System.out.println("********************");
+			break;
 		case "UPDATE":
 			System.out.println(this.zoneService.updateZone(Integer.parseInt(list.get(0)), Boolean.valueOf(list.get(1))));
 			String outjsonStringUpdateZone = mapper.writeValueAsString(response);
 			out.write(outjsonStringUpdateZone + "\n");
 			out.flush();
-			System.out.println("Update sensor done for " + this.getName());
+			System.out.println("Update zone done for " + this.getName());
 			System.out.println("********************");
 			break;
 		case "INSERT":

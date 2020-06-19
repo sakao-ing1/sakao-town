@@ -29,6 +29,17 @@ public class ZoneService {
 		return b;
 	}
 	
+	public boolean updateZoneBeta(int id, int thresholdbeta) {
+		boolean b = false;
+		try {
+			controller.updateZoneBeta(id, thresholdbeta);
+			b = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+	
 	public boolean updateZone(int id, boolean alertstate) {
 		boolean b = false;
 		try {

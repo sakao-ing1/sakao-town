@@ -36,11 +36,9 @@ public class ZoneInsert {
 		System.out.println("REQUEST SENT");
 		System.out.println(outjsonString);
 		System.out.println(" _____");
-		System.out.println("");
 		out.write(outjsonString + "\n");
 		out.flush();
 		String injsonString = in.readLine();
-		System.out.println(injsonString);
 		response = mapper.readValue(injsonString, Response.class);
 		return response.toString();
 	}

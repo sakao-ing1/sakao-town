@@ -312,10 +312,8 @@ public class Crud_Controller {
 				i += 12;
 			}
 			req = req.substring(0, req.length() - 1);
-			System.out.println(req);
 			PreparedStatement pstm = con.prepareStatement(req);
 			pstm.executeUpdate();
-			System.out.println(req);
 			DataSource.returnConnection(con);
 
 		} catch (SQLException ex) {
@@ -441,6 +439,21 @@ public class Crud_Controller {
 		}
 	}
 
+	public void updateZoneBeta(int id, int thresholdbeta) throws ClassNotFoundException {
+		try {
+			Connection con = DataSource.getConnection();
+
+			PreparedStatement pstm = con.prepareStatement(" UPDATE zone SET thresholdbeta = ?  WHERE idzone = ?");
+			pstm.setInt(1, thresholdbeta);
+			pstm.setInt(2, id);
+			pstm.executeUpdate();
+			DataSource.returnConnection(con);
+
+		} catch (SQLException ex) {
+			System.out.println("erreur " + ex.getMessage());
+		}
+	}
+
 	public void updateZone(int id, boolean alertestate) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
@@ -455,7 +468,7 @@ public class Crud_Controller {
 			System.out.println("erreur " + ex.getMessage());
 		}
 	}
-
+	
 	public ArrayList<String> showZoneById(int id) throws ClassNotFoundException {
 		ArrayList<String> retour = new ArrayList<String>();
 		try {

@@ -70,8 +70,7 @@ public class TablesToBeInserted {
 	
 
 	public String readFileZone() throws IOException {
-		InputStream fis = new FileInputStream("resources\\table-to-be-inserted\\zone.json");
-		InputStreamReader ipsr = new InputStreamReader(fis);
+		InputStreamReader ipsr = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("table-to-be-inserted/zone.json"));
 		BufferedReader br = new BufferedReader(ipsr);
 		String outjsonString = "";
 		String chaine = "";
@@ -79,7 +78,6 @@ public class TablesToBeInserted {
 		while ((outjsonString = br.readLine()) != null) {
 			chaine = chaine + outjsonString;
 		}
-		System.out.println("Request sent : " + chaine);
 		return chaine;
 	}
 	
