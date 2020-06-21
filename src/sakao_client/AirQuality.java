@@ -43,13 +43,17 @@ public class AirQuality extends JPanel {
 	private JTable table_1;
 	private JTable table_2;
 	private JTable table_3;
-
+	private ArrayList<Integer> listSensorPollution = new ArrayList<Integer>();
+	private ArrayList<Integer> listSensorWeather = new ArrayList<Integer>();
 	/**
 	 * Create the panel.
 	 * 
 	 * @throws IOException
 	 */
 
+
+	
+	
 	public void simulateAlgoPollution(double average, int thresholdbeta, int temperature, int idSensor, int idZone,
 			int idSensorWeather, AppStructureHandler app) throws IOException {
 		double d = thresholdbeta;
@@ -110,23 +114,7 @@ public class AirQuality extends JPanel {
 		Request request = new Request("INSERT", "pollutionsensor", a);
 		app.sendMessageToServer(request);
 
-		ArrayList<String> a2 = new ArrayList<String>();
-		a2.add(s1);
-		a2.add("temperature");
-		a2.add(String.valueOf(temperature));
-		a2.add("stateofthesky");
-		if (temperature < 10) {
-			a2.add("cloudy");
-		} else {
-			a2.add("nice");
-		}
-		a2.add("idsensor");
-		a2.add(String.valueOf(idSensorWeather));
-		a2.add("idconfiguration");
-		a2.add(null);
-		a2.add(s2);
-		Request request2 = new Request("INSERT", "weathersensor", a2);
-		app.sendMessageToServer(request2);
+		
 
 	}
 
@@ -376,6 +364,22 @@ public class AirQuality extends JPanel {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//TO DO
+				int row = table_1.getSelectedRow();
+				int modelRow = table_1.convertRowIndexToModel(row);
+				int idZone = (int) table_1.getValueAt(modelRow, 2);
+				int idSensor = (int) table_1.getValueAt(modelRow, 0);
+				
+				
+				
+				SensorPollutionThread sensorPollutionThread = new SensorPollutionThread(idSensor, idZone, app);
+				if(listSensorPollution.contains(idSensor)) {
+					JOptionPane.showMessageDialog(null, "The sensor "+ idSensor+" is already launched", "Start sensor",
+							JOptionPane.INFORMATION_MESSAGE);
+				}else {
+					listSensorPollution.add(idSensor);
+					sensorPollutionThread.start();
+				}
+				
 				
 			}
 		});
@@ -388,6 +392,25 @@ public class AirQuality extends JPanel {
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//TO DO
+				
+				//TO DO
+				int row = table_3.getSelectedRow();
+				int modelRow = table_3.convertRowIndexToModel(row);
+				int idZone = (int) table_3.getValueAt(modelRow, 2);
+				int idSensor = (int) table_3.getValueAt(modelRow, 0);
+				
+				
+				
+				SensorWeatherThread sensorPollutionThread = new SensorWeatherThread(idSensor, idZone, app);
+				if(listSensorWeather.contains(idSensor)) {
+					JOptionPane.showMessageDialog(null, "The sensor "+ idSensor+" is already launched", "Start sensor",
+							JOptionPane.INFORMATION_MESSAGE);
+				}else {
+					listSensorWeather.add(idSensor);
+					sensorPollutionThread.start();
+				}
+				
+				
 				
 			}
 		});
@@ -419,16 +442,6 @@ public class AirQuality extends JPanel {
 
 		table_3 = new JTable();
 
-		JButton btnNewButtonStart = new JButton("Simulate");
-		btnNewButtonStart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-			}
-		});
-		btnNewButtonStart.setForeground(new Color(255, 255, 255));
-		btnNewButtonStart.setBackground(new Color(34, 139, 34));
-		btnNewButtonStart.setFont(new Font("Times New Roman", Font.BOLD, 12));
-		btnNewButtonStart.setBounds(583, 300, 99, 23);
 		panel_1.add(btnNewButton);
 
 		JButton btnNewButton_2 = new JButton("Load");
@@ -590,4 +603,5 @@ public class AirQuality extends JPanel {
 		panel_2.add(separator_3);
 
 	}
+	
 }
