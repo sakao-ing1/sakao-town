@@ -3,22 +3,22 @@
 	"target": "weathersensor",
 	"list": [
 		{
-			"temperature": 20,
+			"temperature": 9,
 			"stateofthesky": "cloudy",
 			"idsensor": 3,
-			"idconfiguration": 1
+			"idconfiguration": null
 		},
 		{
 			"temperature": 30,
 			"stateofthesky": "nice",
 			"idsensor": 3,
-			"idconfiguration": 2
+			"idconfiguration": null
 		},
 		{
 			"temperature": 40,
 			"stateofthesky": "nice",
 			"idsensor": 3,
-			"idconfiguration": 3
+			"idconfiguration": null
 		}
 	]
 }

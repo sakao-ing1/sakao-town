@@ -45,78 +45,12 @@ public class AirQuality extends JPanel {
 	private JTable table_3;
 	private ArrayList<Integer> listSensorPollution = new ArrayList<Integer>();
 	private ArrayList<Integer> listSensorWeather = new ArrayList<Integer>();
+
 	/**
 	 * Create the panel.
 	 * 
 	 * @throws IOException
 	 */
-
-
-	
-	
-	public void simulateAlgoPollution(double average, int thresholdbeta, int temperature, int idSensor, int idZone,
-			int idSensorWeather, AppStructureHandler app) throws IOException {
-		double d = thresholdbeta;
-		if (temperature > 30) {
-			d = thresholdbeta * 0.85;
-		} else if (temperature < 15) {
-			d = thresholdbeta * 1.15;
-		}
-
-		if (average >= d) {
-
-			String s1 = "{";
-			String s2 = "}";
-			Date actuelle = new Date();
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			String dat = dateFormat.format(actuelle);
-			ArrayList<String> a = new ArrayList<String>();
-			a.add(s1);
-			a.add("dateajout");
-			a.add(dat);
-			a.add("idsensor");
-			a.add(String.valueOf(idSensor));
-			a.add(s2);
-			Request request = new Request("INSERT", "alert", a);
-			app.sendMessageToServer(request);
-
-			ArrayList<String> azon = new ArrayList<String>();
-			azon.add(String.valueOf(idZone));
-			azon.add("true");
-			Request request2 = new Request("UPDATE", "zone", azon);
-			try {
-				app.sendMessageToServer(request2);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-			JOptionPane.showMessageDialog(null, "An alert has been raised", "Alert is triggered",
-					JOptionPane.WARNING_MESSAGE);
-
-		} else {
-			JOptionPane.showMessageDialog(null, "There is no pollution in this area", "The area is under control",
-					JOptionPane.INFORMATION_MESSAGE);
-
-		}
-
-		String s1 = "{";
-		String s2 = "}";
-		ArrayList<String> a = new ArrayList<String>();
-		a.add(s1);
-		a.add("betaaverage");
-		a.add(String.valueOf(average));
-		a.add("idconfiguration");
-		a.add(null);
-		a.add("idsensor");
-		a.add(String.valueOf(idSensor));
-		a.add(s2);
-		Request request = new Request("INSERT", "pollutionsensor", a);
-		app.sendMessageToServer(request);
-
-		
-
-	}
 
 	public AirQuality(AppStructureHandler app) throws IOException {
 		setLayout(null);
@@ -359,69 +293,55 @@ public class AirQuality extends JPanel {
 		lblNewLabel3.setBounds(34, 22, 254, 14);
 		panel_3.add(lblNewLabel3);
 
-			
 		JButton btnNewButton_3 = new JButton("Start");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TO DO
+				// TO DO
 				int row = table_1.getSelectedRow();
 				int modelRow = table_1.convertRowIndexToModel(row);
 				int idZone = (int) table_1.getValueAt(modelRow, 2);
 				int idSensor = (int) table_1.getValueAt(modelRow, 0);
-				
-				
-				
+
 				SensorPollutionThread sensorPollutionThread = new SensorPollutionThread(idSensor, idZone, app);
-				if(listSensorPollution.contains(idSensor)) {
-					JOptionPane.showMessageDialog(null, "The sensor "+ idSensor+" is already launched", "Start sensor",
-							JOptionPane.INFORMATION_MESSAGE);
-				}else {
+				if (listSensorPollution.contains(idSensor)) {
+					JOptionPane.showMessageDialog(null, "The sensor " + idSensor + " is already launched",
+							"Start sensor", JOptionPane.INFORMATION_MESSAGE);
+				} else {
 					listSensorPollution.add(idSensor);
 					sensorPollutionThread.start();
 				}
-				
-				
+
 			}
 		});
 		btnNewButton_3.setBackground(new Color(0, 0, 128));
 		btnNewButton_3.setForeground(Color.WHITE);
 		btnNewButton_3.setBounds(113, 254, 89, 23);
 		panel_3.add(btnNewButton_3);
-		
+
 		JButton btnNewButton_4 = new JButton("Start");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TO DO
-				
-				//TO DO
 				int row = table_3.getSelectedRow();
 				int modelRow = table_3.convertRowIndexToModel(row);
 				int idZone = (int) table_3.getValueAt(modelRow, 2);
 				int idSensor = (int) table_3.getValueAt(modelRow, 0);
-				
-				
-				
+
 				SensorWeatherThread sensorPollutionThread = new SensorWeatherThread(idSensor, idZone, app);
-				if(listSensorWeather.contains(idSensor)) {
-					JOptionPane.showMessageDialog(null, "The sensor "+ idSensor+" is already launched", "Start sensor",
-							JOptionPane.INFORMATION_MESSAGE);
-				}else {
+				if (listSensorWeather.contains(idSensor)) {
+					JOptionPane.showMessageDialog(null, "The sensor " + idSensor + " is already launched",
+							"Start sensor", JOptionPane.INFORMATION_MESSAGE);
+				} else {
 					listSensorWeather.add(idSensor);
 					sensorPollutionThread.start();
 				}
-				
-				
-				
+
 			}
 		});
 		btnNewButton_4.setBackground(new Color(0, 0, 128));
 		btnNewButton_4.setForeground(Color.WHITE);
 		btnNewButton_4.setBounds(490, 254, 89, 23);
 		panel_3.add(btnNewButton_4);
-		
-		
-		
-		
+
 		JLabel lblNewLabel_5 = new JLabel("Choose the weather sensor");
 		lblNewLabel_5.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblNewLabel_5.setBounds(432, 23, 204, 14);
@@ -587,7 +507,7 @@ public class AirQuality extends JPanel {
 
 			}
 		});
-		
+
 		btnNewButton_1.setForeground(new Color(255, 255, 255));
 		btnNewButton_1.setBackground(new Color(0, 100, 0));
 		btnNewButton_1.setBounds(336, 29, 89, 23);
@@ -603,5 +523,5 @@ public class AirQuality extends JPanel {
 		panel_2.add(separator_3);
 
 	}
-	
+
 }

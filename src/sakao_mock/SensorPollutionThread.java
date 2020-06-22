@@ -25,8 +25,8 @@ import sakao_server.WeatherService;
 import sakao_server.ZoneService;
 
 public class SensorPollutionThread extends Thread {
-	// Map<String, String> scenario;
-
+	
+	//store scenarios in a list
 	public List<Map<String, String>> getScenario()  {
 		ReadScenarioMock readScenarioMock = new ReadScenarioMock();
 		String scenarios = readScenarioMock.readScenarioMock();

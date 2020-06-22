@@ -7,7 +7,7 @@
 			"sensortype": "Pollution",
 			"idzone": 1,
 			"ipaddress": "192.168.20.31",
-			"macaddress": "FE000LKS66",
+			"macaddress": "FE:00:0L:KS:66:FF",
 			"isinstalled": true
 		},
 		{
@@ -15,7 +15,7 @@
 			"sensortype": "Weather",
 			"idzone": 1,
 			"ipaddress": "192.168.20.32",
-			"macaddress": "FE000LKS67",
+			"macaddress": "FE:00:0L:KS:67:FF",
 			"isinstalled": true
 		},
 		{
@@ -23,8 +23,8 @@
 			"sensortype": "Vehicle",
 			"idzone": 1,
 			"ipaddress": "192.168.20.33",
-			"macaddress": "FE000LKS68",
-			"isinstalled": false
+			"macaddress": "FE:00:0L:KS:68:FF",
+			"isinstalled": true
 		}
 	]
 }

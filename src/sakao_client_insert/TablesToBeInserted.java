@@ -25,8 +25,7 @@ public class TablesToBeInserted {
 
 
 	public String readFileSensor() throws IOException {
-		InputStream fis = new FileInputStream("resources\\table-to-be-inserted\\sensor.json");
-		InputStreamReader ipsr = new InputStreamReader(fis);
+		InputStreamReader ipsr = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("table-to-be-inserted/sensor.json"));
 		BufferedReader br = new BufferedReader(ipsr);
 		String outjsonString = "";
 		String chaine = "";
@@ -40,8 +39,7 @@ public class TablesToBeInserted {
 	
 
 	public String readFilePollutionSensor() throws IOException {
-		InputStream fis = new FileInputStream("resources\\table-to-be-inserted\\pollutionsensor.json");
-		InputStreamReader ipsr = new InputStreamReader(fis);
+		InputStreamReader ipsr = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("table-to-be-inserted/pollutionsensor.json"));		
 		BufferedReader br = new BufferedReader(ipsr);
 		String outjsonString = "";
 		String chaine = "";
@@ -55,8 +53,7 @@ public class TablesToBeInserted {
 	
 
 	public String readFileWeatherSensor() throws IOException {
-		InputStream fis = new FileInputStream("resources\\table-to-be-inserted\\weathersensor.json");
-		InputStreamReader ipsr = new InputStreamReader(fis);
+		InputStreamReader ipsr = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("table-to-be-inserted/weathersensor.json"));
 		BufferedReader br = new BufferedReader(ipsr);
 		String outjsonString = "";
 		String chaine = "";

@@ -443,6 +443,5 @@ public class ConfigureSensors<E> extends JPanel {
 		btnNewButton.setBounds(552, 42, 89, 23);
 		panelSensors.add(btnNewButton);
 
-
 	}
 }
