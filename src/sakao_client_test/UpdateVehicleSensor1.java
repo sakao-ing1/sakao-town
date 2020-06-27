@@ -76,6 +76,13 @@ public class UpdateVehicleSensor1 {
 		Request req1 = new ObjectMapper().readValue(table.readFileInitilization(), Request.class);
 		Request req2 = new ObjectMapper().readValue(table.readFileInitilizationSmartcity(), Request.class);
 		
+		client1.sendMessageToServer(req2);	
+		System.out.println("Update done");
+		System.out.println("********************");
+		client1.sendMessageToServer(req1);
+		System.out.println("Update done");
+		System.out.println("********************");
+		
 		System.out.println("TEST 1");
 		System.out.println("Updated SensorVehiculeInput1 to 100 ");
 		System.out.println("SensorVehiculeOutput2 = 125");
@@ -97,8 +104,7 @@ public class UpdateVehicleSensor1 {
 		//System.out.println(req1);
 		
 
-		client1.sendMessageToServer(req1);	
-		client1.sendMessageToServer(req2);
+		
 		client1.sendMessageToServer(req3);
 		System.out.println("Update done");
 		System.out.println("********************");

@@ -79,6 +79,15 @@ public class UpdateVehicleSensor4 {
 		//Test2
 		Request req1 = new ObjectMapper().readValue(table.readFileVehiclesTEST2(), Request.class);
 		
+		client1.sendMessageToServer(req2);	
+		System.out.println("Update done");
+		System.out.println("********************");
+		client1.sendMessageToServer(req1);
+		System.out.println("Update done");
+		System.out.println("********************");
+		
+		
+		
 		
 		
 		System.out.println("TEST 4");
@@ -101,9 +110,7 @@ public class UpdateVehicleSensor4 {
 	
 		//System.out.println(req1);
 		
-		client1.sendMessageToServer(req2);
-		client1.sendMessageToServer(req1);	
-		;
+		
 		client1.sendMessageToServer(req3);
 		System.out.println("Update done");
 		System.out.println("********************");
