@@ -62,6 +62,7 @@ public class UpdateVehicleSensor4 {
 	public static void main(String[] args) throws IOException, JSONException {
 		UpdateVehicleSensor4 client1 = new UpdateVehicleSensor4();
 		client1.startConnection("localhost", 3030);
+		//client1.startConnection("172.31.249.254", 3030);
 		readFile table = new readFile();//Test2
 		System.out.println("********************************");
 		System.out.println("INITIALIZATION");
