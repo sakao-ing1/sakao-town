@@ -31,6 +31,12 @@ public class SmartCity {
 		this.astationcost = c;
 		this.name = name;
 	}
+
+	public SmartCity(int id,double h, double w) {
+		this.id = id;
+		this.heightkm = h;
+		this.widthkm = w;
+	}
 	
 	
 	public SmartCity(double h, double w) {

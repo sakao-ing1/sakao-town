@@ -40,6 +40,7 @@ public class ClientThread extends Thread {
 	private WeatherService weatherService;
 	private PollutionService pollutionService;
 	private ZoneService zoneService;
+	private EmpreinteCarboneService empreinteCarboneService;
 
 	private BollardService bollardService;
 	private VehiclesSensorService vehiclesSensorService;
@@ -66,7 +67,7 @@ public class ClientThread extends Thread {
 		bollardService = new BollardService();
 		vehiclesSensorService = new VehiclesSensorService();
 		smartCityServices = new smartCityServices();
-
+		this.empreinteCarboneService = new EmpreinteCarboneService();
 	}
 
 	public void GenerateObject() {
@@ -93,6 +94,24 @@ public class ClientThread extends Thread {
 
 	}
 
+
+	// Get Data from database 
+	public void CrudEmpreinteCarbone(String operation_type, String t,ArrayList<String> list) {
+		if(operation_type.equals("SELECT_ALL")) {
+			try {
+				response.setList(empreinteCarboneService.showCityEM());
+				String outjsonStringSelectAll = mapper.writeValueAsString(response);
+				out.write(outjsonStringSelectAll + "\n");
+				out.flush();
+				System.out.println("Display done for " + this.getName());
+				System.out.println("********************");
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
 	private void CheckVehiclesThreshold() throws ClassNotFoundException {
 
 		int NbVehicleInCirculation = smartCityObject.VehicleInCirculation(vehicleSensorObject);
@@ -1125,9 +1144,18 @@ public class ClientThread extends Thread {
 			}
 
 			break;
-		}
+		
+			case "empreinte":
+				try {
+					System.out.println("Let's go to see what's in smartcity oumaima");
+					this.CrudEmpreinteCarbone(this.request.getOperation_type(), this.request.getTarget(), this.request.getList());
+				} catch (Exception e) {
+				}
 
-	}
+				break;
+		}
+			}
+	
 
 	public void run() {
 		try {

@@ -99,12 +99,14 @@ public class AppStructure extends JFrame {
 		ManageBollard m = new ManageBollard(appStructure);
 		ConfigureSensors s = new ConfigureSensors(appStructure);
 		AirQuality a = new AirQuality(appStructure);
+		SeuilCalcul seuil = new SeuilCalcul(appStructure);
 		CreateCity c = new CreateCity();
 		
 	
 		c.setVisible(false);
 		s.setVisible(false);
 		a.setVisible(false);
+		seuil.setVisible(false);
 		m.setVisible(false);
 		
 		
@@ -146,6 +148,7 @@ public class AppStructure extends JFrame {
 		panel_6.add(c);
 		panel_6.add(s);
 		panel_6.add(a);
+		panel_6.add(seuil);
 		panel_6.add(m);
 		h.setVisible(true);
 		
@@ -174,6 +177,7 @@ public class AppStructure extends JFrame {
 				c.setVisible(false);
 				h.setVisible(false);
 				a.setVisible(false);
+				seuil.setVisible(false);
 				m.setVisible(false);
 				s.setVisible(true);
 			}
@@ -204,6 +208,7 @@ public class AppStructure extends JFrame {
 					a.setVisible(false);
 					s.setVisible(false);
 					h.setVisible(false);
+					seuil.setVisible(false);
 					m.setVisible(false);
 					c.setVisible(true);
 					tram.show();
@@ -243,6 +248,7 @@ public class AppStructure extends JFrame {
 				c.setVisible(false);
 				s.setVisible(false);
 				a.setVisible(false);
+				seuil.setVisible(false);
 				m.setVisible(false);
 				h.setVisible(true);
 
@@ -288,6 +294,7 @@ public class AppStructure extends JFrame {
 					s.setVisible(false);
 					h.setVisible(false);
 					m.setVisible(false);
+					seuil.setVisible(false);
 					a.setVisible(true);
 			
 			
@@ -311,6 +318,7 @@ public class AppStructure extends JFrame {
 				c.setVisible(false);
 				s.setVisible(false);
 				h.setVisible(false);
+				seuil.setVisible(false);
 				a.setVisible(false);
 				m.setVisible(true);
 				
@@ -323,6 +331,34 @@ public class AppStructure extends JFrame {
 		lblNewLabel_6.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		lblNewLabel_6.setBounds(10, 0, 168, 37);
 		panel_8.add(lblNewLabel_6);
+		
+		JPanel panel_9 = new JPanel();
+		panel_9.setBackground(new Color(0, 128, 0));
+		panel_9.setBounds(0, 414, 188, 40);
+		panel_1.add(panel_9);
+		panel_9.setLayout(null);
+		
+		JLabel lblNewLabel_7 = new JLabel("    Pollution threshold");
+		lblNewLabel_7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				c.setVisible(false);
+				s.setVisible(false);
+				h.setVisible(false);
+				seuil.setVisible(true);
+				a.setVisible(false);
+				m.setVisible(false);
+				
+			}
+		});
+
+		lblNewLabel_7.setForeground(Color.WHITE);
+		Image imgThres = new ImageIcon(this.getClass().getResource("/threshold.png")).getImage();
+		Image newimgThres = imgThres.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH);
+		lblNewLabel_7.setIcon(new ImageIcon(newimgThres));	
+		lblNewLabel_7.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		lblNewLabel_7.setBounds(10, 0, 168, 40);
+		panel_9.add(lblNewLabel_7);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(25, 25, 112));

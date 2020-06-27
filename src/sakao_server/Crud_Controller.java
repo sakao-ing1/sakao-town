@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import sakao_common.AlerteStatistics;
 import sakao_common.Bollard;
@@ -31,7 +32,69 @@ public class Crud_Controller {
 
 	public Crud_Controller() throws ClassNotFoundException {
 	}
+/////// db 
+	
+	public ArrayList<String> showVehiculNumb() {
+		ArrayList<String> don = new ArrayList<String>();
+		try {
+			Connection con = DataSource.getConnection();
+			PreparedStatement ps = con.prepareStatement("select maxnumbervehicles from smartcity;");
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				System.out.println("/////////////////////////////////////////////////////");
+		//		SmartCity s = new SmartCity(rs.getInt("maxnumbervehicles"));
+				
+				//don.add(new ObjectMapper().writeValueAsString(s));
+			}
 
+			DataSource.returnConnection(con);
+			System.out.println("fini");
+		} catch (Exception e) {
+			System.out.println("erreur " + e.getMessage());
+		}
+
+		return don;
+	}
+	public ArrayList<String> showBeta() {
+		ArrayList<String> don = new ArrayList<String>();
+		try {
+			Connection con = DataSource.getConnection();
+			PreparedStatement ps = con.prepareStatement("select avg(beteaverage) as betaaverage from pollutionsensor");
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+	//			don.add(new PollutionSensor(rs.getDouble(1)).toString());
+			}
+			DataSource.returnConnection(con);
+			System.out.println("fini");
+		} catch (Exception e) {
+			System.out.println("erreur " + e.getMessage());
+		}
+
+		return don;
+	}
+////oumaima
+	public ArrayList<String> showCityEM() {
+		ArrayList<String> don = new ArrayList<String>();
+		try {
+			Connection con = DataSource.getConnection();
+			PreparedStatement ps = con.prepareStatement("select * from smartcity");
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				SmartCity s = new SmartCity(rs.getInt("idcity"), rs.getDouble("heightkm"), rs.getDouble("widthkm"));
+				
+				don.add(new ObjectMapper().writeValueAsString(s));
+			}
+
+			DataSource.returnConnection(con);
+			System.out.println("fini");
+		} catch (Exception e) {
+			System.out.println("erreur " + e.getMessage());
+		}
+
+		return don;
+	}
 	public ArrayList<String> showAllConfiguration() throws ClassNotFoundException {
 		ArrayList<String> retour = new ArrayList<String>();
 		try {
