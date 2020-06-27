@@ -209,7 +209,7 @@ public class ManageBollard extends JPanel {
 		panelAddBollard.add(lblNewLabelBollard_3);
 		
 		
-		String Bollardstate[] = { "lifted", "lower" };
+		String Bollardstate[] = { "lower", "lifted" };
 		JComboBox comboBoxBollard = new JComboBox(Bollardstate);
 		comboBoxBollard.setBounds(177, 96, 107, 22);
 		panelAddBollard.add(comboBoxBollard);
