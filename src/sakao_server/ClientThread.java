@@ -76,13 +76,17 @@ public class ClientThread extends Thread {
 			vehicleSensorObject = vehiclesSensorService.GenerateAllVehicleSensors();
 			bollardObject = bollardService.GenerateAllBollards();
 			smartCityObject = smartCityServices.GenerateCity();
-			/*
-			 * System.out.println("Objets gener�s :"); System.out.println("");
-			 * System.out.println(vehicleSensorObject); System.out.println("");
-			 * System.out.println(bollardObject); System.out.println("");
-			 * System.out.println(smartCityObject); System.out.println("");
-			 * System.out.println("Fin objets gener�s");
-			 */
+
+			/*System.out.println("Objets generés :");
+			System.out.println("");
+			System.out.println(vehicleSensorObject);
+			System.out.println("");
+			System.out.println(bollardObject);
+			System.out.println("");
+			System.out.println(smartCityObject);
+			System.out.println("");
+			System.out.println("Fin objets generés");*/
+
 		} catch (Exception e) {
 
 		}
@@ -235,7 +239,7 @@ public class ClientThread extends Thread {
 		//
 
 		case "Update":
-			// Don't work if generateobject is commented
+			
 			vehiclesSensorService.UpdateSensorVehicles(target, list, vehicleSensorObject);
 			vehicleSensorObject = vehiclesSensorService.GenerateAllVehicleSensors();
 			System.out.println("");
@@ -1132,8 +1136,8 @@ public class ClientThread extends Thread {
 			System.out.println(this.getName() + " connected");
 			System.out.println("********************");
 			System.out.println("");
-		//	this.GenerateObject();      // IHM DON'T WORK
-			//this.CheckVehiclesThreshold();
+			this.GenerateObject(); // IHM DON'T WORK
+			this.CheckVehiclesThreshold();
 			while (shouldRun) {
 				this.StartCrud();
 			}

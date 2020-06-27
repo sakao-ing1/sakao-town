@@ -1254,8 +1254,11 @@ public class Crud_Controller {
 
 			while (rs1.next()) {
 
-				sensor.add(new Sensor(rs1.getInt(1), rs1.getString(2), rs1.getString(3), rs1.getInt(4),
-						rs1.getString(5), rs1.getString(6), rs1.getBoolean(7)));
+				/*sensor.add(new Sensor(rs1.getInt(1), rs1.getString(2), rs1.getString(3), rs1.getInt(4),
+						rs1.getString(5), rs1.getString(6), rs1.getBoolean(7)));*/
+				
+				sensor.add(new Sensor(rs1.getInt("idsensor"), rs1.getString("sensorstate"), rs1.getString("sensortype"), rs1.getInt("idzone"),
+						rs1.getString("ipaddress"), rs1.getString("macaddress"), rs1.getBoolean("isinstalled")));
 
 				DataSource.returnConnection(con1);
 			}
@@ -1296,8 +1299,12 @@ public class Crud_Controller {
 			PreparedStatement pt = con.prepareStatement("select * from retractablebollard");
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
-				retour.add(new Bollard(rs.getInt(1), rs.getBoolean(2), rs.getInt(3), rs.getBoolean(4), rs.getString(5),
-						rs.getString(6)));
+				/*retour.add(new Bollard(rs.getInt(1), rs.getBoolean(2), rs.getInt(3), rs.getBoolean(4), rs.getString(5),
+						rs.getString(6)));*/
+				
+				retour.add(new Bollard(rs.getInt("idbollard"), rs.getBoolean("bollardstate"), rs.getInt("idzone"), rs.getBoolean("isinstalled"), rs.getString("ipaddress"),
+						rs.getString("macaddress")));
+				
 				DataSource.returnConnection(con);
 			}
 
@@ -1315,8 +1322,10 @@ public class Crud_Controller {
 			PreparedStatement pt = con.prepareStatement("select * from smartcity");
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
-				smartcity = new smartcity2(rs.getInt(1), rs.getDouble(3), rs.getDouble(4), rs.getInt(5), rs.getInt(6),
-						rs.getInt(8), rs.getInt(7), rs.getInt(9), rs.getString(2));
+				/*smartcity = new smartcity2(rs.getInt(1), rs.getDouble(3), rs.getDouble(4), rs.getInt(5), rs.getInt(6),
+						rs.getInt(8), rs.getInt(7), rs.getInt(9), rs.getString(2));*/
+				smartcity = new smartcity2(rs.getInt("idcity"), rs.getDouble("heightkm"), rs.getDouble("widthkm"), rs.getInt("budget"), rs.getInt("astationcost"),
+						rs.getInt("numberofvehicules"), rs.getInt("maxnumbervehicles"), rs.getInt("tramfrequency"), rs.getString("name"));
 				DataSource.returnConnection(con);
 			}
 
@@ -1330,7 +1339,7 @@ public class Crud_Controller {
 			ArrayList<VehicleSensor> listVehicleSensorObj) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
-			String req = "UPDATE vehiclesensor SET  numberofvehicle=? WHERE idvehiclesensor =? and sensortypeio= ?;";
+			String req = "UPDATE vehiclesensor SET  numberofvehicle=? WHERE idvehiclesensor =? and sensortype= ?;";
 
 			PreparedStatement pstm = con.prepareStatement(req);
 			int i = 2;
@@ -1492,8 +1501,7 @@ public class Crud_Controller {
 			PreparedStatement pstm = con.prepareStatement(req);
 			int i = 2;
 
-			// System.out.println("taille " + list.size());
-			// System.out.println("case " + list.get(2));
+	
 			while (i < list.size()) {
 				pstm.setInt(1, Integer.parseInt((list.get(i)))); // MaxnumberVeh
 				pstm.setInt(2, Integer.parseInt(list.get(i + 2))); // numberofvehicules
@@ -1508,12 +1516,7 @@ public class Crud_Controller {
 
 			}
 			req = req.substring(0, req.length() - 1);
-			//System.out.println(req);
-			// PreparedStatement pstm = con.prepareStatement(req);
-			// pstm.executeUpdate();
-			//System.out.println("");
-			//System.out.println(req);
-			//System.out.println("");
+			
 			DataSource.returnConnection(con);
 
 		} catch (SQLException ex) {
