@@ -37,7 +37,7 @@ public class TablesToBeInserted {
 		return chaine;
 	}
 	
-
+///////
 	public String readFilePollutionSensor() throws IOException {
 		InputStreamReader ipsr = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("table-to-be-inserted/pollutionsensor.json"));		
 		BufferedReader br = new BufferedReader(ipsr);
