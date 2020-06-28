@@ -15,6 +15,7 @@ import sakao_common.Configuration;
 import sakao_common.PollutionSensor;
 import sakao_common.Sensor;
 import sakao_common.TramLineD;
+import sakao_common.Transportation;
 import sakao_common.VehicleSensor;
 import sakao_common.WeatherSensor;
 import sakao_common.Zone;
@@ -32,8 +33,30 @@ public class Crud_Controller {
 
 	public Crud_Controller() throws ClassNotFoundException {
 	}
+
+	//// Transport
+
+	public ArrayList<String> showAllTransport() throws ClassNotFoundException {
+		ArrayList<String> retour = new ArrayList<String>();
+		try {
+			Connection con = DataSource.getConnection();
+			PreparedStatement pt = con.prepareStatement("select * from transportation");
+			ResultSet rs = pt.executeQuery();
+			while (rs.next()) {
+				retour.add(new Transportation(rs.getInt("idtransportation"), rs.getString("typeoftransport"),
+						rs.getInt("dailytransportusercount"),
+						rs.getDouble("averageofco2releasedbytransport")).toString());
+
+			}
+			DataSource.returnConnection(con);
+		} catch (SQLException ex) {
+			System.out.println("erreur " + ex.getMessage());
+		}
+		return retour;
+	}
+
 /////// db 
-	
+
 	public ArrayList<String> showVehiculNumb() {
 		ArrayList<String> don = new ArrayList<String>();
 		try {
@@ -55,6 +78,7 @@ public class Crud_Controller {
 
 		return don;
 	}
+
 	public ArrayList<String> showBeta() {
 		ArrayList<String> don = new ArrayList<String>();
 		try {
@@ -63,7 +87,7 @@ public class Crud_Controller {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-	//			don.add(new PollutionSensor(rs.getDouble(1)).toString());
+				// don.add(new PollutionSensor(rs.getDouble(1)).toString());
 			}
 			DataSource.returnConnection(con);
 			System.out.println("fini");
@@ -73,6 +97,7 @@ public class Crud_Controller {
 
 		return don;
 	}
+
 ////oumaima
 	public ArrayList<String> showCityEM() {
 		ArrayList<String> don = new ArrayList<String>();
@@ -83,7 +108,7 @@ public class Crud_Controller {
 
 			while (rs.next()) {
 				SmartCity s = new SmartCity(rs.getInt("idcity"), rs.getDouble("heightkm"), rs.getDouble("widthkm"));
-				
+
 				don.add(new ObjectMapper().writeValueAsString(s));
 			}
 
@@ -95,6 +120,7 @@ public class Crud_Controller {
 
 		return don;
 	}
+
 	public ArrayList<String> showAllConfiguration() throws ClassNotFoundException {
 		ArrayList<String> retour = new ArrayList<String>();
 		try {
@@ -104,7 +130,7 @@ public class Crud_Controller {
 			while (rs.next()) {
 				retour.add(new Configuration(rs.getInt("idconfiguration"), rs.getInt("frequency"), rs.getInt("idzone"))
 						.toString());
-				
+
 			}
 			DataSource.returnConnection(con);
 		} catch (SQLException ex) {
@@ -122,7 +148,7 @@ public class Crud_Controller {
 			while (rs.next()) {
 				retour.add(new Sensor(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
 						rs.getString(6), rs.getBoolean(7)).toString());
-				
+
 			}
 			DataSource.returnConnection(con);
 		} catch (SQLException ex) {
@@ -140,7 +166,7 @@ public class Crud_Controller {
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
 				retour.add(new AlerteStatistics(rs.getInt(1), rs.getDate(2), rs.getInt(3)).toString());
-				
+
 			}
 			DataSource.returnConnection(con);
 		} catch (SQLException ex) {
@@ -153,12 +179,13 @@ public class Crud_Controller {
 		ArrayList<String> retour = new ArrayList<String>();
 		try {
 			Connection con = DataSource.getConnection();
-			PreparedStatement pt = con.prepareStatement("select * from sensor where sensortype like 'Pollution' and isinstalled = 'true' ");
+			PreparedStatement pt = con.prepareStatement(
+					"select * from sensor where sensortype like 'Pollution' and isinstalled = 'true' ");
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
 				retour.add(new Sensor(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
 						rs.getString(6), rs.getBoolean(7)).toString());
-				
+
 			}
 			DataSource.returnConnection(con);
 		} catch (SQLException ex) {
@@ -171,12 +198,13 @@ public class Crud_Controller {
 		ArrayList<String> retour = new ArrayList<String>();
 		try {
 			Connection con = DataSource.getConnection();
-			PreparedStatement pt = con.prepareStatement("select * from sensor where sensortype like 'Weather' and isinstalled = 'true' ");
+			PreparedStatement pt = con
+					.prepareStatement("select * from sensor where sensortype like 'Weather' and isinstalled = 'true' ");
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
 				retour.add(new Sensor(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
 						rs.getString(6), rs.getBoolean(7)).toString());
-				
+
 			}
 			DataSource.returnConnection(con);
 		} catch (SQLException ex) {
@@ -193,7 +221,7 @@ public class Crud_Controller {
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
 				retour.add(new PollutionSensor(rs.getInt(1), rs.getInt(4), rs.getInt(3), rs.getDouble(2)).toString());
-				
+
 			}
 			DataSource.returnConnection(con);
 		} catch (SQLException ex) {
@@ -211,7 +239,7 @@ public class Crud_Controller {
 			while (rs.next()) {
 				retour.add(new WeatherSensor(rs.getInt(1), rs.getInt(4), rs.getInt(5), rs.getInt(2), rs.getString(3))
 						.toString());
-				
+
 			}
 			DataSource.returnConnection(con);
 		} catch (SQLException ex) {
@@ -228,7 +256,7 @@ public class Crud_Controller {
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
 				retour.add(new Zone(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4)).toString());
-				
+
 			}
 			DataSource.returnConnection(con);
 		} catch (SQLException ex) {
@@ -248,7 +276,7 @@ public class Crud_Controller {
 			while (rs.next()) {
 				retour.add(new Bollard(rs.getInt(1), rs.getBoolean(2), rs.getInt(3), rs.getBoolean(4), rs.getString(5),
 						rs.getString(6)).toString());
-				
+
 			}
 			DataSource.returnConnection(con);
 		} catch (SQLException ex) {
@@ -307,19 +335,19 @@ public class Crud_Controller {
 								rs.getString(2), rs.getInt(3), s.getIdZone(), s.getIpAddress(), s.getMacAddress(),
 								s.getIsInstalled());
 						String c1 = c.toString();
-					//	System.out.println("c.getIdSensor(); =" + c.getIdSensor());
+						// System.out.println("c.getIdSensor(); =" + c.getIdSensor());
 						// System.out.println("le c = "+c);
 
 						retour1.add(c);
 
 						retour.add(c1);
 
-					//	System.out.println("retour1    =" + retour1);
+						// System.out.println("retour1 =" + retour1);
 
 						
 					}
 				}
-				
+
 			}
 			DataSource.returnConnection(con2);
 			System.out.println("retour laaa   =" + retour);
@@ -350,11 +378,11 @@ public class Crud_Controller {
 
 			System.out.println("");
 			req = req.substring(0, req.length() - 1);
-			//System.out.println(req);
+			// System.out.println(req);
 			PreparedStatement pstm = con.prepareStatement(req);
 			pstm.executeUpdate();
 			System.out.println("");
-			//System.out.println(req);
+			// System.out.println(req);
 			System.out.println("");
 			DataSource.returnConnection(con);
 
@@ -362,6 +390,7 @@ public class Crud_Controller {
 			ex.printStackTrace();
 		}
 	}
+
 	///////////////////////////////////////////////////
 	public void addOnZone(String target, ArrayList<String> list) throws ClassNotFoundException {
 		try {
@@ -370,7 +399,7 @@ public class Crud_Controller {
 
 			int i = 2;
 			while (i < list.size()) {
-				req += "('" + list.get(i) +"\'"+ "," + "\'" + list.get(i + 2) + "\'" + "," + list.get(i + 4) + ","
+				req += "('" + list.get(i) + "\'" + "," + "\'" + list.get(i + 2) + "\'" + "," + list.get(i + 4) + ","
 						+ list.get(i + 6) + "," + list.get(i + 8) + "),";
 				i += 12;
 			}
@@ -383,7 +412,7 @@ public class Crud_Controller {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	///////////////////////////////////////////////////
 	public void addOnWeatherSensor(String target, ArrayList<String> list) throws ClassNotFoundException {
 		try {
@@ -531,7 +560,7 @@ public class Crud_Controller {
 			System.out.println("erreur " + ex.getMessage());
 		}
 	}
-	
+
 	public ArrayList<String> showZoneById(int id) throws ClassNotFoundException {
 		ArrayList<String> retour = new ArrayList<String>();
 		try {
@@ -540,7 +569,7 @@ public class Crud_Controller {
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
 				retour.add(new Zone(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4)).toString());
-				
+
 			}
 			DataSource.returnConnection(con);
 		} catch (SQLException ex) {
@@ -559,7 +588,7 @@ public class Crud_Controller {
 			while (rs.next()) {
 				retour.add(new Sensor(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
 						rs.getString(6), rs.getBoolean(7)).toString());
-				
+
 			}
 			DataSource.returnConnection(con);
 		} catch (SQLException ex) {
@@ -708,15 +737,11 @@ public class Crud_Controller {
 	 * 
 	 * }
 	 */
-	
-	
-	
-	
-	
-	
 
-	
-	/////////////////////////////// SELECT ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
+	/////////////////////////////// SELECT /////////////////////////
+	/////////////////////////////// /////////////////////////
+	/////////////////////////////// /////////////////////////
+	/////////////////////////////// /////////////////////////
 ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
 ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
 ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
@@ -741,9 +766,8 @@ public class Crud_Controller {
 
 		return displayer;
 	}
-	
-	
-	public ArrayList<String> showStations(){
+
+	public ArrayList<String> showStations() {
 		ArrayList<String> displayer = new ArrayList<String>();
 		try {
 			Connection con = DataSource.getConnection();
@@ -759,12 +783,11 @@ public class Crud_Controller {
 		} catch (Exception e) {
 			System.out.println("erreur " + e.getMessage());
 		}
-		
+
 		return displayer;
 	}
-	
-	
-	public ArrayList<String> showTramLineA(){
+
+	public ArrayList<String> showTramLineA() {
 		ArrayList<String> displayer = new ArrayList<String>();
 		try {
 			Connection con = DataSource.getConnection();
@@ -772,19 +795,19 @@ public class Crud_Controller {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				displayer.add(new TramLineA(rs.getInt("idtramlinea"), rs.getInt("idstation"),rs.getDouble("coordx"),rs.getDouble("coordy")).toString());
+				displayer.add(new TramLineA(rs.getInt("idtramlinea"), rs.getInt("idstation"), rs.getDouble("coordx"),
+						rs.getDouble("coordy")).toString());
 			}
 
 			DataSource.returnConnection(con);
 		} catch (Exception e) {
 			System.out.println("erreur " + e.getMessage());
 		}
-		
+
 		return displayer;
 	}
-	
-	
-	public ArrayList<String> showTramLineB(){
+
+	public ArrayList<String> showTramLineB() {
 		ArrayList<String> displayer = new ArrayList<String>();
 		try {
 			Connection con = DataSource.getConnection();
@@ -792,19 +815,19 @@ public class Crud_Controller {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				displayer.add(new TramLineA(rs.getInt("idtramlineb"), rs.getInt("idstation"),rs.getDouble("coordx"),rs.getDouble("coordy")).toString());
+				displayer.add(new TramLineA(rs.getInt("idtramlineb"), rs.getInt("idstation"), rs.getDouble("coordx"),
+						rs.getDouble("coordy")).toString());
 			}
 
 			DataSource.returnConnection(con);
 		} catch (Exception e) {
 			System.out.println("erreur " + e.getMessage());
 		}
-		
+
 		return displayer;
 	}
-	
-	
-	public ArrayList<String> showTramLineC(){
+
+	public ArrayList<String> showTramLineC() {
 		ArrayList<String> displayer = new ArrayList<String>();
 		try {
 			Connection con = DataSource.getConnection();
@@ -812,19 +835,19 @@ public class Crud_Controller {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				displayer.add(new TramLineA(rs.getInt("idtramlinec"), rs.getInt("idstation"),rs.getDouble("coordx"),rs.getDouble("coordy")).toString());
+				displayer.add(new TramLineA(rs.getInt("idtramlinec"), rs.getInt("idstation"), rs.getDouble("coordx"),
+						rs.getDouble("coordy")).toString());
 			}
 
 			DataSource.returnConnection(con);
 		} catch (Exception e) {
 			System.out.println("erreur " + e.getMessage());
 		}
-		
+
 		return displayer;
 	}
-	
-	
-	public ArrayList<String> showTramLineD(){
+
+	public ArrayList<String> showTramLineD() {
 		ArrayList<String> displayer = new ArrayList<String>();
 		try {
 			Connection con = DataSource.getConnection();
@@ -832,22 +855,19 @@ public class Crud_Controller {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				displayer.add(new TramLineA(rs.getInt("idtramlined"), rs.getInt("idstation"),rs.getDouble("coordx"),rs.getDouble("coordy")).toString());
+				displayer.add(new TramLineA(rs.getInt("idtramlined"), rs.getInt("idstation"), rs.getDouble("coordx"),
+						rs.getDouble("coordy")).toString());
 			}
 
 			DataSource.returnConnection(con);
 		} catch (Exception e) {
 			System.out.println("erreur " + e.getMessage());
 		}
-		
+
 		return displayer;
 	}
-	
-	
-	
-	
-	
-	public ArrayList<String> showCityDimension(){
+
+	public ArrayList<String> showCityDimension() {
 		ArrayList<String> displayer = new ArrayList<String>();
 		try {
 			Connection con = DataSource.getConnection();
@@ -866,15 +886,8 @@ public class Crud_Controller {
 
 		return displayer;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	public ArrayList<String> showStationCoord(){
+
+	public ArrayList<String> showStationCoord() {
 		ArrayList<String> displayer = new ArrayList<String>();
 		try {
 			Connection con = DataSource.getConnection();
@@ -882,29 +895,18 @@ public class Crud_Controller {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				displayer.add(new Station(rs.getDouble("coordx"),
-						rs.getDouble("coordy")).toString());
+				displayer.add(new Station(rs.getDouble("coordx"), rs.getDouble("coordy")).toString());
 			}
 
 			DataSource.returnConnection(con);
 		} catch (Exception e) {
 			System.out.println("erreur " + e.getMessage());
 		}
-		
+
 		return displayer;
 	}
-	
-	
-	
-	
-	
 
-	
-	
-	
-	
-	
-	public ArrayList<String> showTramLineACoord(){
+	public ArrayList<String> showTramLineACoord() {
 		ArrayList<String> displayer = new ArrayList<String>();
 		try {
 			Connection con = DataSource.getConnection();
@@ -919,14 +921,11 @@ public class Crud_Controller {
 		} catch (Exception e) {
 			System.out.println("erreur " + e.getMessage());
 		}
-		
+
 		return displayer;
 	}
-	
-	
-	
-	
-	public ArrayList<String> showTramLineBCoord(){
+
+	public ArrayList<String> showTramLineBCoord() {
 		ArrayList<String> displayer = new ArrayList<String>();
 		try {
 			Connection con = DataSource.getConnection();
@@ -941,14 +940,11 @@ public class Crud_Controller {
 		} catch (Exception e) {
 			System.out.println("erreur " + e.getMessage());
 		}
-		
+
 		return displayer;
 	}
-	
-	
-	
-	
-	public ArrayList<String> showTramLineCCoord(){
+
+	public ArrayList<String> showTramLineCCoord() {
 		ArrayList<String> displayer = new ArrayList<String>();
 		try {
 			Connection con = DataSource.getConnection();
@@ -963,14 +959,11 @@ public class Crud_Controller {
 		} catch (Exception e) {
 			System.out.println("erreur " + e.getMessage());
 		}
-		
+
 		return displayer;
 	}
-	
-	
-	
-	
-	public ArrayList<String> showTramLineDCoord(){
+
+	public ArrayList<String> showTramLineDCoord() {
 		ArrayList<String> displayer = new ArrayList<String>();
 		try {
 			Connection con = DataSource.getConnection();
@@ -985,19 +978,19 @@ public class Crud_Controller {
 		} catch (Exception e) {
 			System.out.println("erreur " + e.getMessage());
 		}
-		
+
 		return displayer;
 	}
-	
-	
-	///////////////////////////////////////  ADD ///////////////////////// ///////////////////////// ///////////////////////// /////////////////////////
+
+	/////////////////////////////////////// ADD /////////////////////////
+	/////////////////////////////////////// /////////////////////////
+	/////////////////////////////////////// /////////////////////////
+	/////////////////////////////////////// /////////////////////////
 ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
 ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
 ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
 ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
-	
-	
-	
+
 	public void addASmartCity(ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
@@ -1011,7 +1004,7 @@ public class Crud_Controller {
 						+ "," + "'" + s + "'" + "),";
 				i += list.size();
 			}
-			
+
 			sqlreq = sqlreq.substring(0, sqlreq.length() - 1);
 			System.out.println(sqlreq);
 
@@ -1023,32 +1016,30 @@ public class Crud_Controller {
 			System.out.println("erreur " + ex.getMessage());
 		}
 	}
-	
-	
+
 	public void addStation(ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
-			
+
 			String sqlReqFkCity = "select idcity from smartcity";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sqlReqFkCity);
 			Object idfk = null;
 			while (rs.next()) {
-			 idfk = rs.getInt(1);
+				idfk = rs.getInt(1);
 			}
-			
+
 			DataSource.returnConnection(con);
-			
-			
+
 			con = DataSource.getConnection();
 			String sqlreq = "insert into station(typestation,coordx,coordy,isbuilt,idcity,idtransportation) VALUES";
-			
+
 			System.out.println("list size : " + list.size());
 
 			int i = 2;
 			while (i < list.size()) {
-				sqlreq += "(" + "'" + list.get(i) + "'" + "," + list.get(i + 2) + "," + list.get(i + 4) + "," + list.get(i + 6) +"," + idfk + ","+ 1
-						 + "),";
+				sqlreq += "(" + "'" + list.get(i) + "'" + "," + list.get(i + 2) + "," + list.get(i + 4) + ","
+						+ list.get(i + 6) + "," + idfk + "," + 1 + "),";
 				i += 8;
 			}
 
@@ -1063,38 +1054,32 @@ public class Crud_Controller {
 			System.out.println("erreur " + ex.getMessage());
 		}
 	}
-	
-	
-	
+
 	public void addTramLineAStation(ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
 
-			String sqlReqFkCoord = 
-					"select station.idstation from station "
-					+ "inner join tramlinea on "
-					+ "station.coordx =  + " + list.get(2) 
-					+ "and station.coordy = " + list.get(4);
+			String sqlReqFkCoord = "select station.idstation from station " + "inner join tramlinea on "
+					+ "station.coordx =  + " + list.get(2) + "and station.coordy = " + list.get(4);
 			String sqlreq = "insert into tramlinea(idstation,coordx,coordy) VALUES";
-			
+
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sqlReqFkCoord);
 			Object idfk = null;
 			while (rs.next()) {
-			 idfk = rs.getInt(1);
+				idfk = rs.getInt(1);
 			}
-			
+
 			DataSource.returnConnection(con);
 
 			System.out.println("list size : " + list.size());
 
 			int i = 2;
 			while (i < list.size()) {
-				sqlreq += "(" + idfk+ "," + list.get(i) + "," + list.get(i + 2) 
-						 + "),";
+				sqlreq += "(" + idfk + "," + list.get(i) + "," + list.get(i + 2) + "),";
 				i += 6;
 			}
-			 con = DataSource.getConnection();
+			con = DataSource.getConnection();
 			sqlreq = sqlreq.substring(0, sqlreq.length() - 1);
 			System.out.println(sqlreq);
 			PreparedStatement pstmt = con.prepareStatement(sqlreq);
@@ -1102,43 +1087,36 @@ public class Crud_Controller {
 			DataSource.returnConnection(con);
 			rs.close();
 
-
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
 		}
 	}
-	
-	
-	
+
 	public void addTramLineBStation(ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
 
-			String sqlReqFkCoord = 
-					"select station.idstation from station "
-					+ "inner join tramlineb on "
-					+ "station.coordx =  + " + list.get(2) 
-					+ "and station.coordy = " + list.get(4);
+			String sqlReqFkCoord = "select station.idstation from station " + "inner join tramlineb on "
+					+ "station.coordx =  + " + list.get(2) + "and station.coordy = " + list.get(4);
 			String sqlreq = "insert into tramlineb(idstation,coordx,coordy) VALUES";
-			
+
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sqlReqFkCoord);
 			Object idfk = null;
 			while (rs.next()) {
-			 idfk = rs.getInt(1);
+				idfk = rs.getInt(1);
 			}
-			
+
 			DataSource.returnConnection(con);
 
 			System.out.println("list size : " + list.size());
 
 			int i = 2;
 			while (i < list.size()) {
-				sqlreq += "(" + idfk+ "," + list.get(i) + "," + list.get(i + 2) 
-						 + "),";
+				sqlreq += "(" + idfk + "," + list.get(i) + "," + list.get(i + 2) + "),";
 				i += 6;
 			}
-			 con = DataSource.getConnection();
+			con = DataSource.getConnection();
 			sqlreq = sqlreq.substring(0, sqlreq.length() - 1);
 			System.out.println(sqlreq);
 			PreparedStatement pstmt = con.prepareStatement(sqlreq);
@@ -1146,43 +1124,36 @@ public class Crud_Controller {
 			DataSource.returnConnection(con);
 			rs.close();
 
-
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
 		}
 	}
-	
-	
+
 	public void addTramLineCStation(ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
-	
 
-			String sqlReqFkCoord = 
-					"select station.idstation from station "
-					+ "inner join tramlinec on "
-					+ "station.coordx =  + " + list.get(2) 
-					+ "and station.coordy = " + list.get(4);
+			String sqlReqFkCoord = "select station.idstation from station " + "inner join tramlinec on "
+					+ "station.coordx =  + " + list.get(2) + "and station.coordy = " + list.get(4);
 			String sqlreq = "insert into tramlinec(idstation,coordx,coordy) VALUES";
-			
+
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sqlReqFkCoord);
 			Object idfk = null;
 			while (rs.next()) {
-			 idfk = rs.getInt(1);
+				idfk = rs.getInt(1);
 			}
-		
+
 			DataSource.returnConnection(con);
 
 			System.out.println("list size : " + list.size());
 
 			int i = 2;
 			while (i < list.size()) {
-				sqlreq += "(" + idfk + "," + list.get(i) + "," + list.get(i + 2) 
-						 + "),";
+				sqlreq += "(" + idfk + "," + list.get(i) + "," + list.get(i + 2) + "),";
 				i += 6;
 			}
-			 con = DataSource.getConnection();
+			con = DataSource.getConnection();
 			sqlreq = sqlreq.substring(0, sqlreq.length() - 1);
 			System.out.println(sqlreq);
 			PreparedStatement pstmt = con.prepareStatement(sqlreq);
@@ -1194,36 +1165,31 @@ public class Crud_Controller {
 			System.out.println("erreur " + ex.getMessage());
 		}
 	}
-	
-	
+
 	public void addTramLineDStation(ArrayList<String> list) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
-			String sqlReqFkCoord = 
-					"select station.idstation from station "
-					+ "inner join tramlined on "
-					+ "station.coordx =  + " + list.get(2) 
-					+ "and station.coordy = " + list.get(4);
+			String sqlReqFkCoord = "select station.idstation from station " + "inner join tramlined on "
+					+ "station.coordx =  + " + list.get(2) + "and station.coordy = " + list.get(4);
 			String sqlreq = "insert into tramlined(idstation,coordx,coordy) VALUES";
-			
+
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sqlReqFkCoord);
-			Object idfk=null;
+			Object idfk = null;
 			while (rs.next()) {
-			 idfk = rs.getInt(1);
+				idfk = rs.getInt(1);
 			}
-		
+
 			DataSource.returnConnection(con);
 
 			System.out.println("list size : " + list.size());
 
 			int i = 2;
 			while (i < list.size()) {
-				sqlreq += "(" + idfk + "," + list.get(i) + "," + list.get(i + 2) 
-						 + "),";
+				sqlreq += "(" + idfk + "," + list.get(i) + "," + list.get(i + 2) + "),";
 				i += 6;
 			}
-			 con = DataSource.getConnection();
+			con = DataSource.getConnection();
 			sqlreq = sqlreq.substring(0, sqlreq.length() - 1);
 			System.out.println(sqlreq);
 			PreparedStatement pstmt = con.prepareStatement(sqlreq);
@@ -1235,76 +1201,63 @@ public class Crud_Controller {
 			System.out.println("erreur " + ex.getMessage());
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	///////////////////////// DELETE ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
+
+	///////////////////////// DELETE /////////////////////////
+	///////////////////////// ///////////////////////// /////////////////////////
+	///////////////////////// /////////////////////////
 ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
 ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
 ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// 
 ///////////////////////// ///////////////////////// ///////////////////////// ///////////////////////// /////////////////////////
-	
+
 	public void deleteACity() throws SQLException, ClassNotFoundException {
 		Connection con = DataSource.getConnection();
 
 		Statement query = con.createStatement();
 		query.executeUpdate("TRUNCATE TABLE smartcity cascade");
-		///System.out.println(result + "rows deleted");
+		/// System.out.println(result + "rows deleted");
 		DataSource.returnConnection(con);
 	}
-	
-	
+
 	public void deleteStations() throws SQLException, ClassNotFoundException {
 		Connection con = DataSource.getConnection();
 		Statement query = con.createStatement();
 		query.executeUpdate("TRUNCATE TABLE station cascade");
-		/////System.out.println(result + "row(s) deleted");
+		///// System.out.println(result + "row(s) deleted");
 		DataSource.returnConnection(con);
 	}
-	
 
-	
-	
 	public void deleteTramLineA() throws SQLException, ClassNotFoundException {
 		Connection con = DataSource.getConnection();
 		Statement query = con.createStatement();
 		query.executeUpdate("TRUNCATE TABLE tramlinea cascade");
-		/////System.out.println(result + "row(s) deleted");
+		///// System.out.println(result + "row(s) deleted");
 		DataSource.returnConnection(con);
 	}
-	
-	
+
 	public void deleteTramLineB() throws SQLException, ClassNotFoundException {
 		Connection con = DataSource.getConnection();
 		Statement query = con.createStatement();
 		query.executeUpdate("TRUNCATE TABLE tramlineb cascade");
-		/////System.out.println(result + "row(s) deleted");
+		///// System.out.println(result + "row(s) deleted");
 		DataSource.returnConnection(con);
 	}
-	
-	
+
 	public void deleteTramLineC() throws SQLException, ClassNotFoundException {
 		Connection con = DataSource.getConnection();
 		Statement query = con.createStatement();
 		query.executeUpdate("TRUNCATE TABLE tramlinec cascade");
-		/////System.out.println(result + "row(s) deleted");
+		///// System.out.println(result + "row(s) deleted");
 		DataSource.returnConnection(con);
 	}
-	
-	
+
 	public void deleteTramLineD() throws SQLException, ClassNotFoundException {
 		Connection con = DataSource.getConnection();
 		Statement query = con.createStatement();
 		query.executeUpdate("TRUNCATE TABLE tramlined cascade");
-		/////System.out.println(result + "row(s) deleted");
+		///// System.out.println(result + "row(s) deleted");
 		DataSource.returnConnection(con);
 	}
-	
-	
 
 	public ArrayList<VehicleSensor> GenerateAllVehicleSensors() throws ClassNotFoundException {
 		ArrayList<VehicleSensor> retour = new ArrayList<VehicleSensor>();
@@ -1317,11 +1270,14 @@ public class Crud_Controller {
 
 			while (rs1.next()) {
 
-				/*sensor.add(new Sensor(rs1.getInt(1), rs1.getString(2), rs1.getString(3), rs1.getInt(4),
-						rs1.getString(5), rs1.getString(6), rs1.getBoolean(7)));*/
-				
-				sensor.add(new Sensor(rs1.getInt("idsensor"), rs1.getString("sensorstate"), rs1.getString("sensortype"), rs1.getInt("idzone"),
-						rs1.getString("ipaddress"), rs1.getString("macaddress"), rs1.getBoolean("isinstalled")));
+				/*
+				 * sensor.add(new Sensor(rs1.getInt(1), rs1.getString(2), rs1.getString(3),
+				 * rs1.getInt(4), rs1.getString(5), rs1.getString(6), rs1.getBoolean(7)));
+				 */
+
+				sensor.add(new Sensor(rs1.getInt("idsensor"), rs1.getString("sensorstate"), rs1.getString("sensortype"),
+						rs1.getInt("idzone"), rs1.getString("ipaddress"), rs1.getString("macaddress"),
+						rs1.getBoolean("isinstalled")));
 
 				DataSource.returnConnection(con1);
 			}
@@ -1362,12 +1318,14 @@ public class Crud_Controller {
 			PreparedStatement pt = con.prepareStatement("select * from retractablebollard");
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
-				/*retour.add(new Bollard(rs.getInt(1), rs.getBoolean(2), rs.getInt(3), rs.getBoolean(4), rs.getString(5),
-						rs.getString(6)));*/
-				
-				retour.add(new Bollard(rs.getInt("idbollard"), rs.getBoolean("bollardstate"), rs.getInt("idzone"), rs.getBoolean("isinstalled"), rs.getString("ipaddress"),
-						rs.getString("macaddress")));
-				
+				/*
+				 * retour.add(new Bollard(rs.getInt(1), rs.getBoolean(2), rs.getInt(3),
+				 * rs.getBoolean(4), rs.getString(5), rs.getString(6)));
+				 */
+
+				retour.add(new Bollard(rs.getInt("idbollard"), rs.getBoolean("bollardstate"), rs.getInt("idzone"),
+						rs.getBoolean("isinstalled"), rs.getString("ipaddress"), rs.getString("macaddress")));
+
 				DataSource.returnConnection(con);
 			}
 
@@ -1385,10 +1343,14 @@ public class Crud_Controller {
 			PreparedStatement pt = con.prepareStatement("select * from smartcity");
 			ResultSet rs = pt.executeQuery();
 			while (rs.next()) {
-				/*smartcity = new smartcity2(rs.getInt(1), rs.getDouble(3), rs.getDouble(4), rs.getInt(5), rs.getInt(6),
-						rs.getInt(8), rs.getInt(7), rs.getInt(9), rs.getString(2));*/
-				smartcity = new smartcity2(rs.getInt("idcity"), rs.getDouble("heightkm"), rs.getDouble("widthkm"), rs.getInt("budget"), rs.getInt("astationcost"),
-						rs.getInt("numberofvehicules"), rs.getInt("maxnumbervehicles"), rs.getInt("tramfrequency"), rs.getString("name"));
+				/*
+				 * smartcity = new smartcity2(rs.getInt(1), rs.getDouble(3), rs.getDouble(4),
+				 * rs.getInt(5), rs.getInt(6), rs.getInt(8), rs.getInt(7), rs.getInt(9),
+				 * rs.getString(2));
+				 */
+				smartcity = new smartcity2(rs.getInt("idcity"), rs.getDouble("heightkm"), rs.getDouble("widthkm"),
+						rs.getInt("budget"), rs.getInt("astationcost"), rs.getInt("numberofvehicules"),
+						rs.getInt("maxnumbervehicles"), rs.getInt("tramfrequency"), rs.getString("name"));
 				DataSource.returnConnection(con);
 			}
 
@@ -1407,14 +1369,14 @@ public class Crud_Controller {
 			PreparedStatement pstm = con.prepareStatement(req);
 			int i = 2;
 
-			//System.out.println("taille " + list.size());
-			//System.out.println("case " + list.get(2));
+			// System.out.println("taille " + list.size());
+			// System.out.println("case " + list.get(2));
 			while (i < list.size()) {
 				pstm.setInt(2, Integer.parseInt((list.get(i)))); // IDVehicule
 				pstm.setString(3, list.get(i + 2)); // Sensortypeio
 				pstm.setInt(1, Integer.parseInt(list.get(i + 4)));// NUMBERVEHICULE
 				pstm.executeUpdate();
-				
+
 				// Don't work if generateobject is commented in clientThread
 				for (VehicleSensor sensor : listVehicleSensorObj) {
 					if ((sensor.getIdSensor() == Integer.parseInt((list.get(i))))) {
@@ -1429,12 +1391,12 @@ public class Crud_Controller {
 
 			}
 			req = req.substring(0, req.length() - 1);
-			//System.out.println(req);
+			// System.out.println(req);
 			// PreparedStatement pstm = con.prepareStatement(req);
 			// pstm.executeUpdate();
-			//System.out.println("");
-			//System.out.println(req);
-			//System.out.println("");
+			// System.out.println("");
+			// System.out.println(req);
+			// System.out.println("");
 			DataSource.returnConnection(con);
 
 		} catch (SQLException ex) {
@@ -1472,11 +1434,11 @@ public class Crud_Controller {
 
 			}
 			req = req.substring(0, req.length() - 1);
-			//System.out.println(req);
+			// System.out.println(req);
 			// PreparedStatement pstm = con.prepareStatement(req);
 			// pstm.executeUpdate();
 			System.out.println("");
-			//System.out.println(req);
+			// System.out.println(req);
 			System.out.println("");
 			DataSource.returnConnection(con);
 
@@ -1564,7 +1526,6 @@ public class Crud_Controller {
 			PreparedStatement pstm = con.prepareStatement(req);
 			int i = 2;
 
-	
 			while (i < list.size()) {
 				pstm.setInt(1, Integer.parseInt((list.get(i)))); // MaxnumberVeh
 				pstm.setInt(2, Integer.parseInt(list.get(i + 2))); // numberofvehicules
@@ -1579,43 +1540,39 @@ public class Crud_Controller {
 
 			}
 			req = req.substring(0, req.length() - 1);
-			
+
 			DataSource.returnConnection(con);
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
 	}
-	
-	
-	public void updateNumberinCirculation(int c) throws ClassNotFoundException{
-		
+
+	public void updateNumberinCirculation(int c) throws ClassNotFoundException {
+
 		try {
 			Connection con = DataSource.getConnection();
-			PreparedStatement pt = con.prepareStatement("UPDATE smartcity SET numberofvehicules="+c+"  WHERE idcity = 1;");
+			PreparedStatement pt = con
+					.prepareStatement("UPDATE smartcity SET numberofvehicules=" + c + "  WHERE idcity = 1;");
 			pt.execute();
 			DataSource.returnConnection(con);
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
 		}
-		
+
 	}
-	
 
 	public void updateTramFrequency(int c) throws ClassNotFoundException {
 		try {
 			Connection con = DataSource.getConnection();
-			PreparedStatement pt = con.prepareStatement("UPDATE smartcity SET tramfrequency="+c+"  WHERE idcity = 1;");
+			PreparedStatement pt = con
+					.prepareStatement("UPDATE smartcity SET tramfrequency=" + c + "  WHERE idcity = 1;");
 			pt.execute();
 			DataSource.returnConnection(con);
 		} catch (SQLException ex) {
 			System.out.println("erreur " + ex.getMessage());
 		}
-		
+
 	}
-	
-	
-	
-	
-	
+
 }

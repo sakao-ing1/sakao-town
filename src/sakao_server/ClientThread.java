@@ -49,6 +49,8 @@ public class ClientThread extends Thread {
 	private ArrayList<VehicleSensor> vehicleSensorObject;
 	private ArrayList<Bollard> bollardObject;
 	private smartcity2 smartCityObject;
+	
+	private TransportService transportService;
 
 	private ObjectMapper mapper;
 	private static int position = 1;
@@ -67,6 +69,7 @@ public class ClientThread extends Thread {
 		bollardService = new BollardService();
 		vehiclesSensorService = new VehiclesSensorService();
 		smartCityServices = new smartCityServices();
+		transportService = new TransportService();
 		this.empreinteCarboneService = new EmpreinteCarboneService();
 	}
 
@@ -145,110 +148,96 @@ public class ClientThread extends Thread {
 		} /*else if (smartCityObject.CheckThresholdNbMaxVehicles(NbVehicleInCirculation) == false
 				&& bollardObject.get(0).getIsInstalled() == true) {*/
 		else {
-			
-			
+
 			if (NbVehicleInCirculation < Maxminus20) {
-			
-			bollardService.Updatefalse(bollardObject);
-			bollardObject = bollardService.GenerateAllBollards();
 
-
-			smartCityServices.updateTramFrequency(6);
-			smartCityObject = smartCityServices.GenerateCity();
-
-			System.out.println("Retractable bollards are lowered");
-			System.out.println("Tramfrequency =  6/10");
-			}
-			else {
-				
-				if(bollardObject.get(1).getIsBollardState() == true) {
-					
-					smartCityServices.updateTramFrequency(8);
-					smartCityObject = smartCityServices.GenerateCity();
-					//Faire liste des bollard
-					
-					System.out.println("Number of vehicule is decreasing in town");
-					System.out.println("Retractable bollards are raised");
-					System.out.println("Tramfrequency =  8/10");
-				}
-				else {
-					
-					smartCityServices.updateTramFrequency(8);
-					smartCityObject = smartCityServices.GenerateCity();
-					//Faire liste des bollard
-					
-					
-					System.out.println("Number of vehicule is increasing in town");
-					System.out.println("Retractable bollards are lowered");
-					System.out.println("Tramfrequency =  8/10");
-					
-					
-					
-				}
-				
-				
-				
-			}
-		}
-			
-		
-		
-	}
-			
-			
-
-/*				smartCityServices.updateTramFrequency(8);
-
-				bollardObject = bollardService.GenerateAllBollards(); // A ESSAYER SANS
-				smartCityObject = smartCityServices.GenerateCity();
-
-				System.out.println("//////////////////////////////////");
-				System.out.println("Doit etre true");
-				System.out.println("bollardObject.get(0).getIsInstalled()");
-				System.out.println(bollardObject.get(0).getIsInstalled());
-				System.out.println("**********************************************");
-
-				System.out.println("Retractable bollards are raised (Nb in desc)");
-				System.out.println("Tramfrequency =  8/10");
-
-			} else {
 				bollardService.Updatefalse(bollardObject);
 				bollardObject = bollardService.GenerateAllBollards();
 
+				smartCityServices.updateTramFrequency(6);
 				smartCityObject = smartCityServices.GenerateCity();
 
 				System.out.println("Retractable bollards are lowered");
 				System.out.println("Tramfrequency =  6/10");
-
-			}
-
-			// iff number circulation > max-((max *20)/100)
-
-			//// refaire
-
-		} else {
-
-			if (NbVehicleInCirculation >= Maxminus20) {
-
-				System.out.println("Maxinus20 " + Maxminus20);
-
-				smartCityServices.updateTramFrequency(8);
-				smartCityObject = smartCityServices.GenerateCity();
-
-				bollardObject = bollardService.GenerateAllBollards(); // ???
-
-				System.out.println("Retractable bollards are raised (Nb in crois");
-				System.out.println("Tramfrequency =  8/10");
-
 			} else {
-				System.out.println("Retractable bollards are lowered (and bollard not true");
-				System.out.println("Tramfrequency =  6/10");
+
+				if (bollardObject.get(1).getIsBollardState() == true) {
+
+					smartCityServices.updateTramFrequency(8);
+					smartCityObject = smartCityServices.GenerateCity();
+					// Faire liste des bollard
+
+					System.out.println("Number of vehicule is decreasing in town");
+					System.out.println("Retractable bollards are raised");
+					System.out.println("Tramfrequency =  8/10");
+				} else {
+
+					smartCityServices.updateTramFrequency(8);
+					smartCityObject = smartCityServices.GenerateCity();
+					// Faire liste des bollard
+
+					System.out.println("Number of vehicule is increasing in town");
+					System.out.println("Retractable bollards are lowered");
+					System.out.println("Tramfrequency =  8/10");
+
+				}
 
 			}
+		}
 
-		}*/
+	}
 
-	
+	/*
+	 * smartCityServices.updateTramFrequency(8);
+	 * 
+	 * bollardObject = bollardService.GenerateAllBollards(); // A ESSAYER SANS
+	 * smartCityObject = smartCityServices.GenerateCity();
+	 * 
+	 * System.out.println("//////////////////////////////////");
+	 * System.out.println("Doit etre true");
+	 * System.out.println("bollardObject.get(0).getIsInstalled()");
+	 * System.out.println(bollardObject.get(0).getIsInstalled());
+	 * System.out.println("**********************************************");
+	 * 
+	 * System.out.println("Retractable bollards are raised (Nb in desc)");
+	 * System.out.println("Tramfrequency =  8/10");
+	 * 
+	 * } else { bollardService.Updatefalse(bollardObject); bollardObject =
+	 * bollardService.GenerateAllBollards();
+	 * 
+	 * smartCityObject = smartCityServices.GenerateCity();
+	 * 
+	 * System.out.println("Retractable bollards are lowered");
+	 * System.out.println("Tramfrequency =  6/10");
+	 * 
+	 * }
+	 * 
+	 * // iff number circulation > max-((max *20)/100)
+	 * 
+	 * //// refaire
+	 * 
+	 * } else {
+	 * 
+	 * if (NbVehicleInCirculation >= Maxminus20) {
+	 * 
+	 * System.out.println("Maxinus20 " + Maxminus20);
+	 * 
+	 * smartCityServices.updateTramFrequency(8); smartCityObject =
+	 * smartCityServices.GenerateCity();
+	 * 
+	 * bollardObject = bollardService.GenerateAllBollards(); // ???
+	 * 
+	 * System.out.println("Retractable bollards are raised (Nb in crois");
+	 * System.out.println("Tramfrequency =  8/10");
+	 * 
+	 * } else {
+	 * System.out.println("Retractable bollards are lowered (and bollard not true");
+	 * System.out.println("Tramfrequency =  6/10");
+	 * 
+	 * }
+	 * 
+	 * }
+	 */
 
 	public void CrudBollard(String operation_type, String target, ArrayList<String> list)
 			throws ClassNotFoundException, JsonGenerationException, JsonMappingException, IOException {
@@ -334,7 +323,7 @@ public class ClientThread extends Thread {
 		//
 
 		case "Update":
-			
+
 			vehiclesSensorService.UpdateSensorVehicles(target, list, vehicleSensorObject);
 			vehicleSensorObject = vehiclesSensorService.GenerateAllVehicleSensors();
 			System.out.println("");
@@ -538,6 +527,21 @@ public class ClientThread extends Thread {
 
 	}
 
+	private void CrudTransportation(String operation_type, String target, ArrayList<String> list)
+			throws ClassNotFoundException, JsonGenerationException, JsonMappingException, IOException {
+		switch (operation_type) {
+			
+		case "SELECT_ALL":
+			response.setList(transportService.showAllTransport());
+			String outjsonStringSelectAll = mapper.writeValueAsString(response);
+			out.write(outjsonStringSelectAll + "\n");
+			out.flush();
+			System.out.println("Display done to " + this.getName());
+			System.out.println("********************");
+			break;
+		}
+	}
+
 	public void CrudZone(String operation_type, String target, ArrayList<String> list)
 			throws ClassNotFoundException, JsonGenerationException, JsonMappingException, IOException {
 
@@ -560,7 +564,8 @@ public class ClientThread extends Thread {
 			System.out.println("********************");
 			break;
 		case "UPDATE_BETA":
-			System.out.println(this.zoneService.updateZoneBeta(Integer.parseInt(list.get(0)), Integer.parseInt(list.get(1))));
+			System.out.println(
+					this.zoneService.updateZoneBeta(Integer.parseInt(list.get(0)), Integer.parseInt(list.get(1))));
 			String outjsonStringUpdateZoneBeta = mapper.writeValueAsString(response);
 			out.write(outjsonStringUpdateZoneBeta + "\n");
 			out.flush();
@@ -568,7 +573,8 @@ public class ClientThread extends Thread {
 			System.out.println("********************");
 			break;
 		case "UPDATE":
-			System.out.println(this.zoneService.updateZone(Integer.parseInt(list.get(0)), Boolean.valueOf(list.get(1))));
+			System.out
+					.println(this.zoneService.updateZone(Integer.parseInt(list.get(0)), Boolean.valueOf(list.get(1))));
 			String outjsonStringUpdateZone = mapper.writeValueAsString(response);
 			out.write(outjsonStringUpdateZone + "\n");
 			out.flush();
@@ -689,8 +695,7 @@ public class ClientThread extends Thread {
 
 		}
 	}
-	
-	
+
 	private void CrudSmartcity2(String operation_type, String target, ArrayList<String> list)
 			throws ClassNotFoundException, JsonGenerationException, JsonMappingException, IOException {
 
@@ -1197,7 +1202,7 @@ public class ClientThread extends Thread {
 			}
 
 			break;
-			
+
 		case "smartcity2":
 			try {
 				this.CrudSmartcity2(this.request.getOperation_type(), this.request.getTarget(), this.request.getList());
@@ -1220,18 +1225,30 @@ public class ClientThread extends Thread {
 			}
 
 			break;
-		
-			case "empreinte":
-				try {
-					System.out.println("Let's go to see what's in smartcity oumaima");
-					this.CrudEmpreinteCarbone(this.request.getOperation_type(), this.request.getTarget(), this.request.getList());
-				} catch (Exception e) {
-				}
 
-				break;
-		}
+		case "empreinte":
+			try {
+				//System.out.println("Let's go to see what's in smartcity oumaima");
+				this.CrudEmpreinteCarbone(this.request.getOperation_type(), this.request.getTarget(),
+						this.request.getList());
+			} catch (Exception e) {
 			}
-	
+
+			break;
+
+		case "transportation":
+			try {
+				System.out.println("Let's go to see what's in smartcity oumaima");
+				this.CrudTransportation(this.request.getOperation_type(), this.request.getTarget(),
+						this.request.getList());
+			} catch (Exception e) {
+			}
+
+			break;
+
+		}
+
+	}
 
 	public void run() {
 		try {
