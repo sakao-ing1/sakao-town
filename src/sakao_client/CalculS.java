@@ -33,7 +33,7 @@ public double estimatedThreshold (int nbreVehicule,double heightkm, int nbreCycl
 	double V2= this.tramPollution *this.CercleAverageDistanceT(heightkm)*utilisateurTram;
 	double V3 =this.cyclistPollution *this.CercleAverageDistanceC(heightkm)*nbreCycliste;
 	double V4= this.walkerPollution *this.CercleAverageDistanceW(heightkm)*pieton;
-	return (V1 +V2+V4+V3);
+	return ((V1 +V2+V4+V3)/1000);
 }
 
 

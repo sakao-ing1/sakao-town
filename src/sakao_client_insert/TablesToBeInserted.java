@@ -126,7 +126,20 @@ public class TablesToBeInserted {
 		return chaine;
 	}
 	
-	
+public String readFileCarbonEstimateConf() throws IOException {
+		
+		InputStream fis = new FileInputStream("resources\\table-to-be-inserted\\SmartCityTest.json");
+		InputStreamReader ipsr = new InputStreamReader(fis);
+		BufferedReader br = new BufferedReader(ipsr);
+		String outjsonString = "";
+		String chaine = "";
+
+		while ((outjsonString = br.readLine()) != null) {
+			chaine = chaine + outjsonString;
+		}
+		System.out.println("Request sent : " + chaine);
+		return chaine;
+	}
 	public String readFileSmartCityLinkAlgo() throws IOException {
 		InputStream fis = new FileInputStream("resources/table-to-be-inserted/smartCityComputeLinkStationAlgoTest.json");
 		InputStreamReader ipsr = new InputStreamReader(fis);
