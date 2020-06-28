@@ -112,7 +112,12 @@ public class ClientThread extends Thread {
 		}
 
 	}
+
 	private void CheckVehiclesThreshold() throws ClassNotFoundException {
+
+		bollardObject = bollardService.GenerateAllBollards();
+
+
 
 		int NbVehicleInCirculation = smartCityObject.VehicleInCirculation(vehicleSensorObject);
 		smartCityServices.updateNumberinCirculation(NbVehicleInCirculation);
@@ -120,29 +125,95 @@ public class ClientThread extends Thread {
 		smartCityObject = smartCityServices.GenerateCity();
 
 		System.out.println("NbVehicleInCirculation = " + NbVehicleInCirculation);
+
 		int Max = smartCityObject.getMaxNumberVehicles();
-		int Maxminus20 = ((Max) - ((Max * 20) / 100));
-		// if (NbVehicleInCirculation >= this.maxNumberVehicles) retunrn true
-		if (smartCityObject.CheckThresholdNbMaxVehicles(
-				NbVehicleInCirculation) == true /* && bollardObject.get(0).isBollardState() == false */) {
+		int Maxminus20 = ((Max) - ((Max * 20) / 100)); // -20% of max
+
+		if (smartCityObject.CheckThresholdNbMaxVehicles(NbVehicleInCirculation) == true) {
 
 			bollardService.Updatetrue(bollardObject);
+			bollardObject = bollardService.GenerateAllBollards();
+
 			smartCityServices.updateTramFrequency(10);
 			smartCityObject = smartCityServices.GenerateCity();
+
+
+
 			System.out.println("Retractable bollards are raised");
 			System.out.println("Tramfrequency =  10/10");
 
-		} else if (smartCityObject.CheckThresholdNbMaxVehicles(NbVehicleInCirculation) == false
-				&& bollardObject.get(0).getIsInstalled() == true) {
-			if (NbVehicleInCirculation >= Maxminus20) {
+		} /*else if (smartCityObject.CheckThresholdNbMaxVehicles(NbVehicleInCirculation) == false
+				&& bollardObject.get(0).getIsInstalled() == true) {*/
+		else {
+			
+			
+			if (NbVehicleInCirculation < Maxminus20) {
+			
+			bollardService.Updatefalse(bollardObject);
+			bollardObject = bollardService.GenerateAllBollards();
 
-				smartCityServices.updateTramFrequency(8);
+
+			smartCityServices.updateTramFrequency(6);
+			smartCityObject = smartCityServices.GenerateCity();
+
+			System.out.println("Retractable bollards are lowered");
+			System.out.println("Tramfrequency =  6/10");
+			}
+			else {
+				
+				if(bollardObject.get(1).getIsBollardState() == true) {
+					
+					smartCityServices.updateTramFrequency(8);
+					smartCityObject = smartCityServices.GenerateCity();
+					//Faire liste des bollard
+					
+					System.out.println("Number of vehicule is decreasing in town");
+					System.out.println("Retractable bollards are raised");
+					System.out.println("Tramfrequency =  8/10");
+				}
+				else {
+					
+					smartCityServices.updateTramFrequency(8);
+					smartCityObject = smartCityServices.GenerateCity();
+					//Faire liste des bollard
+					
+					
+					System.out.println("Number of vehicule is increasing in town");
+					System.out.println("Retractable bollards are lowered");
+					System.out.println("Tramfrequency =  8/10");
+					
+					
+					
+				}
+				
+				
+				
+			}
+		}
+			
+		
+		
+	}
+			
+			
+
+/*				smartCityServices.updateTramFrequency(8);
+
+				bollardObject = bollardService.GenerateAllBollards(); // A ESSAYER SANS
 				smartCityObject = smartCityServices.GenerateCity();
-				System.out.println("Retractable bollards are raised");
+
+				System.out.println("//////////////////////////////////");
+				System.out.println("Doit etre true");
+				System.out.println("bollardObject.get(0).getIsInstalled()");
+				System.out.println(bollardObject.get(0).getIsInstalled());
+				System.out.println("**********************************************");
+
+				System.out.println("Retractable bollards are raised (Nb in desc)");
 				System.out.println("Tramfrequency =  8/10");
 
 			} else {
 				bollardService.Updatefalse(bollardObject);
+				bollardObject = bollardService.GenerateAllBollards();
 
 				smartCityObject = smartCityServices.GenerateCity();
 
@@ -159,20 +230,25 @@ public class ClientThread extends Thread {
 
 			if (NbVehicleInCirculation >= Maxminus20) {
 
+				System.out.println("Maxinus20 " + Maxminus20);
+
 				smartCityServices.updateTramFrequency(8);
 				smartCityObject = smartCityServices.GenerateCity();
-				System.out.println("Retractable bollards are raised");
+
+				bollardObject = bollardService.GenerateAllBollards(); // ???
+
+				System.out.println("Retractable bollards are raised (Nb in crois");
 				System.out.println("Tramfrequency =  8/10");
 
 			} else {
-				System.out.println("Retractable bollards are lowered");
+				System.out.println("Retractable bollards are lowered (and bollard not true");
 				System.out.println("Tramfrequency =  6/10");
 
 			}
 
-		}
+		}*/
 
-	}
+	
 
 	public void CrudBollard(String operation_type, String target, ArrayList<String> list)
 			throws ClassNotFoundException, JsonGenerationException, JsonMappingException, IOException {
