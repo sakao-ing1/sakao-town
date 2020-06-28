@@ -65,6 +65,7 @@ public class SensorPollutionThread extends Thread {
 		SensorPollutionController sensorPollutionController = new SensorPollutionController();
 		try {
 			sensorPollutionController.startConnection("localhost", 3030);
+			//sensorPollutionController.startConnection("172.31.249.254", 3030);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

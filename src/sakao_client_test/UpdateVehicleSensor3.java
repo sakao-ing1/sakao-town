@@ -62,6 +62,7 @@ public class UpdateVehicleSensor3 {
 	public static void main(String[] args) throws IOException, JSONException {
 		UpdateVehicleSensor3 client1 = new UpdateVehicleSensor3();
 		client1.startConnection("localhost", 3030);
+		//client1.startConnection("172.31.249.254", 3030);
 		readFile table = new readFile();
 		System.out.println("********************************");
 		System.out.println("INITIALIZATION");
@@ -76,10 +77,10 @@ public class UpdateVehicleSensor3 {
 		Request req1 = new ObjectMapper().readValue(table.readFileInitilization(), Request.class);
 		Request req2 = new ObjectMapper().readValue(table.readFileInitilizationSmartcity(), Request.class);
 		
-		client1.sendMessageToServer(req1);	
+		client1.sendMessageToServer(req2);	
 		System.out.println("Update done");
 		System.out.println("********************");
-		client1.sendMessageToServer(req2);
+		client1.sendMessageToServer(req1);
 		System.out.println("Update done");
 		System.out.println("********************");
 		
