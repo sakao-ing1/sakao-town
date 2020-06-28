@@ -48,7 +48,7 @@ public class CarbonTest2 {
 	int nbreTramE=1000;
 	int nbrePietonE=5000;
 	int nbreCyclisteE=500;
-	//////
+	
 	CarbonTest2 carbonTest = new CarbonTest2();
 	System.out.println("**********************************");
 	System.out.println("  THE BEGINNING OF THE TEST 2 ");

@@ -27,7 +27,7 @@ public double CercleAverageDistanceW (double heightkm) {
 	return  2*Math.PI*heightkm/4;
 }
 
-///////estimated threshold 
+///////estimated threshold ////
 public double estimatedThreshold (int nbreVehicule,double heightkm, int nbreCycliste, int utilisateurTram, int pieton) {
 	double V1=this.vehicalPollution*this.CercleAverageDistanceV(heightkm)*nbreVehicule;
 	double V2= this.tramPollution *this.CercleAverageDistanceT(heightkm)*utilisateurTram;

@@ -9,7 +9,7 @@ import sakao_common.SmartCity;
 
 
 public class CarbonTest1 {
-/////
+
 	//	double perimetre=carbonTest.getPerimetreValueOfSmartCity(sc);
 	
 		public SmartCity getSmartCity() {
