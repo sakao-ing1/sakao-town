@@ -66,8 +66,8 @@ public class mockSensor1_1 {
 
 		Request req1 = new ObjectMapper().readValue(table.readFileInitilization(), Request.class);
 		Request req2 = new ObjectMapper().readValue(table.readFileInitilizationSmartcity(), Request.class);
-		client1.sendMessageToServer(req1);
 		client1.sendMessageToServer(req2);
+		client1.sendMessageToServer(req1);
 
 		System.out.println("*******************************************************************");
 		System.out.println("For Start the simulation, press a number");

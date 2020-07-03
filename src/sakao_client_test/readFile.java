@@ -29,6 +29,19 @@ public class readFile {
 		return chaine;
 	}
 	
+	/*public String readFileInitilization() throws IOException {
+		//InputStream fis = new FileInputStream("resources\\table-to-be-inserted\\InitilizationTESTVehicles.json");
+		InputStreamReader ipsr = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("resources\\\\table-to-be-inserted\\\\InitilizationTESTVehicles.json"));
+		BufferedReader br = new BufferedReader(ipsr);
+		String outjsonString = "";
+		String chaine = "";
+
+		while ((outjsonString = br.readLine()) != null) {
+			chaine = chaine + outjsonString;
+		}
+		//System.out.println("Request sent : " + chaine);
+		return chaine;
+	}*/
 	public String readFileInitilizationSmartcity() throws IOException {
 		//InputStream fis = new FileInputStream("resources\\table-to-be-inserted\\InitilizationTESTSmartCity.json");
 		InputStreamReader ipsr = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("table-to-be-inserted/InitilizationTESTSmartCity.json"));
