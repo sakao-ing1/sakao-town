@@ -327,11 +327,11 @@ public class ClientThread extends Thread {
 			vehiclesSensorService.UpdateSensorVehicles(target, list, vehicleSensorObject);
 			vehicleSensorObject = vehiclesSensorService.GenerateAllVehicleSensors();
 			System.out.println("");
-			System.out.println("List Sensor Objet Updated :");
-			System.out.println("");
-			System.out.println(vehicleSensorObject);
-			System.out.println("");
-			System.out.println("Fin object updated");
+//			System.out.println("List Sensor Objet Updated :");
+//			System.out.println("");
+//			System.out.println(vehicleSensorObject);
+//			System.out.println("");
+//			System.out.println("Fin object updated");
 			System.out.println("");
 			this.CheckVehiclesThreshold();
 			String outjsonStringUpdate = mapper.writeValueAsString(response);
