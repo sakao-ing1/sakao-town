@@ -1,14 +1,23 @@
 package sakao_client;
 /* Oumaima Code*/
 public class CalculS {
-	private double vehicalPollution = 126 ;
+	private double vehicalPollution;// = 126 ;
 	private double humanPollution = 2;
-	private double tramPollution =43 ;
-	private double cyclistPollution = 16 ;
+	private double tramPollution;// =43 ;
+	private double cyclistPollution;// = 16 ;
 	private double walkerPollution=4 ;
 	public CalculS() {
 	
 	}
+	
+	public CalculS(double vehicalPollution,double tramPollution, double cyclistPollution) {
+		this.vehicalPollution = vehicalPollution;
+		this.tramPollution = tramPollution;
+		this.cyclistPollution = cyclistPollution;
+		
+	}
+	
+	
 ///////// perimeter calculation 
 public double perimetre(double heightkm, double widthkm) {
 	return 2*Math.PI*heightkm;

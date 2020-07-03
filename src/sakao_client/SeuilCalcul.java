@@ -37,6 +37,9 @@ public class SeuilCalcul extends JPanel {
 	private int NB_TRAM;
 	private int NB_BIKE;
 	private int NB_Ped;
+	private double vehicalPollution;
+	private double tramPollution;
+	private double cyclistPollution;
 	public static final int NB_POPULATION = 10000;
 
 	public SeuilCalcul(AppStructureHandler appStructure) throws IOException, JSONException {
@@ -77,16 +80,21 @@ public class SeuilCalcul extends JPanel {
 				if (TypeOfTransport.equals("Tram")) {
 
 					NB_TRAM = reqT.getDailytransportusercount();
+					tramPollution =reqT.getAverageofco2releasedbytransport();
+					
 
 				}
 				if (TypeOfTransport.equals("Vehicle")) {
 
 					NB_VEHICLES = reqT.getDailytransportusercount();
+					vehicalPollution =reqT.getAverageofco2releasedbytransport();
 
 				}
 				if (TypeOfTransport.equals("Bike")) {
 
 					NB_BIKE = reqT.getDailytransportusercount();
+					cyclistPollution = reqT.getAverageofco2releasedbytransport();
+					
 
 				}
 
@@ -101,6 +109,11 @@ public class SeuilCalcul extends JPanel {
 			 * System.out.println(NB_TRAM);
 			 * System.out.println("////////////////////////////////////////////////");
 			 */
+			System.out.println("cyclistPollution");
+			System.out.println(cyclistPollution);
+			System.out.println("vehicalPollution");
+			System.out.println(vehicalPollution);
+			System.out.println();
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -245,7 +258,7 @@ public class SeuilCalcul extends JPanel {
 		// Action to calculate/load BetAverage
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CalculS calculS = new CalculS();
+				CalculS calculS = new CalculS(vehicalPollution,tramPollution,cyclistPollution);
 				Request request = new Request("SELECT_ALL", "empreinte");
 				ArrayList<String> al;
 				try {

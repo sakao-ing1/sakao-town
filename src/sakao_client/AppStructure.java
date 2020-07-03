@@ -90,8 +90,8 @@ public class AppStructure extends JFrame {
 	 */
 	public AppStructure() throws ClassNotFoundException, IOException, JSONException {
 		AppStructureHandler appStructure = new AppStructureHandler();
-		appStructure.startConnection("localhost", 3030);
-		//appStructure.startConnection("172.31.249.254", 3030);
+		//appStructure.startConnection("localhost", 3030);
+		appStructure.startConnection("172.31.249.254", 3030);
 		
 		
 		
